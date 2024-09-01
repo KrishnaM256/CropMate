@@ -1,0 +1,93 @@
+.cross {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 30px;
+  position: absolute;
+  right: 0px;
+}
+
+.sideBar {
+  width: 250px;
+  height: 100vh;
+  background-color: #f8f9fa;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.sideBar ul {
+  list-style: none;
+  padding: 20px;
+  margin: 0;
+}
+
+.sideBar ul li {
+  margin: 15px 0;
+  font-size: 16px;
+}
+
+.sideBar ul li a {
+  text-decoration: none;
+  color: #343a40;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.sideBar ul li a:hover,
+.sideBar ul li:hover {
+  color: #007bff;
+}
+
+.sideBar ul li .navButton {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #343a40;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.sideBar ul li .navButton:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.sideBar ul li .item {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.sideBar ul li .item:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.sideBar ul li .item p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.sideBar ul li .item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.sideBar ul li svg {
+  font-size: 20px;
+}
+
+.sideBar ul li .navButton {
+  padding: 8px 16px;
+}
+
+.sideBar ul li .navButton svg {
+  margin-right: 8px;
+}

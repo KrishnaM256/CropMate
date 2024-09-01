@@ -1,0 +1,134 @@
+.card {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  min-width: 100px;
+  padding: 25px 15px;
+  border-radius: 5px;
+  margin: 30px 20px;
+}
+
+.card:hover {
+  box-shadow: 3px 3px 4px rgb(0, 0, 0, 0.2), -1px -1px 1px rgb(0, 0, 0, 0.1);
+}
+
+.profileInfo {
+  display: flex;
+  justify-content: space-evenly;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 20px;
+  width: 100%;
+}
+
+.profilePic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* min-width: 550px; */
+  margin: 0 10px;
+}
+
+.line2 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.line2 > div {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.wrapText {
+  display: -webkit-box;
+  --max-lines: 2;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--max-lines);
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 450;
+  font-size: 14px;
+}
+
+.border {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.like {
+  font-size: 15px;
+  padding: 9px;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 90%;
+  margin: 10px;
+}
+
+.border {
+  display: flex;
+  outline: none;
+  font-size: 16px;
+  padding: 10px;
+  background-color: transparent;
+  margin: 0 10px;
+}
+.simpleBtn {
+  padding: 8.5px;
+  width: 100px;
+}
+
+.border:hover {
+  background-color: rgba(154, 152, 152, 0.1);
+  cursor: pointer;
+}
+.landInfo {
+  display: flex;
+  font-size: 20px;
+}
+.landInfo h5 {
+  margin: 0;
+}
+.landInfo span {
+  font-size: 18px;
+  margin: 0;
+}
+
+@media (max-width: 850px) {
+  .profileInfo {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .line2 {
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .wrapText {
+    text-align: justify;
+  }
+  .details {
+    flex-direction: column;
+  }
+}

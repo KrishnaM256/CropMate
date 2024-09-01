@@ -1,0 +1,141 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0.5px 0.5px 0.5px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  background-color: white;
+  z-index: 100;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 0 100px;
+  box-sizing: border-box;
+}
+
+.navbar ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar ul li,
+.navbar ul li a {
+  text-decoration: none;
+  color: #62646a;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  margin: 0 15px;
+}
+
+.navbar ul > button {
+  margin: 0 15px;
+}
+
+.navbar ul li:hover,
+.navbar ul li a:hover {
+  color: rgb(29, 191, 115);
+  cursor: pointer;
+}
+
+.navButton,
+.item {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 1.1rem;
+  color: #62646a;
+  padding: 10px;
+  border-radius: 7px;
+}
+
+.navButton:hover {
+  background-color: rgba(156, 156, 156, 0.1);
+  cursor: pointer;
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2), -1px -1px 1px rgba(0, 0, 0, 0.2);
+  padding: 10px 0;
+  background-color: #ffffff;
+}
+
+.item p {
+  font-size: 14px;
+  margin: 3px 0;
+  color: #7a7b7b;
+}
+
+.item:hover {
+  border-radius: 0;
+  cursor: pointer;
+  background-color: rgba(138, 138, 138, 0.1);
+}
+
+#signin {
+  display: block;
+}
+
+#join {
+  display: block;
+  border: 1px solid green;
+  border-radius: 3px;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: green;
+  transition: all 0.3s ease;
+}
+
+#join:hover {
+  background-color: green;
+  color: white;
+}
+
+.sidebarDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu {
+  font-size: 30px;
+  margin: 15px;
+  cursor: pointer;
+  display: none;
+}
+
+.categories {
+  display: flex;
+  overflow-x: auto;
+  box-shadow: 0.5px 0.5px 0.5px rgba(0, 0, 0, 0.2);
+  flex-wrap: nowrap;
+}
+.categories p {
+  margin: 5px 20px;
+  color: #62646a;
+  flex-wrap: nowrap;
+}
+@media (max-width: 1350px) {
+  .navbar ul li,
+  .navbar ul button {
+    display: none;
+  }
+  .navbar {
+    padding: 0 20px;
+  }
+  .menu {
+    display: block;
+  }
+}
+
+@media (max-width: 430px) {
+  #join {
+    display: none;
+  }
+}

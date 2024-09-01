@@ -1,0 +1,112 @@
+.radioCard {
+  border: 1px solid rgba(12, 147, 12, 0.5);
+  width: 200px;
+  height: 100px;
+  padding: 35px;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.radioCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 2px 2px 10px rgba(35, 183, 35, 0.5);
+}
+
+.radio-card {
+  cursor: pointer;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.h3 {
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.radio-group > div {
+  gap: 16px;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.radio-input {
+  display: none;
+}
+
+.radio-btn {
+  display: flex;
+  align-items: center;
+}
+
+.radio-checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  margin-right: 8px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.checked.radio-checkmark {
+  background-color: green;
+  border-color: green;
+}
+
+.checked.radio-checkmark::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.radio-label {
+  font-size: 20px;
+}
+
+.icon {
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+.radio-btn {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.greenBtn {
+  padding: 10px 25px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: green;
+  font-size: 16px;
+  color: white;
+  border-radius: 10px;
+}
+
+.greenBtn:hover {
+  background-color: rgba(0, 128, 0, 0.7);
+}
