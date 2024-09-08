@@ -20,6 +20,7 @@ import Home from './components/Home/Home.jsx'
 import BuyerCard from './components/common/cards/BuyerCard/BuyerCard.jsx'
 import ContractMarket from './components/ContractMarket/ContractMarket.jsx'
 import LiveMarket from './components/LiveMarket/LiveMarket.jsx'
+import FarmerProfile from './components/common/profile/FarmerProfile/FarmerProfile.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
       <Route path="/buyerCards" element={<BuyerCard />}></Route>
       <Route path="/contractMarket" element={<ContractMarket />}></Route>
       <Route path="/liveMarket" element={<LiveMarket />}></Route>
+      <Route path="/farmerProfile" element={<FarmerProfile />}></Route>
     </Route>
   )
 )

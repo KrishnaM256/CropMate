@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { GrLanguage } from 'react-icons/gr'
@@ -64,13 +64,28 @@ const Navbar = () => {
             Language
           </li>
           <li>
-            <Link to={'/liveMarket'}>Live market</Link>
+            <NavLink
+              to={'/liveMarket'}
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Live market
+            </NavLink>
           </li>
           <li>
-            <Link to={'/contractMarket'}>Contract market</Link>
+            <NavLink
+              to={'/contractMarket'}
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Contract market
+            </NavLink>
           </li>
           <li id="signin">
-            <Link to={'/signIn'}>Sign in</Link>
+            <NavLink
+              to={'/signIn'}
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              Sign in
+            </NavLink>
           </li>
           <Link to={'/signUp'} id="join">
             Join

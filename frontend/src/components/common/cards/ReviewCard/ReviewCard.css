@@ -1,0 +1,9 @@
+.reviewer {
+  display: flex;
+  border: 1px solid black;
+}
+.reviewer img {
+  height: 70px;
+  border-radius: 50%;
+  width: 70px;
+}

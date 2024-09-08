@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 50px 70px;
+  margin: 50px 0;
   background-color: rgb(1, 60, 1);
   height: 300px;
   color: white;
@@ -24,9 +24,9 @@
 
 .search input {
   outline: none;
-  font-size: 16px;
+  font-size: 19px;
   border: none;
-  width: 55vmin;
+  width: 60vmin;
 }
 
 .search button {
@@ -52,7 +52,7 @@
 .categoriesDiv {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -61,8 +61,29 @@
   justify-content: center;
 }
 
-@media (max-width: 1350px) {
+.h1 {
+  font-size: 45px;
+  width: 50%;
+  font-weight: 400;
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .h1 {
+    font-size: 30px;
+    width: 100%;
+  }
   .header {
-    margin: 20px;
+    padding: 100px 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .h1 {
+    font-size: 30px;
+    width: 100%;
+  }
+  .header {
+    padding: 100px 20px;
   }
 }

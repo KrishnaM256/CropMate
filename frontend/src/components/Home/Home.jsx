@@ -26,10 +26,10 @@ const Home = () => {
   return (
     <section id="home">
       <div className="header">
-        <h1 className="h3">Find the right farming partnership, right away.</h1>
+        <h1 className="h1">Find the right farming partnership, right away.</h1>
         <div className="search">
           <input
-            type="text"
+            type="search"
             name="search"
             placeholder="Search for any service..."
           />
@@ -45,9 +45,7 @@ const Home = () => {
       </div>
       <div className="popularServices">
         <h3 className="h3">Popular Services</h3>
-        <div className="cards">
-          
-        </div>
+        <div className="cards"></div>
       </div>
     </section>
   )

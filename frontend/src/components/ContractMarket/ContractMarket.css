@@ -1,6 +1,6 @@
 #market {
   display: flex;
-  padding: 10px 100px;
+  padding: 50px 0;
   flex-direction: column;
 }
 
@@ -41,7 +41,6 @@
 }
 
 .marketDiv2 {
-  /* border: 1px solid black; */
   height: 600px;
   width: 300px;
 }

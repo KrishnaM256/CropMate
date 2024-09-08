@@ -36,8 +36,9 @@
 }
 
 .navbar ul li:hover,
-.navbar ul li a:hover {
-  color: rgb(29, 191, 115);
+.navbar ul li a:hover,
+.navbar ul li .active {
+  color: rgb(14, 163, 94);
   cursor: pointer;
 }
 

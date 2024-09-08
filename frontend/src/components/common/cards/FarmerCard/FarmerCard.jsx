@@ -2,13 +2,16 @@ import React from 'react'
 import profile from '../../../../assets/profile.jpg'
 import { FaStar } from 'react-icons/fa'
 import { IoLocationSharp } from 'react-icons/io5'
-import { FaRegHeart } from 'react-icons/fa'
+import { FaRegHeart, FaRegPaperPlane } from 'react-icons/fa'
 import { BiSolidLandscape } from 'react-icons/bi'
 import { BiMessageRoundedDots } from 'react-icons/bi'
-import { GoPlus } from 'react-icons/go'
+import { MdOutlineGroupAdd } from 'react-icons/md'
+
 import './FarmerCard.css'
+import { useNavigate } from 'react-router-dom'
 
 const FarmerCard = () => {
+  const navigate = useNavigate()
   return (
     <div className="card">
       <div className="profileInfo">
@@ -43,15 +46,19 @@ const FarmerCard = () => {
         </div>
         <div className="options">
           <button type="button" className="border">
-            <GoPlus />
+            <MdOutlineGroupAdd />
           </button>
           <button type="button" className="border">
             <FaRegHeart />
           </button>
           <button type="button" className="border">
-            <BiMessageRoundedDots />
+            <FaRegPaperPlane />
           </button>
-          <button type="button" className="simpleBtn border">
+          <button
+            type="button"
+            className="simpleBtn border"
+            onClick={() => navigate('/farmerProfile')}
+          >
             See profile
           </button>
         </div>
