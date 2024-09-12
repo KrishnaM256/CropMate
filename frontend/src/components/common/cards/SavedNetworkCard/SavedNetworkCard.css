@@ -1,0 +1,52 @@
+.savedNetworkCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 380px;
+  margin: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 10px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.savedNetworkCard:hover {
+  box-shadow: 3px 3px 4px rgb(0, 0, 0, 0.2), -1px -1px 1px rgb(0, 0, 0, 0.2);
+}
+.savedNetworkCardDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  position: relative;
+}
+.savedNetworkCardDiv > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.savedNetworkCardDiv .firstLine {
+  display: flex;
+  flex-direction: column;
+}
+.savedNetworkCardDiv .line2 {
+  margin: 5px 0;
+}
+
+.savedNetworkCardDiv .wrapText {
+  display: -webkit-box;
+  text-align: justify;
+  --max-lines: 5;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--max-lines);
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 450;
+}
+#heartRelative {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}

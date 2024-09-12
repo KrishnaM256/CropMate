@@ -4,11 +4,10 @@ import { FaStar } from 'react-icons/fa'
 import { IoLocationSharp } from 'react-icons/io5'
 import { FaRegHeart, FaRegPaperPlane } from 'react-icons/fa'
 import { BiSolidLandscape } from 'react-icons/bi'
-import { BiMessageRoundedDots } from 'react-icons/bi'
 import { MdOutlineGroupAdd } from 'react-icons/md'
+import { useNavigate } from 'react-router-dom'
 
 import './FarmerCard.css'
-import { useNavigate } from 'react-router-dom'
 
 const FarmerCard = () => {
   const navigate = useNavigate()

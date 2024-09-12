@@ -1,0 +1,15 @@
+.GroupCard {
+  display: flex;
+  flex-direction: row;
+  margin: 7px 15px;
+}
+/* .GroupCard .profilePic {
+  width: 70px;
+  height: 70px;
+} */
+@media (max-width: 850px) {
+  .GroupCard {
+    /* display: flex; */
+    flex-direction: column;
+  }
+}

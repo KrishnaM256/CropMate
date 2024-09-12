@@ -1,9 +1,37 @@
+.review {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 15px;
+  margin: 10px 0;
+}
+.nameRating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ratings {
+  display: flex;
+  margin: 10px 0;
+  width: 100%;
+}
 .reviewer {
   display: flex;
-  border: 1px solid black;
+  margin: 0 10px;
+  padding: 15px 0px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 .reviewer img {
   height: 70px;
   border-radius: 50%;
   width: 70px;
+}
+.details2 {
+  margin: 0 10px;
+}
+.comment {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px 10px;
 }

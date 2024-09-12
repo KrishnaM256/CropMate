@@ -152,14 +152,10 @@
 @media (max-width: 400px) {
   .signin {
     border: none;
-    width: 90%;
   }
 }
 
 @media (max-width: 1050px) {
-  .formDiv {
-    width: 90%;
-  }
   .signin {
     width: 70%;
   }

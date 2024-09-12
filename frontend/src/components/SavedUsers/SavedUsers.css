@@ -1,0 +1,13 @@
+.pageContainer {
+  padding: 10px 0;
+}
+.h2 {
+  font-weight: 500;
+  font-size: 28px;
+}
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+}

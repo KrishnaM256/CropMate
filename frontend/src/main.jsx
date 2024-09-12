@@ -21,6 +21,8 @@ import BuyerCard from './components/common/cards/BuyerCard/BuyerCard.jsx'
 import ContractMarket from './components/ContractMarket/ContractMarket.jsx'
 import LiveMarket from './components/LiveMarket/LiveMarket.jsx'
 import FarmerProfile from './components/common/profile/FarmerProfile/FarmerProfile.jsx'
+import SavedUsers from './components/SavedUsers/SavedUsers.jsx'
+import GroupedUsers from './components/GroupedUsers/GroupedUsers.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,6 +37,8 @@ const router = createBrowserRouter(
       <Route path="/contractMarket" element={<ContractMarket />}></Route>
       <Route path="/liveMarket" element={<LiveMarket />}></Route>
       <Route path="/farmerProfile" element={<FarmerProfile />}></Route>
+      <Route path="/savedNetwork" element={<SavedUsers />} />
+      <Route path="/groupedNetwork" element={<GroupedUsers />} />
     </Route>
   )
 )

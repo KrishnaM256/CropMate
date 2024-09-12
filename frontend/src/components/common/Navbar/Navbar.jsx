@@ -20,7 +20,9 @@ const Navbar = () => {
         <div className="sidebarDiv">
           <IoMenu className="menu" onClick={() => setOpen(!open)} />
           <p>
-            <Link to={'/'}>CropMate</Link>
+            <Link to={'/'} className="logo">
+              CropMate
+            </Link>
           </p>
         </div>
         <ul>
