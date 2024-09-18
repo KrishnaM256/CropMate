@@ -1,0 +1,10 @@
+.form1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.form1 > .formDiv,
+.form1 .formBody {
+  width: 100%;
+}

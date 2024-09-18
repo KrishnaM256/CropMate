@@ -39,11 +39,7 @@ const SavedNetworkCard = () => {
             </div>
             <div>
               <IoLocationSharp />
-              City
-            </div>
-            <div>
-              <IoLocationSharp />
-              State
+              City, State
             </div>
           </div>
         </div>

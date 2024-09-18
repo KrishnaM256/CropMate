@@ -5,7 +5,7 @@
   justify-content: space-evenly;
   border: 1px solid rgba(0, 0, 0, 0.1);
   min-width: 100px;
-  padding: 25px 15px;
+  padding: 25px 25px;
   border-radius: 5px;
   margin: 30px 20px;
 }
@@ -16,12 +16,14 @@
 
 .profileInfo {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding-bottom: 20px;
   width: 100%;
 }
-
+.profileInfoFlex {
+  display: flex;
+}
 .profilePic {
   width: 100px;
   height: 100px;
@@ -82,7 +84,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  width: 90%;
+  width: 100%;
   margin: 10px;
 }
 
@@ -92,6 +94,8 @@
   font-size: 16px;
   padding: 10px;
   background-color: transparent;
+  justify-content: center;
+  align-items: center;
   margin: 0 10px;
 }
 .simpleBtn {
@@ -105,7 +109,10 @@
 }
 .landInfo {
   display: flex;
+  gap: 5px;
   font-size: 20px;
+  /* justify-content: center; */
+  align-items: center;
 }
 .landInfo h5 {
   margin: 0;

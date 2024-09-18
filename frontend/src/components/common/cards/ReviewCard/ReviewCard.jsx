@@ -22,11 +22,7 @@ const ReviewCard = () => {
           <div className="thirdLine line2">
             <div>
               <IoLocationSharp />
-              City
-            </div>
-            <div>
-              <IoLocationSharp />
-              State
+              City, State
             </div>
           </div>
         </div>

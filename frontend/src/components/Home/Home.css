@@ -3,13 +3,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 50px 0;
+  margin-top: 40px;
+  margin-bottom: 20px;
   background-color: rgb(1, 60, 1);
   height: 300px;
   color: white;
   border-radius: 20px;
-  padding: 100px;
+  padding: 70px 100px;
   text-align: center;
+  /* box-sizing: border-box; */
 }
 
 .search {
@@ -19,14 +21,14 @@
   align-items: center;
   background-color: white;
   border-radius: 10px;
-  padding: 5px 10px;
+  padding: 5px 8px;
 }
 
 .search input {
   outline: none;
-  font-size: 19px;
+  font-size: 17px;
   border: none;
-  width: 60vmin;
+  width: 70vmin;
 }
 
 .search button {
@@ -52,8 +54,9 @@
 .categoriesDiv {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
+  margin: 0 5px;
 }
 
 .popularServices {
@@ -63,9 +66,11 @@
 
 .h1 {
   font-size: 45px;
-  width: 50%;
+  width: 70%;
   font-weight: 400;
   text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 1200px) {
@@ -85,5 +90,45 @@
   }
   .header {
     padding: 100px 20px;
+  }
+}
+
+@media (max-width: 850px) {
+  .header {
+    border-radius: 0px;
+    padding: 20px;
+    margin: 0px 0;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #003912 36.72%, #19aa64 141.43%);
+  }
+
+  .search {
+    border-radius: 10px;
+    padding: 6px 4px;
+  }
+
+  .search input {
+    outline: none;
+    font-size: 16px;
+    border: none;
+    width: 70vmin;
+    padding-left: 5px;
+    color: rgb(57, 57, 57);
+  }
+
+  .h1 {
+    font-size: 28px;
+  }
+
+  .search button {
+    color: white;
+    background-color: rgb(1, 60, 1);
+    padding: 7px;
+    border-radius: 7px;
+    font-size: 28px;
+  }
+  .searchIcon {
+    font-size: 20px;
   }
 }

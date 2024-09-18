@@ -9,40 +9,38 @@ import { useNavigate } from 'react-router-dom'
 
 import './FarmerCard.css'
 
-const FarmerCard = () => {
+const FarmerCard = ({ data }) => {
+  console.log(data)
+
   const navigate = useNavigate()
   return (
     <div className="card">
       <div className="profileInfo">
-        <img src={profile} alt="" className="profilePic" />
-        <div className="info">
-          <div className="firstLine line2">
-            <div style={{ fontWeight: '550', fontSize: '19px' }}>Name</div>
-            <FaStar />
-            <div>4.6</div>
-            <div>(1000)</div>
-          </div>
-          <div className="wrapText line2">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            Consequuntur, neque.Lorem ipsum dolor sit amet consectetur,
-            adipisicing elit. Consequuntur, neque.Lorem ipsum dolor sit amet
-            consectetur, adipisicing elit. Consequuntur, neque.
-          </div>
-          <div className="thirdLine line2">
-            <div>
-              <BiSolidLandscape />
-              Land
+        <div className="profileInfoFlex">
+          <img src={profile} alt="" className="profilePic" />
+          <div className="info">
+            <div className="firstLine line2">
+              <div style={{ fontWeight: '550', fontSize: '19px' }}>
+                {data?.user?.name}
+              </div>
+              <FaStar />
+              <div>{data?.user?.rating}</div>
+              <div>({data?.user?.numReviews})</div>
             </div>
-            <div>
-              <IoLocationSharp />
-              City
-            </div>
-            <div>
-              <IoLocationSharp />
-              State
+            <div className="wrapText line2">{data?.user?.tagLine}</div>
+            <div className="thirdLine line2">
+              <div>
+                <BiSolidLandscape />
+                {data?.user?.totalLand}
+              </div>
+              <div>
+                <IoLocationSharp />
+                {data?.user?.city}, {data?.user?.state}
+              </div>
             </div>
           </div>
         </div>
+
         <div className="options">
           <button type="button" className="border">
             <MdOutlineGroupAdd />
@@ -56,7 +54,7 @@ const FarmerCard = () => {
           <button
             type="button"
             className="simpleBtn border"
-            onClick={() => navigate('/farmerProfile')}
+            onClick={() => navigate(`/farmerProfile/${data?.user?.id}`)}
           >
             See profile
           </button>
@@ -65,15 +63,32 @@ const FarmerCard = () => {
       <div className="details">
         <div>
           <div className="landInfo">
-            <h5>Crop-Ready Land : </h5> <span> 30Acre</span>
+            <h5>Crop-Ready Land : </h5> <span> {data?.cropReadyLand} Acre</span>
+          </div>
+          {data?.expectedCropsYields.map((ecy, i) => {
+            return (
+              <div className="ipDivContainer">
+                <div className="landInfo">
+                  <h5>Expected Crop {i + 1} : </h5>
+                  <span>{ecy?.expectedCrop}</span>
+                </div>
+                <div className="landInfo">
+                  <h5>Expected Average Yield {i + 1} : </h5>
+                  <span>{ecy?.expectedYield} tons/acre</span>
+                </div>
+              </div>
+            )
+          })}
+          <div className="landInfo">
+            <h5>Current Crops : </h5> <span> {data?.currentCrops} </span>
           </div>
           <div className="landInfo">
-            <h5>Expected Crop :</h5>
-            <span>Onion</span>
+            <h5>Logistics : </h5> <span> {data?.logistics} </span>
           </div>
         </div>
         <div style={{ fontSize: '18px' }}>
-          <span style={{ fontWeight: 'bold' }}>From</span> ₹5,999/Acre
+          <span style={{ fontWeight: 'bold' }}>From</span> ₹{data?.pricePerAcre}
+          /Acre
         </div>
       </div>
     </div>

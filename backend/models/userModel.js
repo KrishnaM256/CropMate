@@ -1,5 +1,18 @@
 import mongoose from 'mongoose'
 
+const reviewSchema = mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    rating: { type: Number, required: true },
+    comment: { type: String, required: true },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      req: 'User',
+    },
+  },
+  { timestamps: true }
+)
+
 const userSchema = mongoose.Schema(
   {
     firstName: {
@@ -45,12 +58,44 @@ const userSchema = mongoose.Schema(
       required: [true, 'Please enter password'],
       minLength: [8, 'Password should be greater than 8 '],
     },
+    reviews: [reviewSchema],
+    rating: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    numReviews: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    workImages: [
+      {
+        public_id: { type: String, required: true },
+        url: { type: String, required: true },
+      },
+    ],
+    totalLand: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     avatar: {
       public_id: {
         type: String,
         required: false,
       },
       url: { type: String, required: false },
+    },
+    tagLine: {
+      type: String,
+      // required: true,
+      default: '',
+    },
+    aboutMe: {
+      type: String,
+      // required: true,
+      default: '',
     },
     role: {
       type: String,

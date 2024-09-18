@@ -1,0 +1,34 @@
+.subLine {
+  color: rgba(0, 0, 0, 0.5);
+}
+.profileEditDiv {
+  display: flex;
+  margin: 20px 0;
+  justify-content: flex-end;
+  align-items: center;
+}
+.profileEditDiv button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  font-weight: bold;
+  color: white;
+  background-color: #3f84c3;
+}
+.profileEditDiv button:hover {
+  background-color: #5d99d1;
+}
+.myProfileDiv1 {
+  width: 100%;
+}
+.flexProfile {
+  display: flex;
+  justify-content: space-between;
+}
+.myProfileBasic1 {
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}

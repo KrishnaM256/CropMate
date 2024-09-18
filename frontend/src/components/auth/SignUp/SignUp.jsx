@@ -3,10 +3,15 @@ import { GrPrevious, GrNext } from 'react-icons/gr'
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { indianStates, indianCities } from '../../data/indiaData.js'
 import './Register.css'
+import { useRegisterMutation } from '../../../redux/api/usersApiSlice.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCredentials } from '../../../redux/features/auth/authSlice.js'
+import { toast } from 'react-toastify'
 
 const Register = () => {
   const params = useParams()
   const role = params.id
+  console.log(role)
 
   const navigate = useNavigate()
 
@@ -14,7 +19,16 @@ const Register = () => {
   const sp = new URLSearchParams(search)
   const redirect = sp.get('redirect') || '/'
 
-  const [page, setPage] = useState(0)
+  const [register, { isLoading }] = useRegisterMutation()
+  const { userInfo } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect)
+    }
+  }, [redirect, navigate, userInfo])
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -24,31 +38,26 @@ const Register = () => {
     city: '',
     state: '',
     password: '',
-    aadhaarCard: '',
-    panCard: '',
-    saatBara: '',
+    aadhaarNumber: '',
+    panNumber: '',
+    role: role,
   })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
+      console.log(formData)
+      const res = await register(formData).unwrap()
+      console.log(res)
+      dispatch(setCredentials({ ...res }))
       navigate(redirect)
       toast.success('User successfully registered.')
     } catch (error) {
-      console.log(error.data.message)
+      console.log({ error: error.data.message })
       toast.error(error.data.message)
     }
   }
 
-  const handleNext = (e) => {
-    e.preventDefault()
-    setPage(page + 1)
-  }
-
-  const handlePrev = (e) => {
-    e.preventDefault()
-    setPage(page - 1)
-  }
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({
@@ -56,6 +65,7 @@ const Register = () => {
       [name]: value,
     })
   }
+
   return (
     <form className="form" onSubmit={handleSubmit}>
       <div className="formDiv">
@@ -167,16 +177,24 @@ const Register = () => {
             </div>
           </div>
           <div className="ipContainer">
-            <label htmlFor="aadhaarCard">Aadhaar Card:</label>
-            <input type="file" name="aadhaarCard" id="aadhaarCard" />
+            <label htmlFor="aadhaarNumber">Aadhaar Number:</label>
+            <input
+              type="Number"
+              name="aadhaarNumber"
+              onChange={handleChange}
+              value={formData.aadhaarNumber}
+              required
+            />
           </div>
           <div className="ipContainer">
-            <label htmlFor="panCard">Pan Card:</label>
-            <input type="file" name="panCard" id="panCard" />
-          </div>
-          <div className="ipContainer">
-            <label htmlFor="saatBara">Saat Baara:</label>
-            <input type="file" name="saatBara" id="saatBara" />
+            <label htmlFor="panNumber">Pan Number:</label>
+            <input
+              type="Number"
+              name="panNumber"
+              onChange={handleChange}
+              value={formData.panNumber}
+              required
+            />
           </div>
         </div>
         <div className="navigatePage">

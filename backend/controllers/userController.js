@@ -22,7 +22,15 @@ export const getUserProfile = asyncHandler(async (req, res) => {
       address: user.address,
       city: user.city,
       state: user.state,
-      role: updateUserProfile.role,
+      role: user.role,
+      reviews: user.reviews,
+      rating: user.rating,
+      numReviews: user.numReviews,
+      workImages: user.workImages,
+      totalLand: user.totalLand,
+      avatar: user.avatar,
+      tagLine: user.tagLine,
+      aboutMe: user.aboutMe,
     })
   } else {
     res.status(404)
@@ -31,9 +39,10 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 })
 
 export const updateUserProfile = asyncHandler(async (req, res) => {
+  console.log(req.body)
+
   const user = await User.findById(req.user._id)
-  console.log(user)
-  // console.log(req.body)
+  // console.log(user)
 
   if (user) {
     user.firstName = req.body.firstName
@@ -43,6 +52,11 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     user.address = req.body.address
     user.city = req.body.city
     user.state = req.body.state
+    user.aadhaarNumber = req.body.aadhaarNumber
+    user.panNumber = req.body.panNumber
+    user.totalLand = req.body.totalLand
+    user.tagLine = req.body.tagLine
+    user.aboutMe = req.body.aboutMe
 
     if (req.body.password) {
       user.password = req.body.password
@@ -51,14 +65,25 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     const updatedUser = await user.save()
 
     res.status(200).json({
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
-      email: updatedUser.email,
-      phone: updatedUser.phone,
-      address: updatedUser.address,
-      city: updatedUser.city,
-      state: updatedUser.state,
-      role: updatedUser.role,
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      aadhaarNumber: user.aadhaarNumber,
+      panNumber: user.panNumber,
+      address: user.address,
+      city: user.city,
+      state: user.state,
+      tagLine: user.tagLine,
+      aboutMe: user.aboutMe,
+      totalLand: user.totalLand,
+      reviews: user.reviews,
+      rating: user.rating,
+      numReviews: user.numReviews,
+      workImages: user.workImages,
+      avatar: user.avatar,
+      role: updateUserProfile.role,
     })
   }
 })
@@ -79,7 +104,11 @@ export const deleteUser = asyncHandler(async (req, res) => {
 })
 
 export const getUserById = asyncHandler(async (req, res) => {
+  console.log(req)
+
   const user = await User.findById(req.params.id).select('-password')
+  console.log(user)
+
   if (user) {
     res.json(user)
   } else {
@@ -101,14 +130,17 @@ export const updateUserById = asyncHandler(async (req, res) => {
     user.role = req.body.role
     const updatedUser = await user.save()
     res.status(200).json({
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
-      email: updatedUser.email,
-      phone: updatedUser.phone,
-      address: updatedUser.address,
-      city: updatedUser.city,
-      state: updatedUser.state,
-      role: updatedUser.role,
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      aadhaarNumber: user.aadhaarNumber,
+      panNumber: user.panNumber,
+      address: user.address,
+      city: user.city,
+      state: user.state,
+      role: updateUserProfile.role,
     })
   } else {
     res.status(404)
@@ -169,22 +201,11 @@ export const createUser = asyncHandler(async (req, res) => {
   try {
     await newUser.save()
     createToken(res, newUser._id)
-    res.status(200).json({
-      firstName,
-      lastName,
-      email,
-      phone,
-      aadhaarNumber,
-      panNumber,
-      address,
-      city,
-      state,
-      password,
-      role,
-    })
+    console.log(newUser._doc)
+
+    res.status(200).json(newUser._doc)
   } catch (err) {
     console.log(err)
-
     res.status(400)
     throw new Error('Invalid user data')
   }
@@ -193,16 +214,22 @@ export const createUser = asyncHandler(async (req, res) => {
 export const loginUser = asyncHandler(async (req, res) => {
   console.log(req.body)
   const { email, password } = req.body
+
   if (!email || !password) {
     throw new Error('All fields are mandatory!')
   }
+
   const user = await User.findOne({ email })
 
   if (user && (await bcrypt.compare(password, user.password))) {
     createToken(res, user._id)
-    res.status(200).json(user)
-    return
-  } else res.status(400).send({ message: 'Email or Password is invalid' })
+    const { password, ...userWithoutPassword } = user._doc
+    console.log(userWithoutPassword)
+
+    res.status(200).json(userWithoutPassword)
+  } else {
+    res.status(400).send({ message: 'Email or Password is invalid' })
+  }
 })
 
 export const logoutUser = asyncHandler(async (req, res) => {

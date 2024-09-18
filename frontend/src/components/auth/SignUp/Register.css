@@ -45,16 +45,17 @@
   flex-direction: column;
 }
 .ipContainer input,
-.selectField {
-  font-size: 1.2rem;
+.selectField,
+.textAreaField {
+  font-size: 1.1rem;
   background-color: transparent;
   border: 1px solid rgba(0, 0, 0, 0.5);
   outline: none;
   padding: 5px 10px;
   color: rgb(0, 0, 0);
+  font-family: 'Poppins', sans-serif;
   border-radius: 5px;
 }
-
 .ipContainer label {
   margin-top: 20px;
 

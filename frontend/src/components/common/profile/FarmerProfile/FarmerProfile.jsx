@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaStar } from 'react-icons/fa'
 import { IoLocationSharp } from 'react-icons/io5'
 import { FaRegHeart, FaRegPaperPlane } from 'react-icons/fa'
@@ -13,16 +13,22 @@ import ReviewCard from '../../cards/ReviewCard/ReviewCard'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-
-import './FarmerProfile.css'
-
+import { useParams } from 'react-router-dom'
+import { useGetUserByIdQuery } from '../../../../redux/api/usersApiSlice'
 const FarmerProfile = () => {
+  const { userId } = useParams()
   const medias = [
     { type: 'image', src: farm1 },
     { type: 'image', src: farm2 },
     { type: 'image', src: farm3 },
     { type: 'image', src: farm1 },
   ]
+
+  console.log('userId:', userId)
+
+  const { data: userInfo, isLoading, error } = useGetUserByIdQuery(userId)
+
+  console.log('userInfo:', userInfo, 'isLoading:', isLoading, 'error:', error)
 
   const [file, setFile] = useState(null)
 
@@ -60,6 +66,12 @@ const FarmerProfile = () => {
       },
     ],
   }
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error fetching user profile</div>
+
+  if (!userInfo) {
+    return <div>No user data found</div>
+  }
   return (
     <>
       <div className="mainProfilePage">
@@ -70,38 +82,29 @@ const FarmerProfile = () => {
               <div className="info">
                 <div className="firstLine line1">
                   <div style={{ fontWeight: '550', fontSize: '25px' }}>
-                    Name
+                    {userInfo.firstName} {userInfo.lastName}
                   </div>
                 </div>
                 <div className="thirdLine">
                   <FaStar />
-                  4.6 (1000)
+                  {userInfo.rating} ({userInfo.numReviews})
                 </div>
-                <div className="wrapText line1">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                </div>
+                <div className="wrapText line1">{userInfo.tagLine}</div>
                 <div className="thirdLine line1">
                   <div>
                     <BiSolidLandscape />
-                    Land
+                    {userInfo.totalLand} Acre
                   </div>
                   <div>
                     <IoLocationSharp />
-                    City
-                  </div>
-                  <div>
-                    <IoLocationSharp />
-                    State
+                    {userInfo.city}, {userInfo.state}
                   </div>
                 </div>
               </div>
             </div>
             <div className="basic2">
               <h4 className="h4">About me</h4>
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Corporis illum, dolorem non voluptatum.
-              </p>
+              <p>{userInfo.aboutMe}</p>
             </div>
           </div>
           <div className="profileDiv2">
@@ -130,24 +133,28 @@ const FarmerProfile = () => {
         <div className="gallery">
           <h4 className="h4">See my work</h4>
           <div className="slider-container">
-            <Slider {...settings}>
-              {medias.map((media, index) => (
-                <div
-                  className="media"
-                  key={index}
-                  onClick={() => setFile(media)}
-                >
-                  {media.type === 'image' ? (
-                    <img src={media.src} alt={`media-${index}`} />
-                  ) : (
-                    <video controls>
-                      <source src={media.src} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  )}
-                </div>
-              ))}
-            </Slider>
+            {userInfo.length > 0 ? (
+              <Slider {...settings}>
+                {userInfo.workImages.map((media, index) => (
+                  <div
+                    className="media"
+                    key={index}
+                    onClick={() => setFile(media)}
+                  >
+                    {media.type === 'image' ? (
+                      <img src={media.src} alt={`media-${index}`} />
+                    ) : (
+                      <video controls>
+                        <source src={media.src} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    )}
+                  </div>
+                ))}
+              </Slider>
+            ) : (
+              <p className="subLine">No work images yet</p>
+            )}
           </div>
           {file && (
             <div className="popupMedia">
@@ -162,11 +169,13 @@ const FarmerProfile = () => {
         </div>
         <div className="basic3">
           <h4 className="h4">Reviews</h4>
-          <ReviewCard />
-          <ReviewCard />
-          <ReviewCard />
-          <ReviewCard />
-          <ReviewCard />
+          {userInfo.reviews.length > 0 ? (
+            userInfo.reviews.map((review) => {
+              return <ReviewCard />
+            })
+          ) : (
+            <p className="subLine">No reviews yet</p>
+          )}
         </div>
       </div>
       <div className="bottomLine">

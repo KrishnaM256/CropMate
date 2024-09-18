@@ -131,6 +131,34 @@
   color: #62646a;
   flex-wrap: nowrap;
 }
+.menuBar {
+  background-color: gray;
+}
+.menuBtn {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+.icon2 {
+  border: none;
+  background-color: transparent;
+  font-size: 25px;
+  color: #414142;
+  cursor: pointer;
+}
+.menuDivider {
+  border-top: 1px solid green;
+  margin: 5px 0;
+}
+.link2 {
+  text-decoration: none;
+  color: black;
+}
+.item2 {
+  padding: 10px 25px;
+}
+
 @media (max-width: 1350px) {
   .navbar ul li,
   .navbar ul button {
@@ -147,5 +175,8 @@
 @media (max-width: 430px) {
   #join {
     display: none;
+  }
+  .navbar {
+    padding: 0;
   }
 }

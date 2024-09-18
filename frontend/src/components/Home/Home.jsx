@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { IoSearchOutline } from 'react-icons/io5'
-
+import { v4 as uuidv4 } from 'uuid'
 import './Home.css'
 import CategoryCard from '../common/cards/categoryCard/categoryCard'
 
@@ -14,6 +14,7 @@ const Home = () => {
     'Spices and Herbs',
     'Fiber Crops',
     'Sugar Crops',
+    'Medicinal Plants',
   ]
   const services = [
     'Contract Management',
@@ -40,7 +41,7 @@ const Home = () => {
       </div>
       <div className="categoriesDiv">
         {categories.map((category) => (
-          <CategoryCard name={category} />
+          <CategoryCard name={category} key={uuidv4()} />
         ))}
       </div>
       <div className="popularServices">

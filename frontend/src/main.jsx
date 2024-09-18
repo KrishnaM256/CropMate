@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom'
 
 import Layout from './Layout.jsx'
+import 'react-toastify/dist/ReactToastify.css'
 
 import './index.css'
 import SignIn from './components/auth/SignIn/SignIn.jsx'
@@ -23,6 +24,14 @@ import LiveMarket from './components/LiveMarket/LiveMarket.jsx'
 import FarmerProfile from './components/common/profile/FarmerProfile/FarmerProfile.jsx'
 import SavedUsers from './components/SavedUsers/SavedUsers.jsx'
 import GroupedUsers from './components/GroupedUsers/GroupedUsers.jsx'
+import { Provider } from 'react-redux'
+import { ToastContainer } from 'react-toastify'
+import store from './redux/store.js'
+import PrivateRoute from './components/PrivateRoutes.jsx'
+import MyProfile from './components/Users/MyProfile.jsx'
+import CreateOrder from './components/Users/CreateOrder.jsx'
+import UpdateProfile from './components/Users/UpdateProfile.jsx'
+import CreateBuyerOrder from './components/Buyer/CreateBuyerOrder.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,13 +45,24 @@ const router = createBrowserRouter(
       <Route path="/buyerCards" element={<BuyerCard />}></Route>
       <Route path="/contractMarket" element={<ContractMarket />}></Route>
       <Route path="/liveMarket" element={<LiveMarket />}></Route>
-      <Route path="/farmerProfile" element={<FarmerProfile />}></Route>
-      <Route path="/savedNetwork" element={<SavedUsers />} />
-      <Route path="/groupedNetwork" element={<GroupedUsers />} />
+      <Route path="/farmerProfile/:userId" element={<FarmerProfile />}></Route>
+      <Route path="" element={<PrivateRoute />}>
+        <Route path="/profile" element={<MyProfile />} />
+        <Route path="/savedNetwork" element={<SavedUsers />} />
+        <Route path="/groupedNetwork" element={<GroupedUsers />} />
+        <Route path="/createOrder" element={<CreateOrder />} />
+        <Route path="/createBuyerOrder" element={<CreateBuyerOrder />} />
+        <Route path="/updateProfile" element={<UpdateProfile />} />
+      </Route>
     </Route>
   )
 )
 
 createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router}></RouterProvider>
+  <StrictMode>
+    <Provider store={store}>
+      <RouterProvider router={router}></RouterProvider>
+      <ToastContainer />
+    </Provider>
+  </StrictMode>
 )

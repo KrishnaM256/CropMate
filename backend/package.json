@@ -10,7 +10,8 @@
     "express-formidable": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.3",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "path": "^0.12.7"
   },
   "name": "style_nexus",
   "version": "1.0.0",

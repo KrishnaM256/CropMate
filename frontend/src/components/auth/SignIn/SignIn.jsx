@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useLoginMutation } from '../../../redux/api/usersApiSlice'
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '../../../redux/features/auth/authSlice'
+import { toast } from 'react-toastify'
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +11,7 @@ const SignIn = () => {
     password: '',
   })
 
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const { search } = useLocation()
   const sp = new URLSearchParams(search)
@@ -21,9 +26,15 @@ const SignIn = () => {
     })
   }
 
+  const [loginApiCall, { isLoading }] = useLoginMutation()
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
+      const res = await loginApiCall(formData).unwrap()
+      dispatch(setCredentials({ ...res }))
+      toast.success('Logged in successfully!')
+      navigate('/')
     } catch (err) {
       toast.error(err?.data?.message || err.message)
     }

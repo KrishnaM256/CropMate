@@ -4,7 +4,7 @@ import connectDB from './config/connectDB.js'
 import cookieParser from 'cookie-parser'
 import path from 'path'
 import userRoutes from './routes/userRoutes.js'
-import categoryRoutes from './routes/categoryRoutes.js'
+import orderRoutes from './routes/orderRoutes.js'
 
 import cors from 'cors'
 
@@ -25,7 +25,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/users', userRoutes)
-// app.use('/api/category', categoryRoutes)
+app.use('/api/order', orderRoutes)
 
 app.listen(port, () => {
   console.log(`Running on server http://localhost:${port}`)
