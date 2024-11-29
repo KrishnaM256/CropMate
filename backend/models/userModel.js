@@ -20,6 +20,11 @@ const userSchema = mongoose.Schema(
       required: [true, 'Please enter first name'],
       minLength: [3, 'First name must be more than 3 character long'],
     },
+    middleName: {
+      type: String,
+      required: [true, 'Please enter middle name'],
+      minLength: [3, 'Middle name must be more than 3 character long'],
+    },
     lastName: {
       type: String,
       required: [true, 'Please enter last name'],
@@ -33,30 +38,30 @@ const userSchema = mongoose.Schema(
       type: Number,
       required: [true, 'Please enter phone number'],
     },
-    aadhaarNumber: {
-      type: Number,
-      required: true,
-    },
-    panNumber: {
-      type: Number,
-      required: true,
-    },
     address: {
-      type: String,
-      required: [true, 'Please enter you address'],
-    },
-    city: {
-      type: String,
-      required: [true, 'Please enter your city'],
-    },
-    state: {
-      type: String,
-      required: [true, 'Please enter your state'],
+      Street_Building: { type: String, required: true },
+      village: { type: String },
+      city: {
+        type: String,
+        required: [true, 'Please enter your city'],
+      },
+      state: {
+        type: String,
+        required: [true, 'Please enter your state'],
+      },
+      pincode: { type: Number, required: true },
     },
     password: {
       type: String,
       required: [true, 'Please enter password'],
       minLength: [8, 'Password should be greater than 8 '],
+    },
+    verification: {
+      aadharCard: { type: String, required: true }, // Required for both roles
+      landOwnershipProof: { type: String }, // Farmer-specific
+      bankPassbook: { type: String }, // Farmer-specific
+      businessLicense: { type: String }, // Buyer-specific
+      bankStatement: { type: String }, // Buyer-specific
     },
     reviews: [reviewSchema],
     rating: {
@@ -77,24 +82,18 @@ const userSchema = mongoose.Schema(
     ],
     totalLand: {
       type: Number,
-      required: true,
       default: 0,
     },
     avatar: {
-      public_id: {
-        type: String,
-        required: false,
-      },
-      url: { type: String, required: false },
+      type: String,
+      required: false,
     },
     tagLine: {
       type: String,
-      // required: true,
       default: '',
     },
     aboutMe: {
       type: String,
-      // required: true,
       default: '',
     },
     role: {

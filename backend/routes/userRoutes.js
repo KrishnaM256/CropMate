@@ -1,5 +1,5 @@
 import express from 'express'
-import multer from 'multer'
+import { upload } from '../utils/multer.js'
 import path from 'path'
 const router = express.Router()
 
@@ -17,36 +17,25 @@ import {
 
 import { authenticate, authorized } from '../middlewares/authMiddleware.js'
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    console.log({ req: req })
-
-    cb(null, 'uploads/')
-  },
-  filename: (req, file, cb) => {
-    cb(
-      null,
-      file.fieldname + '_' + Date.now() + path.extname(file.originalname)
-    )
-  },
-})
-
-const upload = multer({
-  storage: storage,
-})
-
+router.route('/register').post(
+  upload.fields([
+    { name: 'avatar', maxCount: 1 },
+    { name: 'aadharCard', maxCount: 1 },
+    { name: 'landOwnershipProof', maxCount: 1 },
+    { name: 'bankPassbook', maxCount: 1 },
+    { name: 'businessLicense', maxCount: 1 },
+    { name: 'bankStatement', maxCount: 1 },
+  ]),
+  createUser
+)
+router.route('/login').post(loginUser)
+router.route('/logout').post(logoutUser)
 router
   .route('/profile')
   .get(authenticate, getUserProfile)
   .put(authenticate, upload.single('avatar'), updateUserProfile)
-
-router.route('/userProfile/:id').get(getUserById)
-
-router.route('/login').post(loginUser)
-router.route('/register').post(createUser)
-router.route('/logout').post(logoutUser)
 router.route('/usersList').get(authenticate, authorized, getAllUsers)
-
+router.route('/userProfile/:id').get(getUserById)
 router
   .route('/admin/:id')
   .delete(authenticate, authorized, deleteUser)
