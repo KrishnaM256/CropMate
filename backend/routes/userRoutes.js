@@ -13,6 +13,8 @@ import {
   loginUser,
   logoutUser,
   deleteUser,
+  forgotPassword,
+  resetPassword,
 } from '../controllers/userController.js'
 
 import { authenticate, authorized } from '../middlewares/authMiddleware.js'
@@ -30,6 +32,8 @@ router.route('/register').post(
 )
 router.route('/login').post(loginUser)
 router.route('/logout').post(logoutUser)
+router.route('/forgotPassword').post(forgotPassword)
+router.route('/resetPassword/:token').post(resetPassword)
 router
   .route('/profile')
   .get(authenticate, getUserProfile)

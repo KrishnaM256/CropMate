@@ -2,7 +2,7 @@ import User from '../models/userModel.js'
 import asyncHandler from '../middlewares/asyncHandler.js'
 import bcrypt from 'bcryptjs'
 import createToken from '../utils/createToken.js'
-
+import { sendMail } from '../utils/sendMail.js'
 export const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find({})
   res.status(200).send(users)
@@ -335,7 +335,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
   )}/password/reset/${resetToken}`
   console.log(user)
   const subject = 'Password Reset Request'
-  const message = `Dear ${user.name},\n\nWe received a request to reset your password. You can reset your password by clicking the link below:\n\n${resetURL}\n\nIf you did not request a password reset, please disregard this email.\n\nThank you,\nName`
+  const message = `Dear ${user.firstName} ${user.lastName},\n\nWe received a request to reset your password. You can reset your password by clicking the link below:\n\n${resetURL}\n\nIf you did not request a password reset, please disregard this email.\n\nThank you,\nName`
   try {
     sendMail({ email, subject, message })
     return res.status(200).send({ message: 'Email sent successfully' })
@@ -359,9 +359,13 @@ export const resetPassword = asyncHandler(async (req, res) => {
       .send({ message: 'Reset password token has expired or is not valid' })
   }
 
-  const { password, confirmPassword } = req.body
-  if (!password || !confirmPassword) {
+  const { password } = req.body
+  if (!password) {
     return res.status(400).send({ message: 'Please enter reset password' })
+  }
+  const { confirmPassword } = req.body
+  if (!confirmPassword) {
+    return res.status(400).send({ message: 'Please confirm password' })
   }
   if (password !== confirmPassword) {
     return res

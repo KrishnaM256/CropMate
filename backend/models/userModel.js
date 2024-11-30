@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-
+import { v4 as uuid4 } from 'uuid'
 const reviewSchema = mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -100,11 +100,20 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
   },
   {
     timestamps: true,
   }
 )
+
+userSchema.methods.getResetPasswordToken = function () {
+  const resetToken = uuid4() // Generate a unique token
+  this.resetPasswordToken = resetToken // Store the token directly
+  this.resetPasswordExpire = Date.now() + 15 * 60 * 1000 // Set expiration
+  return resetToken
+}
 
 const User = mongoose.model('User', userSchema)
 
