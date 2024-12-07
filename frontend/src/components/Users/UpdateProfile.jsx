@@ -48,9 +48,7 @@ const Profile = () => {
         formD.append(key, formData[key])
       }
       formD.append('avatar', formData.avatar)
-      console.log(formD)
       const res = await updateProfileApi(formData).unwrap()
-      console.log(res)
       dispatch(setCredentials({ ...res }))
       navigate('/profile')
       toast.success('Profile updated successfully')
@@ -86,7 +84,6 @@ const Profile = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, avatar: e.target.files[0] })
                 }
-                required
               />
             </div>
             <div className="doubleDivContainer">
@@ -153,6 +150,10 @@ const Profile = () => {
                 required
               />
             </div>
+          </div>
+        </div>
+        <div className="formDiv">
+          <div className="formBody">
             <div className="ipContainer ">
               <label htmlFor="totalLand">Total Land:</label>
               <input
@@ -163,10 +164,6 @@ const Profile = () => {
                 required
               />
             </div>
-          </div>
-        </div>
-        <div className="formDiv">
-          <div className="formBody">
             <div className="ipContainer">
               <label htmlFor="address">Address:</label>
               <input
@@ -224,9 +221,9 @@ const Profile = () => {
               />
             </div>
             <div className="ipContainer">
-              <label htmlFor="panNumber">Pan Number:</label>
+              <label htmlFor="panNumber">PAN Number:</label>
               <input
-                type="Number"
+                type="text"
                 name="panNumber"
                 onChange={handleChange}
                 value={formData.panNumber}
@@ -234,13 +231,12 @@ const Profile = () => {
               />
             </div>
             <div className="ipContainer">
-              <label htmlFor="panNumber">Work Images:</label>
+              <label htmlFor="">Work Images:</label>
               <input
-                type="image"
-                name="panNumber"
+                type="file"
+                name=""
                 onChange={handleChange}
                 // value={formData.panNumber}
-                required
               />
             </div>
           </div>

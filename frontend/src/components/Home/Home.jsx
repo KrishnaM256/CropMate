@@ -27,12 +27,15 @@ const Home = () => {
   return (
     <section id="home">
       <div className="header">
-        <h1 className="h1">Find the right farming partnership, right away.</h1>
+        <h1 className="h1">
+          Find the right <span className="diffFont">farming</span> <br />
+          partnership, right away.
+        </h1>
         <div className="search">
           <input
             type="search"
             name="search"
-            placeholder="Search for any service..."
+            placeholder="Find crops, services, or partners..."
           />
           <button type="button">
             <IoSearchOutline className="searchIcon" />

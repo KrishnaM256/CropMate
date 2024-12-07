@@ -8,11 +8,30 @@ import { MdOutlineGroupAdd } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 
 import './FarmerCard.css'
+import { useSelector } from 'react-redux'
 
-const FarmerCard = ({ data }) => {
+const FarmerCard = ({ data, addToGroup, toggle, setToggle }) => {
   console.log(data)
-
+  const { userInfo } = useSelector((state) => state.auth)
   const navigate = useNavigate()
+  const handleAddToGroup = () => {
+    const buyerDetails = {
+      profilePic: profile,
+      name: data?.user?.name,
+      rating: data?.user?.rating,
+      numReviews: data?.user?.numReviews,
+      tagLine: data?.user?.tagLine,
+      city: data?.user?.city,
+      state: data?.user?.state,
+      id: data?.user?.id,
+      role: data?.user?.role,
+      totalLand: data?.user?.totalLand,
+    }
+    console.log({ buyerDetails: buyerDetails })
+    addToGroup(buyerDetails)
+    setToggle(true)
+  }
+
   return (
     <div className="card">
       <div className="profileInfo">
@@ -42,7 +61,7 @@ const FarmerCard = ({ data }) => {
         </div>
 
         <div className="options">
-          <button type="button" className="border">
+          <button type="button" className="border" onClick={handleAddToGroup}>
             <MdOutlineGroupAdd />
           </button>
           <button type="button" className="border">
@@ -54,7 +73,13 @@ const FarmerCard = ({ data }) => {
           <button
             type="button"
             className="simpleBtn border"
-            onClick={() => navigate(`/farmerProfile/${data?.user?.id}`)}
+            onClick={() =>
+              navigate(
+                data.user.id == userInfo._id
+                  ? '/profile'
+                  : `/profile/${data?.user?.id}`
+              )
+            }
           >
             See profile
           </button>

@@ -7,4 +7,5 @@
 .form1 > .formDiv,
 .form1 .formBody {
   width: 100%;
+  padding: 0 10px;
 }

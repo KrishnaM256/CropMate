@@ -6,6 +6,8 @@ import { BiSolidLandscape } from 'react-icons/bi'
 import { MdOutlineGroupAdd } from 'react-icons/md'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import profile from './../../assets/profile.jpg'
+import profile2 from './../../assets/profile2.jpg'
+
 import farm1 from '../../assets/farm1.jpg'
 import farm2 from '../../assets/farm2.jpg'
 import farm3 from '../../assets/farm3.jpg'
@@ -67,7 +69,11 @@ const MyProfile = () => {
           <div className="profileDiv1 myProfileDiv1">
             <div className="basic1 myProfileBasic1">
               <div className="profileInfoFlex">
-                <img src={profile} alt="" className="profilePic" />
+                <img
+                  src={userInfo.role == 'farmer' ? profile : profile2}
+                  alt=""
+                  className="profilePic"
+                />
                 <div className="info">
                   <div className="firstLine line1">
                     <div style={{ fontWeight: '550', fontSize: '25px' }}>
@@ -80,10 +86,12 @@ const MyProfile = () => {
                   </div>
                   <div className="wrapText line1">{userInfo.tagLine}</div>
                   <div className="thirdLine line1">
-                    <div>
-                      <BiSolidLandscape />
-                      {userInfo.totalLand} Acre
-                    </div>
+                    {userInfo.role == 'farmer' && (
+                      <div>
+                        <BiSolidLandscape />
+                        {userInfo.totalLand} Acre
+                      </div>
+                    )}
                     <div>
                       <IoLocationSharp />
                       {userInfo.city}, {userInfo.state}

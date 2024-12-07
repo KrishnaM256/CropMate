@@ -155,7 +155,7 @@ const CreateOrder = () => {
             </select>
           </div>
           <div className="ipDiv">
-            <label htmlFor="pricePerAcre">Price (/acre):</label>
+            <label htmlFor="pricePerAcre">Price (₹/acre):</label>
             <input
               type="Number"
               name="pricePerAcre"

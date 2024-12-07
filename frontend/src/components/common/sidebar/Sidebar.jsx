@@ -7,6 +7,9 @@ import { RxCross2 } from 'react-icons/rx'
 import './Sidebar.css'
 
 const Sidebar = ({ open, setOpen }) => {
+  const userInfo = localStorage.getItem('userInfo')
+  console.log(userInfo)
+
   return (
     <div className="sideBar">
       <button onClick={() => setOpen(!open)} className="cross">
@@ -19,12 +22,16 @@ const Sidebar = ({ open, setOpen }) => {
         <li>
           <Link to={'/contractMarket'}>Contract market</Link>
         </li>
-        <li id="signin">
-          <Link to={'/signIn'}>Sign in</Link>
-        </li>
-        <li id="signin">
-          <Link to={'/signUp'}>Join</Link>
-        </li>
+        {!userInfo && (
+          <>
+            <li id="signin">
+              <Link to={'/signIn'}>Sign in</Link>
+            </li>
+            <li id="signin">
+              <Link to={'/signUp'}>Join</Link>
+            </li>
+          </>
+        )}
         <li>Community</li>
         <li>Guides</li>
         <li>Predict</li>

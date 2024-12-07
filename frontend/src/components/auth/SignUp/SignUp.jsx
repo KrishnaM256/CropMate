@@ -46,9 +46,9 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      console.log(formData)
+      console.log({ formData: formData })
       const res = await register(formData).unwrap()
-      console.log(res)
+      console.log({ res: res })
       dispatch(setCredentials({ ...res }))
       navigate(redirect)
       toast.success('User successfully registered.')
@@ -187,9 +187,9 @@ const Register = () => {
             />
           </div>
           <div className="ipContainer">
-            <label htmlFor="panNumber">Pan Number:</label>
+            <label htmlFor="panNumber">PAN Number:</label>
             <input
-              type="Number"
+              type="text"
               name="panNumber"
               onChange={handleChange}
               value={formData.panNumber}

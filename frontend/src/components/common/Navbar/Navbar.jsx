@@ -45,7 +45,6 @@ const Navbar = () => {
   return (
     <>
       <div style={{ height: '63px' }}></div>
-
       {open && <Sidebar open={open} setOpen={setOpen} />}
       <nav className="navbar">
         <div className="sidebarDiv">

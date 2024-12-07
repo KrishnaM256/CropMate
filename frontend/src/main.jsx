@@ -32,7 +32,7 @@ import MyProfile from './components/Users/MyProfile.jsx'
 import CreateOrder from './components/Users/CreateOrder.jsx'
 import UpdateProfile from './components/Users/UpdateProfile.jsx'
 import CreateBuyerOrder from './components/Buyer/CreateBuyerOrder.jsx'
-
+import { ChakraProvider } from '@chakra-ui/react'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -45,7 +45,7 @@ const router = createBrowserRouter(
       <Route path="/buyerCards" element={<BuyerCard />}></Route>
       <Route path="/contractMarket" element={<ContractMarket />}></Route>
       <Route path="/liveMarket" element={<LiveMarket />}></Route>
-      <Route path="/farmerProfile/:userId" element={<FarmerProfile />}></Route>
+      <Route path="/profile/:userId" element={<FarmerProfile />}></Route>
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<MyProfile />} />
         <Route path="/savedNetwork" element={<SavedUsers />} />
@@ -60,9 +60,11 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    {/* <ChakraProvider> */}
     <Provider store={store}>
       <RouterProvider router={router}></RouterProvider>
       <ToastContainer />
     </Provider>
+    {/* </ChakraProvider> */}
   </StrictMode>
 )

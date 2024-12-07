@@ -178,11 +178,11 @@ const CreateBuyerOrder = () => {
               className="select"
             >
               <option value="Self">Self</option>
-              <option value="Buyer">Buyer</option>
+              <option value="Buyer">Farmer</option>
             </select>
           </div>
           <div className="ipDiv">
-            <label htmlFor="pricePerAcre">Price (/acre):</label>
+            <label htmlFor="pricePerAcre">Price (₹/acre):</label>
             <input
               type="Number"
               name="pricePerAcre"

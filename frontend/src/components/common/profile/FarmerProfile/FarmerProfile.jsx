@@ -6,6 +6,8 @@ import { BiSolidLandscape } from 'react-icons/bi'
 import { MdOutlineGroupAdd } from 'react-icons/md'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import profile from '../../../../assets/profile.jpg'
+import profile2 from '../../../../assets/profile2.jpg'
+
 import farm1 from '../../../../assets/farm1.jpg'
 import farm2 from '../../../../assets/farm2.jpg'
 import farm3 from '../../../../assets/farm3.jpg'
@@ -72,13 +74,18 @@ const FarmerProfile = () => {
   if (!userInfo) {
     return <div>No user data found</div>
   }
+
   return (
     <>
       <div className="mainProfilePage">
         <div className="profileDiv">
           <div className="profileDiv1">
             <div className="basic1">
-              <img src={profile} alt="" className="profilePic" />
+              <img
+                src={userInfo.role == 'farmer' ? profile : profile2}
+                alt=""
+                className="profilePic"
+              />
               <div className="info">
                 <div className="firstLine line1">
                   <div style={{ fontWeight: '550', fontSize: '25px' }}>
@@ -91,10 +98,13 @@ const FarmerProfile = () => {
                 </div>
                 <div className="wrapText line1">{userInfo.tagLine}</div>
                 <div className="thirdLine line1">
-                  <div>
-                    <BiSolidLandscape />
-                    {userInfo.totalLand} Acre
-                  </div>
+                  {userInfo.role == 'farmer' && (
+                    <div>
+                      <BiSolidLandscape />
+                      {userInfo.totalLand} Acre
+                    </div>
+                  )}
+
                   <div>
                     <IoLocationSharp />
                     {userInfo.city}, {userInfo.state}
@@ -133,28 +143,24 @@ const FarmerProfile = () => {
         <div className="gallery">
           <h4 className="h4">See my work</h4>
           <div className="slider-container">
-            {userInfo.length > 0 ? (
-              <Slider {...settings}>
-                {userInfo.workImages.map((media, index) => (
-                  <div
-                    className="media"
-                    key={index}
-                    onClick={() => setFile(media)}
-                  >
-                    {media.type === 'image' ? (
-                      <img src={media.src} alt={`media-${index}`} />
-                    ) : (
-                      <video controls>
-                        <source src={media.src} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                    )}
-                  </div>
-                ))}
-              </Slider>
-            ) : (
-              <p className="subLine">No work images yet</p>
-            )}
+            <Slider {...settings}>
+              {medias.map((media, index) => (
+                <div
+                  className="media"
+                  key={index}
+                  onClick={() => setFile(media)}
+                >
+                  {media.type === 'image' ? (
+                    <img src={media.src} alt={`media-${index}`} />
+                  ) : (
+                    <video controls>
+                      <source src={media.src} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
+                </div>
+              ))}
+            </Slider>
           </div>
           {file && (
             <div className="popupMedia">
@@ -169,13 +175,7 @@ const FarmerProfile = () => {
         </div>
         <div className="basic3">
           <h4 className="h4">Reviews</h4>
-          {userInfo.reviews.length > 0 ? (
-            userInfo.reviews.map((review) => {
-              return <ReviewCard />
-            })
-          ) : (
-            <p className="subLine">No reviews yet</p>
-          )}
+          <ReviewCard />
         </div>
       </div>
       <div className="bottomLine">
