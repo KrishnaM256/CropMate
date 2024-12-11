@@ -1,5 +1,5 @@
 #createOrder {
-  margin-top: 50px;
+  margin: 50px 0;
   width: 100%;
 }
 
@@ -32,16 +32,20 @@
 .ipDivContainer {
   width: 100%;
   display: flex;
-  gap: 30px;
+  gap: 25px;
 }
 .deleteBtn {
   padding: 0;
   border: none;
   background-color: transparent;
   font-size: 30px;
+  display: flex;
+  align-items: flex-end;
+  color: rgb(88, 88, 88);
+  transition: all 0.3s;
 }
 .deleteBtn:hover {
-  color: red;
+  color: black;
   cursor: pointer;
 }
 .create {

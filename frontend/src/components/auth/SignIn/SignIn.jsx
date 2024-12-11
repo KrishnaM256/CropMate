@@ -66,7 +66,7 @@ const SignIn = () => {
             <div className="ipContainer ">
               <label htmlFor="password">Password:</label>
               <input
-                type="text"
+                type="password"
                 name="password"
                 onChange={handleChange}
                 autoComplete="current-password"

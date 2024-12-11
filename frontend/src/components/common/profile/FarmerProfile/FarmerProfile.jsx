@@ -5,9 +5,8 @@ import { FaRegHeart, FaRegPaperPlane } from 'react-icons/fa'
 import { BiSolidLandscape } from 'react-icons/bi'
 import { MdOutlineGroupAdd } from 'react-icons/md'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
-import profile from '../../../../assets/profile.jpg'
-import profile2 from '../../../../assets/profile2.jpg'
-
+import profile from '../../../../../public/profile.svg'
+import { BASE_URL } from '../../../../redux/constants'
 import farm1 from '../../../../assets/farm1.jpg'
 import farm2 from '../../../../assets/farm2.jpg'
 import farm3 from '../../../../assets/farm3.jpg'
@@ -82,21 +81,26 @@ const FarmerProfile = () => {
           <div className="profileDiv1">
             <div className="basic1">
               <img
-                src={userInfo.role == 'farmer' ? profile : profile2}
+                src={
+                  userInfo.avatar
+                    ? `${BASE_URL}/avatar/${userInfo.avatar}`
+                    : profile
+                }
                 alt=""
                 className="profilePic"
               />
               <div className="info">
                 <div className="firstLine line1">
                   <div style={{ fontWeight: '550', fontSize: '25px' }}>
-                    {userInfo.firstName} {userInfo.lastName}
+                    {userInfo.firstName} {userInfo.middleName}{' '}
+                    {userInfo.lastName}
                   </div>
                 </div>
+                <div className="wrapText line1">{userInfo.tagLine}</div>
                 <div className="thirdLine">
                   <FaStar />
                   {userInfo.rating} ({userInfo.numReviews})
                 </div>
-                <div className="wrapText line1">{userInfo.tagLine}</div>
                 <div className="thirdLine line1">
                   {userInfo.role == 'farmer' && (
                     <div>
@@ -107,7 +111,7 @@ const FarmerProfile = () => {
 
                   <div>
                     <IoLocationSharp />
-                    {userInfo.city}, {userInfo.state}
+                    {userInfo.address.city}, {userInfo.address.state}
                   </div>
                 </div>
               </div>
@@ -144,32 +148,28 @@ const FarmerProfile = () => {
           <h4 className="h4">See my work</h4>
           <div className="slider-container">
             <Slider {...settings}>
-              {medias.map((media, index) => (
-                <div
-                  className="media"
-                  key={index}
-                  onClick={() => setFile(media)}
-                >
-                  {media.type === 'image' ? (
-                    <img src={media.src} alt={`media-${index}`} />
-                  ) : (
-                    <video controls>
-                      <source src={media.src} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  )}
-                </div>
-              ))}
+              {userInfo.workImages ? (
+                userInfo.workImages?.map((media, index) => (
+                  <div
+                    className="media"
+                    key={index}
+                    onClick={() => setFile(media)}
+                  >
+                    <img
+                      src={`${BASE_URL}/workImages/${media}`}
+                      alt={`media-${index}`}
+                    />
+                  </div>
+                ))
+              ) : (
+                <p className="subLine">No work images yet</p>
+              )}
             </Slider>
           </div>
           {file && (
             <div className="popupMedia">
               <span onClick={() => setFile(null)}>&times;</span>
-              {file.type === 'video' ? (
-                <video src={file.src} muted autoPlay controls></video>
-              ) : (
-                <img src={file.src} alt="popup" />
-              )}
+              <img src={file.src} alt="popup" />
             </div>
           )}
         </div>

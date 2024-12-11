@@ -9,3 +9,13 @@
   width: 100%;
   padding: 0 10px;
 }
+
+.updateProfileIcon {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.wrkImg {
+  height: 200px;
+}

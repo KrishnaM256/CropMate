@@ -1,67 +1,61 @@
 import React, { useEffect, useState } from 'react'
 import './ContractMarket.css'
+import OrderCard from '../common/cards/OrderCard/OrderCard'
 import { CiHome } from 'react-icons/ci'
-import FarmerCard from '../common/cards/FarmerCard/FarmerCard'
 import { TbAdjustmentsHorizontal } from 'react-icons/tb'
-import {
-  useGetAllBuyerOrdersQuery,
-  useGetAllOrdersQuery,
-} from '../../redux/api/ordersApiSlice'
+import { useGetAllOrdersQuery } from '../../redux/api/ordersApiSlice'
 import { setOrders } from '../../redux/features/order/orderSlice'
 import { v4 as uuid4 } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
-import BuyerCard from '../common/cards/BuyerCard/BuyerCard'
 import { createGroup, addToGroup } from '../../redux/features/group/groupSlice' // Import your createGroup action
 import { toast } from 'react-toastify'
+import {
+  useAddToGroupMutation,
+  useCreateGroupMutation,
+  useGetAllGroupsQuery,
+} from '../../redux/api/usersApiSlice'
 
 const ContractMarket = () => {
   const dispatch = useDispatch()
-  const groups = useSelector((state) => state.group)
-  const groupList = Object.values(groups)
-
+  const [createGroup] = useCreateGroupMutation()
+  const [addToGroup] = useAddToGroupMutation()
+  const { data: groupList, isLoading, refetch } = useGetAllGroupsQuery()
   const {
     data: ordersList,
     refetch: refetchOrders,
     isLoading: ordersLoading,
     error: ordersError,
   } = useGetAllOrdersQuery()
-  const {
-    data: buyerOrdersList,
-    refetch: refetchBuyerOrders,
-    isLoading: buyerOrdersLoading,
-    error: buyerOrdersError,
-  } = useGetAllBuyerOrdersQuery()
 
+  console.log({ groupList: groupList })
   useEffect(() => {
-    refetchOrders()
-    refetchBuyerOrders()
-  }, [refetchOrders, refetchBuyerOrders])
-
-  useEffect(() => {
-    if (ordersList) {
-      dispatch(setOrders(ordersList))
-    }
-  }, [ordersList, dispatch])
-
+    refetch()
+  }, [refetch])
   const [groupName, setGroupName] = useState('')
   const [toggle, setToggle] = useState(false)
   const [selectedDetails, setSelectedDetails] = useState(null)
 
-  if (ordersLoading || buyerOrdersLoading) return <p>Loading...</p>
-  if (ordersError || buyerOrdersError) return <p>Error loading orders</p>
+  if (ordersLoading) return <p>Loading...</p>
+  if (ordersError) return <p>Error loading orders</p>
 
-  const handleSaveGroup = (e) => {
+  const handleSaveGroup = async (e) => {
     e.preventDefault()
     if (groupName && selectedDetails) {
-      dispatch(
-        createGroup({
+      try {
+        const res = await createGroup({
           name: groupName,
-          details: selectedDetails,
-        })
-      )
-      toast.success(
-        `${selectedDetails.name} is successfully added to group ${groupName}`
-      )
+          memberId: selectedDetails.id,
+        }).unwrap()
+
+        console.log('Group created successfully:', res)
+        toast.success(
+          `${selectedDetails.name} is successfully added to group ${groupName}.`
+        )
+      } catch (error) {
+        console.log(error)
+        toast.error(`${error.data?.message}`)
+      }
+      refetch()
       setGroupName('')
       setSelectedDetails(null)
       setToggle(false)
@@ -72,23 +66,24 @@ const ContractMarket = () => {
     setSelectedDetails(details)
     setToggle(true)
   }
-  const addToExistingGroup = (id, name) => {
-    const group = groups[id]
 
-    const isMemberExist = group?.members.some(
-      (member) => member.id === selectedDetails.id
-    )
+  const addToExistingGroup = async (id, name) => {
+    try {
+      const res = await addToGroup({
+        groupId: id,
+        memberId: selectedDetails.id,
+      }).unwrap()
+      console.log('added to group successfully:', res)
 
-    if (isMemberExist) {
-      toast.error(`${selectedDetails.name} already exists in group ${name}`)
-    } else if (selectedDetails) {
-      dispatch(addToGroup({ groupId: id, item: selectedDetails }))
       toast.success(
         `${selectedDetails.name} is successfully added to group ${name}`
       )
-      setSelectedDetails(null)
-      setToggle(false)
+    } catch (error) {
+      console.log(error)
+      toast.error(`${error.data?.message}`)
     }
+    setSelectedDetails(null)
+    setToggle(false)
   }
 
   return (
@@ -105,7 +100,7 @@ const ContractMarket = () => {
                   type="text"
                   name="groupName"
                   value={groupName}
-                  onChange={(e) => setGroupName(e.target.value)} // Fixed onChange handler
+                  onChange={(e) => setGroupName(e.target.value)}
                   required
                 />
               </div>
@@ -118,17 +113,20 @@ const ContractMarket = () => {
               >
                 Save
               </button>
-              <button onClick={() => setToggle(false)}>Cancel</button>
+              <button onClick={() => setToggle(false)} id="cancel">
+                Cancel
+              </button>
             </div>
             <div className="existingGroups">
               <h4 className="h4">Add to existing groups:</h4>
 
-              {groupList.length > 0 ? (
+              {groupList ? (
                 groupList.map((group) => {
                   return (
                     <button
                       key={uuid4()}
-                      onClick={() => addToExistingGroup(group.id, group.name)}
+                      onClick={() => addToExistingGroup(group._id, group.name)}
+                      id="grps"
                     >
                       {group.name}
                     </button>
@@ -155,19 +153,7 @@ const ContractMarket = () => {
             {ordersList &&
               ordersList.map((order) => {
                 return (
-                  <FarmerCard
-                    key={uuid4()}
-                    addToGroup={addDetails}
-                    setToggle={setToggle}
-                    toggle={toggle}
-                    data={order}
-                  />
-                )
-              })}
-            {buyerOrdersList &&
-              buyerOrdersList.map((order) => {
-                return (
-                  <BuyerCard
+                  <OrderCard
                     key={uuid4()}
                     addToGroup={addDetails}
                     setToggle={setToggle}

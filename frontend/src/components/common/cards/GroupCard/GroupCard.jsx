@@ -13,29 +13,45 @@ import './GroupCard.css'
 import { useDispatch } from 'react-redux'
 import { removeFromGroup } from '../../../../redux/features/group/groupSlice'
 import { toast } from 'react-toastify'
+import { BASE_URL, FRONT_URL } from '../../../../redux/constants'
 
-const GroupCard = ({ member, handleRemoveFromGroup }) => {
-  const { city, id, name, numReviews, profilePic, rating, state, tagLine } =
-    member
+const GroupCard = ({ groupId, member, handleRemoveFromGroup }) => {
+  const {
+    _id,
+    avatar,
+    firstName,
+    middleName,
+    lastName,
+    numReviews,
+    rating,
+    tagLine,
+    address,
+    role,
+  } = member
+  console.log({ member: member })
   const navigate = useNavigate()
   return (
     <div className="GroupCard card">
       <div className="profileInfoFlex">
         <img
-          src={member.role == 'farmer' ? profile : profile2}
+          src={
+            avatar ? `${BASE_URL}/avatar/${avatar}` : `${FRONT_URL}/profile.svg`
+          }
           alt=""
           className="profilePic"
         />
         <div className="info">
           <div className="firstLine line2">
-            <div style={{ fontWeight: '550', fontSize: '19px' }}>{name}</div>
+            <div style={{ fontWeight: '550', fontSize: '19px' }}>
+              {firstName} {middleName} {lastName}
+            </div>
             <FaStar />
             <div>{rating}</div>
             <div>({numReviews})</div>
           </div>
           <div className="wrapText line2">{tagLine}</div>
           <div className="thirdLine line2">
-            {member?.role && member.role == 'farmer' && (
+            {role && role == 'farmer' && (
               <div>
                 <BiSolidLandscape />
                 {member.totalLand}
@@ -43,7 +59,7 @@ const GroupCard = ({ member, handleRemoveFromGroup }) => {
             )}
             <div>
               <IoLocationSharp />
-              {city}, {state}
+              {address.city}, {address.state}
             </div>
           </div>
         </div>
@@ -52,7 +68,7 @@ const GroupCard = ({ member, handleRemoveFromGroup }) => {
         <button
           type="button"
           className="border"
-          onClick={() => handleRemoveFromGroup(id)}
+          onClick={() => handleRemoveFromGroup(member._id, groupId)}
         >
           <MdOutlineGroupRemove />
         </button>
@@ -65,7 +81,7 @@ const GroupCard = ({ member, handleRemoveFromGroup }) => {
         <button
           type="button"
           className="simpleBtn border"
-          onClick={() => navigate(`/profile/${id}`)}
+          onClick={() => navigate(`/profile/${_id}`)}
         >
           See profile
         </button>

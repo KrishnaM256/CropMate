@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { GrPrevious, GrNext } from 'react-icons/gr'
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { indianStates, indianCities } from '../../data/indiaData.js'
-import './Register.css'
 import { useRegisterMutation } from '../../../redux/api/usersApiSlice.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCredentials } from '../../../redux/features/auth/authSlice.js'
 import { toast } from 'react-toastify'
+import './Register.css'
 
-const Register = () => {
+const SignUp = () => {
   const params = useParams()
   const role = params.id
-  console.log(role)
 
   const navigate = useNavigate()
 
@@ -28,26 +27,39 @@ const Register = () => {
       navigate(redirect)
     }
   }, [redirect, navigate, userInfo])
-
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [formData, setFormData] = useState({
     firstName: '',
+    avatar: '',
+    middleName: '',
     lastName: '',
     email: '',
     phone: '',
-    address: '',
+    street: '',
+    village: '',
     city: '',
     state: '',
+    pincode: '',
     password: '',
-    aadhaarNumber: '',
-    panNumber: '',
-    role: role,
+    aadhaarCard: '',
+    bankPassbook: '',
+    businessLicense: '',
+    bankStatement: '',
+    totalLand: '',
+    role: role ? role : 'farmer',
+    tagLine: '',
+    aboutMe: '',
   })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    const form = new FormData()
+    Object.entries(formData).forEach(([key, value]) => {
+      form.append(key, value)
+    })
     try {
-      console.log({ formData: formData })
-      const res = await register(formData).unwrap()
+      console.log({ formData: form })
+      const res = await register(form).unwrap()
       console.log({ res: res })
       dispatch(setCredentials({ ...res }))
       navigate(redirect)
@@ -59,10 +71,11 @@ const Register = () => {
   }
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value, type, files } = e.target
+
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: type === 'file' ? files[0] : value,
     })
   }
 
@@ -90,6 +103,16 @@ const Register = () => {
               />
             </div>
             <div className="ipContainer">
+              <label htmlFor="middleName">Middle Name:</label>
+              <input
+                type="text"
+                name="middleName"
+                value={formData.middleName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="ipContainer">
               <label htmlFor="lastName">Last Name:</label>
               <input
                 type="text"
@@ -100,45 +123,59 @@ const Register = () => {
               />
             </div>
           </div>
+          <div className="doubleDivContainer">
+            <div className="ipContainer">
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="ipContainer ">
+              <label htmlFor="phone">Phone Number:</label>
+              <input
+                type="number"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
           <div className="ipContainer">
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="street">Street:</label>
             <input
               type="text"
-              name="email"
-              value={formData.email}
+              name="street"
               onChange={handleChange}
+              value={formData.street}
               required
             />
           </div>
-          <div className="ipContainer ">
-            <label htmlFor="phone">Phone Number:</label>
-            <input
-              type="number"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="ipContainer">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              name="password"
-              onChange={handleChange}
-              value={formData.password}
-              required
-            />
-          </div>
-          <div className="ipContainer">
-            <label htmlFor="address">Address:</label>
-            <input
-              type="text"
-              name="address"
-              onChange={handleChange}
-              value={formData.address}
-              required
-            />
+          <div className="doubleDivContainer">
+            <div className="ipContainer">
+              <label htmlFor="village">Village:</label>
+              <input
+                type="text"
+                name="village"
+                onChange={handleChange}
+                value={formData.village}
+                required
+              />
+            </div>
+            <div className="ipContainer">
+              <label htmlFor="pincode">Pincode:</label>
+              <input
+                type="number"
+                name="pincode"
+                onChange={handleChange}
+                value={formData.pincode}
+                required
+              />
+            </div>
           </div>
           <div className="doubleDivContainer">
             <div className="ipContainer select">
@@ -176,36 +213,108 @@ const Register = () => {
               </select>
             </div>
           </div>
-          <div className="ipContainer">
-            <label htmlFor="aadhaarNumber">Aadhaar Number:</label>
-            <input
-              type="Number"
-              name="aadhaarNumber"
-              onChange={handleChange}
-              value={formData.aadhaarNumber}
-              required
-            />
+          <div className="doubleDivContainer">
+            <div className="ipContainer">
+              <label htmlFor="avatar">Avatar:</label>
+              <input
+                type="file"
+                name="avatar"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="ipContainer">
+              <label htmlFor="aadhaarCard">Aadhaar Card:</label>
+              <input
+                type="file"
+                name="aadhaarCard"
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
-          <div className="ipContainer">
-            <label htmlFor="panNumber">PAN Number:</label>
-            <input
-              type="text"
-              name="panNumber"
-              onChange={handleChange}
-              value={formData.panNumber}
-              required
-            />
+          {formData.role == 'farmer' ? (
+            <div className="doubleDivContainer">
+              <div className="ipContainer">
+                <label htmlFor="landOwnershipProof">
+                  Land Ownership Proof:
+                </label>
+                <input
+                  type="file"
+                  name="landOwnershipProof"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="ipContainer">
+                <label htmlFor="bankPassbook">Bank Passbook:</label>
+                <input
+                  type="file"
+                  name="bankPassbook"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="doubleDivContainer">
+              <div className="ipContainer">
+                <label htmlFor="businessLicense">Business License:</label>
+                <input
+                  type="file"
+                  name="businessLicense"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="ipContainer">
+                <label htmlFor="bankStatement">Bank Statement:</label>
+                <input
+                  type="file"
+                  name="bankStatement"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+          )}
+          <div className="doubleDivContainer">
+            <div className="ipContainer">
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                name="password"
+                onChange={handleChange}
+                value={formData.password}
+                required
+              />
+            </div>
+            <div className="ipContainer">
+              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={confirmPassword}
+                required
+              />
+            </div>
           </div>
         </div>
         <div className="navigatePage">
-          <Link to={redirect ? `/signUp?redirect=${redirect}` : '/signUp'}>
-            <button className="btn" type="button">
-              <GrPrevious />
-              Back
-            </button>
-          </Link>
+          <button
+            className="btn"
+            type="button"
+            onClick={() =>
+              navigate(redirect ? `/signUp?redirect=${redirect}` : '/signUp')
+            }
+          >
+            <GrPrevious />
+            Back
+          </button>
           <button className="btn subBtn" type="submit">
             Sign Up
+            <GrNext />
           </button>
         </div>
       </div>
@@ -213,4 +322,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default SignUp

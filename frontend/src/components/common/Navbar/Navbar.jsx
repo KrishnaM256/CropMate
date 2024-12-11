@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import profile from '../../../../public/profile.svg'
 import {
   Menu,
   MenuButton,
@@ -23,6 +24,7 @@ import './Navbar.css'
 import { useLogoutMutation } from '../../../redux/api/usersApiSlice'
 import { logout } from '../../../redux/features/auth/authSlice'
 import { toast } from 'react-toastify'
+import { BASE_URL } from '../../../redux/constants'
 
 const Navbar = () => {
   const dispatch = useDispatch()
@@ -114,7 +116,15 @@ const Navbar = () => {
           {userInfo ? (
             <Menu className={open ? 'show' : 'hide'}>
               <MenuButton as={Button} className="icon2">
-                <CgProfile />
+                <img
+                  src={
+                    userInfo.avatar
+                      ? `${BASE_URL}/avatar/${userInfo.avatar}`
+                      : profile
+                  }
+                  alt="profile"
+                  className="profileIcon"
+                />
               </MenuButton>
               <MenuList className="navList">
                 <MenuGroup>
@@ -130,14 +140,7 @@ const Navbar = () => {
                   <Link to={'/savedNetwork'} className="link2">
                     <MenuItem className="item item2">Saved Network</MenuItem>
                   </Link>
-                  <Link
-                    to={
-                      userInfo.role == 'buyer'
-                        ? '/createBuyerOrder'
-                        : '/createOrder'
-                    }
-                    className="link2"
-                  >
+                  <Link to={'/createOrder'} className="link2">
                     <MenuItem className="item item2">Create Order</MenuItem>
                   </Link>
                 </MenuGroup>

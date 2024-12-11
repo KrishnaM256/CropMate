@@ -5,9 +5,12 @@
 }
 
 .groups {
-  width: 200px;
+  width: 150px;
   border-radius: 10px;
   flex: 1;
+}
+.respContainer {
+  display: none;
 }
 .grpContainer {
   height: 550px;
@@ -69,5 +72,53 @@
 @media (max-width: 1100px) {
   .groups {
     display: none;
+  }
+  .GroupCard {
+    width: 100%;
+  }
+  .respContainer {
+    display: block;
+  }
+  .cardsDiv {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.notFound {
+  color: gray;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 1050px) {
+  .GroupCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 40%;
+    height: 270px;
+  }
+  .profileInfoFlex {
+    justify-content: center;
+    align-items: center;
+  }
+  .line2 {
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 850px) {
+  .GroupCard {
+    width: 100%; /* Override width for smaller screens */
+    height: auto; /* Adjust height if needed for better fit */
   }
 }

@@ -6,7 +6,6 @@ import Navbar from './components/common/Navbar/Navbar'
 const Layout = () => {
   return (
     <div className="layout-container">
-      {/* sidebar */}
       <div className="main-content">
         <Navbar />
         <div className="content-area" style={{ width: '100%' }}>

@@ -18,6 +18,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 1rem;
+  width: 100%;
 }
 
 .divContainer {
@@ -58,7 +59,6 @@
 }
 .ipContainer label {
   margin-top: 20px;
-
   color: rgba(47, 47, 47, 0.9);
 }
 
@@ -73,6 +73,8 @@
   justify-content: center;
   align-items: center;
   margin: 2rem 0;
+  width: 100%;
+  gap: 10px;
 }
 
 .btn {
@@ -82,7 +84,7 @@
   color: #fff;
   border: none;
   outline: none;
-  margin: 0 1rem;
+  /* margin: 0 1rem; */
   border-radius: 0.3rem;
   font-size: 1.1rem;
   font-weight: bold;
@@ -90,6 +92,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 150px;
 }
 
 .btn:hover {
@@ -107,9 +111,6 @@
 .subBtn {
   background-color: #28a745;
 }
-.navigatePage a {
-  text-decoration: none;
-}
 
 .subBtn:hover {
   background-color: #218838;
@@ -120,7 +121,7 @@
 }
 
 .btn svg {
-  margin: 0 0.5rem;
+  margin: 0 0.2rem;
   font-size: 1.2rem;
 }
 
@@ -130,7 +131,7 @@
   width: 30%;
 }
 
-.signin .formBody {
+.formBody {
   width: 100%;
 }
 

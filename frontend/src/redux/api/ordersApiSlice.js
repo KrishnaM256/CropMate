@@ -3,32 +3,14 @@ import { ORDER_URL } from '../constants'
 
 export const ordersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    create: builder.mutation({
+    createOrder: builder.mutation({
       query: (data) => ({
         url: `${ORDER_URL}/create`,
         method: 'POST',
         body: data,
         credentials: 'include',
       }),
-      invalidatesTags: ['Order'],
-    }),
-
-    createBuyerOrder: builder.mutation({
-      query: (data) => ({
-        url: `${ORDER_URL}/createBuyerOrder`,
-        method: 'POST',
-        body: data,
-        credentials: 'include',
-      }),
-      invalidatesTags: ['Order'],
-    }),
-
-    getAllBuyerOrders: builder.query({
-      query: () => ({
-        url: `${ORDER_URL}/getBuyerOrder`,
-        credentials: 'include',
-      }),
-      providesTags: ['Order'],
+      invalidatesTags: ['Order'], // Ensures cache is invalidated after creation
     }),
 
     getAllOrders: builder.query({
@@ -36,14 +18,33 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
         url: `${ORDER_URL}/get`,
         credentials: 'include',
       }),
-      providesTags: ['Order'],
+      providesTags: ['Order'], // Allows cache tracking
+    }),
+
+    updateOrder: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `${ORDER_URL}/${id}`,
+        method: 'PUT',
+        body: data,
+        credentials: 'include',
+      }),
+      invalidatesTags: ['Order'],
+    }),
+
+    deleteOrder: builder.mutation({
+      query: (id) => ({
+        url: `${ORDER_URL}/${id}`,
+        method: 'DELETE',
+        credentials: 'include',
+      }),
+      invalidatesTags: ['Order'],
     }),
   }),
 })
 
 export const {
-  useCreateMutation,
-  useCreateBuyerOrderMutation,
+  useCreateOrderMutation,
   useGetAllOrdersQuery,
-  useGetAllBuyerOrdersQuery,
+  useUpdateOrderMutation,
+  useDeleteOrderMutation,
 } = ordersApiSlice
