@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema(
       required: [true, 'Please enter phone number'],
     },
     address: {
-      Street_Building: { type: String, required: true },
+      street: { type: String, required: true },
       village: { type: String },
       city: {
         type: String,
@@ -57,7 +57,7 @@ const userSchema = mongoose.Schema(
       minLength: [8, 'Password should be greater than 8 '],
     },
     verification: {
-      aadharCard: { type: String, required: true }, // Required for both roles
+      aadhaarCard: { type: String, required: true }, // Required for both roles
       landOwnershipProof: { type: String }, // Farmer-specific
       bankPassbook: { type: String }, // Farmer-specific
       businessLicense: { type: String }, // Buyer-specific
@@ -76,8 +76,7 @@ const userSchema = mongoose.Schema(
     },
     workImages: [
       {
-        public_id: { type: String, required: true },
-        url: { type: String, required: true },
+        type: String,
       },
     ],
     totalLand: {
@@ -100,6 +99,32 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    groups: [
+      {
+        name: { type: String, required: true },
+        members: [
+          {
+            userId: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'User',
+              required: true,
+            },
+            addedAt: { type: Date, default: Date.now },
+          },
+        ],
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
+    savedOrders: [
+      {
+        orderId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Order',
+          required: true,
+        },
+        savedAt: { type: Date, default: Date.now },
+      },
+    ],
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },

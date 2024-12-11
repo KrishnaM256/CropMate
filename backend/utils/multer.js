@@ -4,11 +4,12 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const fileMap = {
       avatar: 'uploads/avatar',
-      aadharCard: 'uploads/aadharCard',
+      aadhaarCard: 'uploads/aadhaarCard',
       landOwnershipProof: 'uploads/landOwnershipProof',
       bankPassbook: 'uploads/bankPassbook/',
       businessLicense: 'uploads/businessLicense/',
       bankStatement: 'uploads/bankStatement/',
+      workImages: 'uploads/workImages/',
     }
     const folderPath = fileMap[file.fieldname] || 'uploads/others/'
     cb(null, folderPath) // call this call back function when there is no error i.e.,'null' then use '/uploads' as destination

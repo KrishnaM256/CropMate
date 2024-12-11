@@ -15,6 +15,15 @@ import {
   deleteUser,
   forgotPassword,
   resetPassword,
+  createSavedOrders,
+  createGroup,
+  addToGroup,
+  getAllGroups,
+  removeMemberGroup,
+  deleteGroup,
+  updateGroupName,
+  removeSavedOrder,
+  getAllSavedOrders,
 } from '../controllers/userController.js'
 
 import { authenticate, authorized } from '../middlewares/authMiddleware.js'
@@ -37,9 +46,32 @@ router.route('/resetPassword/:token').post(resetPassword)
 router
   .route('/profile')
   .get(authenticate, getUserProfile)
-  .put(authenticate, upload.single('avatar'), updateUserProfile)
+  .put(
+    authenticate,
+    upload.fields([
+      { name: 'avatar', maxCount: 1 },
+      { name: 'aadharCard', maxCount: 1 },
+      { name: 'landOwnershipProof', maxCount: 1 },
+      { name: 'bankPassbook', maxCount: 1 },
+      { name: 'businessLicense', maxCount: 1 },
+      { name: 'bankStatement', maxCount: 1 },
+      { name: 'workImages', maxCount: 10 },
+    ]),
+    updateUserProfile
+  )
 router.route('/usersList').get(authenticate, authorized, getAllUsers)
 router.route('/userProfile/:id').get(getUserById)
+
+router.route('/createGroup').post(authenticate, createGroup)
+router.route('/addToGroup').post(authenticate, addToGroup)
+router.route('/getAllGrps').get(authenticate, getAllGroups)
+router.route('/removeMember').delete(authenticate, removeMemberGroup)
+router.route('/deleteGroup').delete(authenticate, deleteGroup)
+router.route('/updateGroupName').put(authenticate, updateGroupName)
+router.route('/createSavedOrders').post(authenticate, createSavedOrders)
+router.route('/removeSavedOrder').delete(authenticate, removeSavedOrder)
+router.route('/getAllSavedOrders').get(authenticate, getAllSavedOrders)
+
 router
   .route('/admin/:id')
   .delete(authenticate, authorized, deleteUser)

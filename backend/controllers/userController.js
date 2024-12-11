@@ -3,6 +3,7 @@ import asyncHandler from '../middlewares/asyncHandler.js'
 import bcrypt from 'bcryptjs'
 import createToken from '../utils/createToken.js'
 import { sendMail } from '../utils/sendMail.js'
+
 export const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find({})
   res.status(200).send(users)
@@ -18,13 +19,13 @@ export const getUserProfileAdmin = asyncHandler(async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       phone: user.phone,
-      aadharCard: user.verification.aadharCard,
+      aadhaarCard: user.verification.aadhaarCard,
       landOwnershipProof: user.verification.landOwnershipProof,
       bankPassbook: user.verification.bankPassbook,
       businessLicense: user.verification.businessLicense,
       bankStatement: user.verification.bankStatement,
       panNumber: user.panNumber,
-      address: user.address.Street_Building,
+      address: user.address.street,
       city: user.address.city,
       state: user.address.state,
       pincode: user.address.pincode,
@@ -54,7 +55,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       phone: user.phone,
-      address: user.address.Street_Building,
+      address: user.address.street,
       city: user.address.city,
       state: user.address.state,
       pincode: user.address.pincode,
@@ -75,25 +76,30 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 })
 
 export const updateUserProfile = asyncHandler(async (req, res) => {
-  console.log(req.body)
-
+  console.log({ body: req.body })
   const user = await User.findById(req.user._id)
-  // console.log(user)
+  const avatar = req.files.avatar ? req.files.avatar[0].filename : user.avatar
+
+  const workImages = req.files?.workImages
+    ? req.files.workImages.map((file) => file.filename)
+    : user.workImages
 
   if (user) {
+    user.avatar = avatar
     user.firstName = req.body.firstName
     user.middleName = req.body.middleName
     user.lastName = req.body.lastName
     user.email = req.body.email
     user.phone = req.body.phone
-    user.address = req.body.address
-    user.city = req.body.city
-    user.state = req.body.state
-    user.aadhaarNumber = req.body.aadhaarNumber
-    user.panNumber = req.body.panNumber
+    user.address.street = req.body.street
+    user.address.village = req.body.village
+    user.address.city = req.body.city
+    user.address.state = req.body.state
+    user.address.pincode = req.body.pincode
     user.totalLand = req.body.totalLand
     user.tagLine = req.body.tagLine
     user.aboutMe = req.body.aboutMe
+    user.workImages = workImages
 
     if (req.body.password) {
       user.password = req.body.password
@@ -101,27 +107,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 
     const updatedUser = await user.save()
 
-    res.status(200).json({
-      id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phone: user.phone,
-      aadhaarNumber: user.aadhaarNumber,
-      panNumber: user.panNumber,
-      address: user.address,
-      city: user.city,
-      state: user.state,
-      tagLine: user.tagLine,
-      aboutMe: user.aboutMe,
-      totalLand: user.totalLand,
-      reviews: user.reviews,
-      rating: user.rating,
-      numReviews: user.numReviews,
-      workImages: user.workImages,
-      avatar: user.avatar,
-      role: updateUserProfile.role,
-    })
+    res.status(200).json(updatedUser._doc)
   }
 })
 
@@ -158,6 +144,7 @@ export const updateUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
   if (user) {
     user.firstName = req.body.firstName
+    user.middleName = req.body.middleName
     user.lastName = req.body.lastName
     user.email = req.body.email
     user.phone = req.body.phone
@@ -167,17 +154,7 @@ export const updateUserById = asyncHandler(async (req, res) => {
     user.role = req.body.role
     const updatedUser = await user.save()
     res.status(200).json({
-      id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phone: user.phone,
-      aadhaarNumber: user.aadhaarNumber,
-      panNumber: user.panNumber,
-      address: user.address,
-      city: user.city,
-      state: user.state,
-      role: updateUserProfile.role,
+      updatedUser,
     })
   } else {
     res.status(404)
@@ -188,8 +165,8 @@ export const updateUserById = asyncHandler(async (req, res) => {
 export const createUser = asyncHandler(async (req, res) => {
   console.log(req.files)
   const avatar = req.files.avatar ? req.files.avatar[0].filename : ''
-  const aadharCard = req.files.aadharCard
-    ? req.files.aadharCard[0].filename
+  const aadhaarCard = req.files.aadhaarCard
+    ? req.files.aadhaarCard[0].filename
     : ''
   const landOwnershipProof = req.files.landOwnershipProof
     ? req.files.landOwnershipProof[0].filename
@@ -204,7 +181,7 @@ export const createUser = asyncHandler(async (req, res) => {
     ? req.files.bankStatement[0].filename
     : ''
   const verification = {
-    aadharCard: aadharCard,
+    aadhaarCard: aadhaarCard,
     landOwnershipProof: landOwnershipProof,
     bankPassbook: bankPassbook,
     businessLicense: businessLicense,
@@ -216,7 +193,7 @@ export const createUser = asyncHandler(async (req, res) => {
     lastName,
     email,
     phone,
-    Street_Building,
+    street,
     village,
     city,
     state,
@@ -230,7 +207,7 @@ export const createUser = asyncHandler(async (req, res) => {
     !lastName ||
     !email ||
     !phone ||
-    !Street_Building ||
+    !street ||
     !village ||
     !city ||
     !state ||
@@ -241,7 +218,7 @@ export const createUser = asyncHandler(async (req, res) => {
     throw new Error('All fields are mandatory!')
   }
   const address = {
-    Street_Building: Street_Building,
+    street: street,
     village: village,
     city: city,
     state: state,
@@ -273,6 +250,7 @@ export const createUser = asyncHandler(async (req, res) => {
     city,
     state,
     role,
+    avatar,
   })
   try {
     await newUser.save()
@@ -379,4 +357,233 @@ export const resetPassword = asyncHandler(async (req, res) => {
   user.resetPasswordExpire = undefined // Fix typo here
   await user.save()
   res.status(200).send({ message: 'Successfully changed the password' })
+})
+
+export const createGroup = asyncHandler(async (req, res) => {
+  const { name, memberId } = req.body
+
+  if (!name) {
+    return res.status(400).json({ message: 'Please enter a group name.' })
+  }
+  if (!memberId) {
+    return res.status(400).json({ message: 'Please select a member.' })
+  }
+
+  try {
+    const user = await User.findById(req.user._id)
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' })
+    }
+
+    const groupExists = user.groups.some((grp) => grp.name === name)
+    if (groupExists) {
+      return res.status(400).json({ message: 'Group already exists.' })
+    }
+    const group = {
+      name,
+      members: [{ userId: memberId, addedAt: Date.now() }],
+      createdAt: Date.now(),
+    }
+
+    await User.findByIdAndUpdate(req.user._id, { $push: { groups: group } })
+
+    res.status(201).json({ message: 'Group created successfully!' })
+  } catch (error) {
+    console.error('Error creating group:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+export const addToGroup = asyncHandler(async (req, res) => {
+  const { groupId, memberId } = req.body
+  if (!groupId) {
+    return res.status(400).json({ message: 'Please select a group.' })
+  }
+  if (!memberId) {
+    return res.status(400).json({ message: 'Please select a member.' })
+  }
+  try {
+    const user = await User.findById(req.user._id)
+    const group = user.groups.id(groupId)
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found.' })
+    }
+    const isMemberExists = group.members.some(
+      (member) => member.userId.toString() === memberId
+    )
+    if (isMemberExists) {
+      return res
+        .status(400)
+        .json({ message: 'The member is already in the group.' })
+    }
+    group.members.push({ userId: memberId, addedAt: Date.now() })
+    await user.save({ validateBeforeSave: false })
+    res.status(200).json({ message: 'Member added to the group successfully!' })
+  } catch (error) {
+    console.error('Error creating group:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+export const getAllGroups = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id)
+    const groups = user.groups
+    res.json(groups)
+  } catch (error) {
+    console.error('Error getting groups:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+export const removeMemberGroup = asyncHandler(async (req, res) => {
+  const { memberId, groupId } = req.body
+  if (!memberId) {
+    return res.status(400).json({ message: 'Please select a member.' })
+  }
+  if (!groupId) {
+    return res.status(400).json({ message: 'Please select a group.' })
+  }
+  try {
+    const user = await User.findById(req.user._id)
+    const group = user.groups.id(groupId)
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found.' })
+    }
+    const memberIndex = group.members.findIndex(
+      (member) => member.userId.toString() === memberId
+    )
+    if (memberIndex === -1) {
+      return res.status(404).json({ message: 'Member not found in the group.' })
+    }
+    group.members.splice(memberIndex, 1)
+    await user.save({ validateBeforeSave: false })
+    res
+      .status(200)
+      .json({ message: 'Member removed from the group successfully!' })
+  } catch (error) {
+    console.error('Error remove member from group:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+export const deleteGroup = asyncHandler(async (req, res) => {
+  const { groupId } = req.body
+  if (!groupId) {
+    return res.status(400).json({ message: 'Please select a group.' })
+  }
+  try {
+    const user = await User.findById(req.user._id)
+    const groupIndex = user.groups.findIndex(
+      (group) => group._id.toString() === groupId
+    )
+    if (groupIndex === -1) {
+      return res.status(404).json({ message: 'Group not found.' })
+    }
+    user.groups.splice(groupIndex, 1)
+    await user.save({ validateBeforeSave: false })
+    res.status(200).json({ message: 'Group deleted successfully!' })
+  } catch (error) {
+    console.error('Error deleting group:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+export const updateGroupName = asyncHandler(async (req, res) => {
+  const { name, groupId } = req.body
+  if (!name) {
+    return res.status(400).json({ message: 'Please enter a group name.' })
+  }
+  if (!groupId) {
+    return res.status(400).json({ message: 'Please select a group.' })
+  }
+  try {
+    const user = await User.findById(req.user._id)
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' })
+    }
+    const group = user.groups.id(groupId)
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found.' })
+    }
+    const groupExists = user.groups.some((grp) => grp.name === name)
+    if (groupExists) {
+      return res.status(400).json({ message: 'Group already exists.' })
+    }
+    group.name = name
+
+    await user.save({ validateBeforeSave: false })
+
+    res.status(200).json({ message: 'Group name updated successfully!' })
+  } catch (error) {
+    console.error('Error updating group name:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+export const createSavedOrders = asyncHandler(async (req, res) => {
+  const { orderId } = req.body
+  if (!orderId) {
+    return res.status(400).json({ message: 'Please select a order.' })
+  }
+  try {
+    const user = await User.findById(req.user._id)
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' })
+    }
+    const savedOrder = {
+      orderId: orderId,
+      savedAt: Date.now(),
+    }
+    await User.findByIdAndUpdate(req.user._id, {
+      $push: { savedOrders: savedOrder },
+    })
+    res.status(201).json({ message: 'Order saved successfully!' })
+  } catch (error) {
+    console.error('Error creating group:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+export const removeSavedOrder = asyncHandler(async (req, res) => {
+  const { orderId } = req.body
+  if (!orderId) {
+    return res.status(400).json({ message: 'Please select an order.' })
+  }
+  try {
+    const user = await User.findById(req.user._id)
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' })
+    }
+    const orderIndex = user.savedOrders.findIndex(
+      (order) => order.orderId === orderId || order._id.toString() === orderId
+    )
+    if (orderIndex === -1) {
+      return res
+        .status(404)
+        .json({ message: 'Order not found in saved orders.' })
+    }
+    user.savedOrders.splice(orderIndex, 1)
+    await user.save({ validateBeforeSave: false })
+    res
+      .status(200)
+      .json({ message: 'Order removed from saved orders successfully!' })
+  } catch (error) {
+    console.error('Error removing saved order:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+export const getAllSavedOrders = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id)
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' })
+    }
+    const savedOrders = user.savedOrders
+    res.status(200).json(savedOrders)
+  } catch (error) {
+    console.error('Error getting saved orders:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
 })

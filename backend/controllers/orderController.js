@@ -2,12 +2,12 @@ import asyncHandler from '../middlewares/asyncHandler.js'
 import Order from '../models/orderModel.js'
 
 export const createOrder = asyncHandler(async (req, res) => {
+  console.log({ body: req.body })
   const {
     land,
     pricePerTon,
     expectedCropsYields,
     orderType,
-    orderStatus,
     paymentMethod,
     transportationRequired,
   } = req.body
@@ -16,7 +16,6 @@ export const createOrder = asyncHandler(async (req, res) => {
     !pricePerTon ||
     !expectedCropsYields ||
     !orderType ||
-    !orderStatus ||
     !paymentMethod ||
     !transportationRequired
   ) {
@@ -32,7 +31,7 @@ export const createOrder = asyncHandler(async (req, res) => {
     await newOrder.save()
     const order = await newOrder.populate(
       'user',
-      `firstName lastName rating numReviews tagLine city state totalLand role _id`
+      `avatar firstName middleName lastName rating numReviews tagLine city state totalLand role _id`
     )
     const userOrder = {
       _id: order._id,
@@ -70,7 +69,7 @@ export const createOrder = asyncHandler(async (req, res) => {
 export const getAllOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find().populate(
     'user',
-    `firstName lastName rating numReviews tagLine city state totalLand role _id`
+    `firstName middleName lastName rating numReviews tagLine address totalLand role _id avatar`
   )
 
   console.log(orders)
@@ -89,15 +88,15 @@ export const getAllOrders = asyncHandler(async (req, res) => {
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
     user: {
-      name: `${order.user.firstName} ${order.user.lastName}`,
-      city: order.user.city,
-      state: order.user.state,
+      name: `${order.user.firstName} ${order.user.middleName} ${order.user.lastName}`,
+      address: order.user.address,
       totalLand: order.user.totalLand,
       rating: order.user.rating,
       numReviews: order.user.numReviews,
       tagLine: order.user.tagLine,
       role: order.user.role,
       id: order.user._id,
+      avatar: order.user.avatar,
     },
   }))
 

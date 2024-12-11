@@ -23,8 +23,10 @@ app.use(
     credentials: true,
   })
 )
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(express.static('uploads'))
 
 app.use('/api/users', userRoutes)
 app.use('/api/order', orderRoutes)
