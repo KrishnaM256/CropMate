@@ -7,26 +7,26 @@ export const createOrder = asyncHandler(async (req, res) => {
     land,
     pricePerTon,
     expectedCropsYields,
-    orderType,
+    orderFor,
     paymentMethod,
     transportationRequired,
   } = req.body
-  if (
-    !land ||
-    !pricePerTon ||
-    !expectedCropsYields ||
-    !orderType ||
-    !paymentMethod ||
-    !transportationRequired
-  ) {
-    throw new Error('All fields are mandatory!')
-  }
+  // if (
+  //   !land ||
+  //   !pricePerTon ||
+  //   !expectedCropsYields ||
+  //   !orderFor ||
+  //   !paymentMethod ||
+  //   !transportationRequired
+  // ) {
+  //   throw new Error('All fields are mandatory!')
+  // }
 
+  console.log('newOrder')
   const newOrder = new Order({
     ...req.body,
     user: req.user._id,
   })
-
   try {
     await newOrder.save()
     const order = await newOrder.populate(
@@ -38,7 +38,7 @@ export const createOrder = asyncHandler(async (req, res) => {
       land: order.land,
       expectedCropsYields: order.expectedCropsYields,
       pricePerTon: order.pricePerTon,
-      orderType: order.orderType,
+      orderFor: order.orderFor,
       orderStatus: order.orderStatus,
       paymentMethod: order.paymentMethod,
       paymentStatus: order.paymentStatus,
@@ -79,7 +79,7 @@ export const getAllOrders = asyncHandler(async (req, res) => {
     land: order.land,
     expectedCropsYields: order.expectedCropsYields,
     pricePerTon: order.pricePerTon,
-    orderType: order.orderType,
+    orderFor: order.orderFor,
     orderStatus: order.orderStatus,
     paymentMethod: order.paymentMethod,
     paymentStatus: order.paymentStatus,
@@ -103,12 +103,52 @@ export const getAllOrders = asyncHandler(async (req, res) => {
   res.status(200).json(userOrders)
 })
 
+export const getMyOrders = asyncHandler(async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user._id }).populate(
+      'user',
+      `firstName middleName lastName rating numReviews tagLine address totalLand role _id avatar`
+    )
+
+    const userOrders = orders.map((order) => ({
+      _id: order._id,
+      land: order.land,
+      expectedCropsYields: order.expectedCropsYields,
+      pricePerTon: order.pricePerTon,
+      orderFor: order.orderFor,
+      orderStatus: order.orderStatus,
+      paymentMethod: order.paymentMethod,
+      paymentStatus: order.paymentStatus,
+      transportationRequired: order.transportationRequired,
+      deliveryLocation: order.deliveryLocation,
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt,
+      user: {
+        name: `${order.user.firstName} ${order.user.middleName} ${order.user.lastName}`,
+        address: order.user.address,
+        totalLand: order.user.totalLand,
+        rating: order.user.rating,
+        numReviews: order.user.numReviews,
+        tagLine: order.user.tagLine,
+        role: order.user.role,
+        id: order.user._id,
+        avatar: order.user.avatar,
+      },
+    }))
+
+    res.status(200).json(userOrders)
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ message: error.message })
+  }
+})
+
 export const updateOrder = asyncHandler(async (req, res) => {
   const {
     land,
     pricePerTon,
     expectedCropsYields,
-    orderType,
+    orderFor,
     orderStatus,
     paymentMethod,
     transportationRequired,
@@ -117,7 +157,7 @@ export const updateOrder = asyncHandler(async (req, res) => {
     !land ||
     !pricePerTon ||
     !expectedCropsYields ||
-    !orderType ||
+    !orderFor ||
     !orderStatus ||
     !paymentMethod ||
     !transportationRequired

@@ -32,6 +32,9 @@ import CreateOrder from './components/Users/CreateOrder.jsx'
 import UpdateProfile from './components/Users/UpdateProfile.jsx'
 // import CreateBuyerOrder from './components/Buyer/CreateBuyerOrder.jsx'
 import { ChakraProvider } from '@chakra-ui/react'
+import Dashboard from './components/Dashboard/Dashboard.jsx'
+import Contract from './components/common/Contract/Contract.jsx'
+import ContractForm from './components/common/Contract/ContractForm/ContractForm.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -45,11 +48,14 @@ const router = createBrowserRouter(
       <Route path="/contractMarket" element={<ContractMarket />}></Route>
       <Route path="/liveMarket" element={<LiveMarket />}></Route>
       <Route path="/profile/:userId" element={<FarmerProfile />}></Route>
+      <Route path="/contract" element={<Contract />}></Route>
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<MyProfile />} />
         <Route path="/savedNetwork" element={<SavedUsers />} />
         <Route path="/groupedNetwork" element={<GroupedUsers />} />
         <Route path="/createOrder" element={<CreateOrder />} />
+        <Route path="/contractForm" element={<ContractForm />}></Route>
+        <Route path="/dashboard" element={<Dashboard />} />
         {/* <Route path="/createBuyerOrder" element={<CreateBuyerOrder />} /> */}
         <Route path="/updateProfile" element={<UpdateProfile />} />
       </Route>

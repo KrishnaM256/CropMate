@@ -1,0 +1,21 @@
+.checkContainer {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin: 4px 2px;
+}
+
+.customTerms {
+  margin: 1em;
+}
+
+.gnrtCntrct {
+  width: 250px;
+}
+
+.gnrtCntrctContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

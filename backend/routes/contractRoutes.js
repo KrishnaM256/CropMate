@@ -9,11 +9,18 @@ import {
   rejectContract,
   deleteContract,
 } from '../controllers/contractController.js'
+import { upload } from '../utils/multer.js'
 
 const router = express.Router()
 
+router
+  .route('/create')
+  .post(
+    authenticate,
+    upload.fields([{ name: 'signature', maxCount: 1 }]),
+    createContract
+  )
 router.route('/getAll').get(authenticate, getContracts)
-router.route('/create').post(authenticate, createContract)
 router
   .route('/:id')
   .get(authenticate, getContractById)

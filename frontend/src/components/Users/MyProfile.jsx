@@ -21,7 +21,7 @@ import { BASE_URL } from '../../redux/constants'
 const MyProfile = () => {
   const navigate = useNavigate()
   const { userInfo } = useSelector((state) => state.auth)
-  const medias = userInfo.workImages
+  const medias = userInfo?.workImages
 
   const [file, setFile] = useState(null)
 
@@ -124,7 +124,7 @@ const MyProfile = () => {
           <div className="slider-container">
             <Slider {...settings}>
               {medias && medias.length > 0 ? (
-                medias.map((media, index) => (
+                medias?.map((media, index) => (
                   <div
                     className="media"
                     key={index}

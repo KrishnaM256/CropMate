@@ -26,7 +26,7 @@ const orderSchema = mongoose.Schema(
       required: [true, 'User id is required'],
     },
     // Both specific
-    orderType: {
+    orderFor: {
       type: String,
       enum: ['farmer', 'buyer'],
       required: true,

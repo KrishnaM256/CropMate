@@ -11,10 +11,6 @@
   box-sizing: border-box;
 }
 
-.marketContainer {
-  width: 500px;
-}
-
 .homeIcon {
   font-size: 20px;
   margin: 0 20px;
@@ -45,11 +41,6 @@
   width: 300px;
 }
 
-.marketDiv3 {
-  /* height: 600px; */
-  width: 100%;
-}
-
 .respContainer {
   padding: 5px 10px;
   width: fit-content;
@@ -63,6 +54,32 @@
   margin-left: 20px;
   margin-bottom: 5px;
 }
+.marketDiv3 {
+  width: 100%;
+}
+
+@media (max-width: 1000px) {
+  .profileInfo {
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media (min-width: 1000px) {
+  .marketDiv3 {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .marketDiv3 .card {
+    margin: 0px;
+    flex: 1 1 calc(50% - 10px);
+    box-sizing: border-box;
+  }
+}
+
 @media (max-width: 1350px) {
   .respContainer {
     display: flex;

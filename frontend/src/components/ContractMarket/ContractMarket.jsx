@@ -13,6 +13,7 @@ import {
   useAddToGroupMutation,
   useCreateGroupMutation,
   useGetAllGroupsQuery,
+  useGetAllSavedOrdersQuery,
 } from '../../redux/api/usersApiSlice'
 
 const ContractMarket = () => {
@@ -26,7 +27,8 @@ const ContractMarket = () => {
     isLoading: ordersLoading,
     error: ordersError,
   } = useGetAllOrdersQuery()
-
+  const { data: savedOrders, refetch: savedOrderRefetch } =
+    useGetAllSavedOrdersQuery()
   console.log({ groupList: groupList })
   useEffect(() => {
     refetch()
@@ -61,7 +63,7 @@ const ContractMarket = () => {
       setToggle(false)
     }
   }
-
+  console.log({ savedOrders: savedOrders })
   const addDetails = (details) => {
     setSelectedDetails(details)
     setToggle(true)
@@ -148,12 +150,13 @@ const ContractMarket = () => {
           Filter
         </button>
         <div className="marketContainer">
-          <div className="marketDiv2"></div>
           <div className="marketDiv3">
             {ordersList &&
               ordersList.map((order) => {
                 return (
                   <OrderCard
+                    savedOrders={savedOrders}
+                    savedOrderRefetch={savedOrderRefetch}
                     key={uuid4()}
                     addToGroup={addDetails}
                     setToggle={setToggle}

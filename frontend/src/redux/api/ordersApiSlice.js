@@ -10,7 +10,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
         body: data,
         credentials: 'include',
       }),
-      invalidatesTags: ['Order'], // Ensures cache is invalidated after creation
+      invalidatesTags: ['Order'],
     }),
 
     getAllOrders: builder.query({
@@ -20,7 +20,13 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ['Order'], // Allows cache tracking
     }),
-
+    getMyOrders: builder.query({
+      query: () => ({
+        url: `${ORDER_URL}/getMyOrders`,
+        credentials: 'include',
+      }),
+      providesTags: ['Order'], // Allows cache tracking
+    }),
     updateOrder: builder.mutation({
       query: ({ id, ...data }) => ({
         url: `${ORDER_URL}/${id}`,
@@ -47,4 +53,5 @@ export const {
   useGetAllOrdersQuery,
   useUpdateOrderMutation,
   useDeleteOrderMutation,
+  useGetMyOrdersQuery,
 } = ordersApiSlice

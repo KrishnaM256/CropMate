@@ -8,19 +8,23 @@ import { setOrders } from '../../redux/features/order/orderSlice'
 import { toast } from 'react-toastify'
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { indianCities, indianStates } from '../data/indiaData'
+import { useCreateContractMutation } from '../../redux/api/contractApiSlice'
+import ContractForm from '../common/Contract/ContractForm/ContractForm'
 
 const CreateOrder = () => {
   const { userInfo } = useSelector((state) => state.auth)
   const role = userInfo.role
   console.log(role)
-  const dispatch = useDispatch()
+
   const navigate = useNavigate()
-  const [createOrderApi, { isLoading }] = useCreateOrderMutation()
+  const location = useLocation()
+  const { orderData } = location.state || {}
+
   const [formData, setFormData] = useState({
     land: '',
     expectedCropsYields: [{ expectedCrop: '', expectedYield: '' }],
     pricePerTon: '',
-    orderType: 'buyer',
+    orderFor: 'buyer',
     paymentMethod: '',
     transportationRequired: 'Included',
     deliveryLocation: {
@@ -31,6 +35,13 @@ const CreateOrder = () => {
       pincode: '',
     },
   })
+
+  useEffect(() => {
+    if (orderData) {
+      setFormData(orderData)
+    }
+  }, [orderData])
+
   const { search } = useLocation()
   const sp = new URLSearchParams(search)
   const redirect = sp.get('redirect') || '/'
@@ -94,30 +105,30 @@ const CreateOrder = () => {
       })
     }
   }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    console.log(formData)
-
-    try {
-      const transportationRequired =
-        formData.transportationRequired == 'included' ? true : false
-      const res = await createOrderApi({
-        ...formData,
-        transportationRequired: transportationRequired,
-      }).unwrap()
-      console.log(res)
-      dispatch(setOrders({ ...res }))
-      toast.success('Order created successfully.')
-      navigate(history.back())
-    } catch (error) {
-      toast.error(error?.data?.message)
+  const validateForm = () => {
+    if (!formData.land) return false
+    if (!formData.pricePerTon) return false
+    if (!formData.paymentMethod) return false
+    if (!formData.transportationRequired) return false
+    for (const crop of formData.expectedCropsYields) {
+      if (!crop.expectedCrop || !crop.expectedYield) return false
     }
+    if (
+      formData.orderFor === 'farmer' &&
+      (!formData.deliveryLocation.street ||
+        !formData.deliveryLocation.village ||
+        !formData.deliveryLocation.district ||
+        !formData.deliveryLocation.state ||
+        !formData.deliveryLocation.pincode)
+    ) {
+      return false
+    }
+    return true
   }
   return (
     <div id="createOrder">
       <h2 className="h2">Order Details:</h2>
-      <form action="" className="orderForm" onSubmit={handleSubmit}>
+      <form action="" className="orderForm">
         <div className="ipDiv">
           <label htmlFor="land">
             {role == 'farmer' ? 'Crop Ready Land' : 'Required Land'}(Acre):
@@ -174,8 +185,8 @@ const CreateOrder = () => {
         </button>
         <div className="ipDivContainer">
           <div className="ipDiv">
-            <label htmlFor="orderType">Order For:</label>
-            <select name="orderType" id="" onChange={handleChange}>
+            <label htmlFor="orderFor">Order For:</label>
+            <select name="orderFor" id="" onChange={handleChange}>
               <option value="">Select order for</option>
               <option value="buyer">Buyer</option>
               <option value="farmer">Farmer</option>
@@ -217,8 +228,8 @@ const CreateOrder = () => {
             />
           </div>
         </div>
-        {console.log(formData.orderType)}
-        {formData.orderType == 'farmer' && (
+        {console.log(formData.orderFor)}
+        {formData.orderFor == 'farmer' && (
           <>
             <h3 style={{ fontWeight: '550', marginBottom: '0px' }}>
               Delivery Location:
@@ -293,8 +304,14 @@ const CreateOrder = () => {
           </>
         )}
 
-        <button type="submit" className="subBtn create">
-          Create Order
+        <button
+          type="submit"
+          className="subBtn create"
+          onClick={() =>
+            validateForm() && navigate('/contractForm', { state: { formData } })
+          }
+        >
+          Create Contract
         </button>
       </form>
     </div>

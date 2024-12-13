@@ -80,9 +80,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     removeSavedOrder: builder.mutation({
-      query: (id) => ({
-        url: `${USERS_URL}/removeSavedOrder/${id}`,
+      query: (data) => ({
+        url: `${USERS_URL}/removeSavedOrder`,
         method: 'DELETE',
+        body: data,
         credentials: 'include',
       }),
     }),

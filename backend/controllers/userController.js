@@ -361,20 +361,18 @@ export const resetPassword = asyncHandler(async (req, res) => {
 
 export const createGroup = asyncHandler(async (req, res) => {
   const { name, memberId } = req.body
-
   if (!name) {
     return res.status(400).json({ message: 'Please enter a group name.' })
   }
   if (!memberId) {
     return res.status(400).json({ message: 'Please select a member.' })
   }
-
   try {
+    // console.log({ user: req.user })
     const user = await User.findById(req.user._id)
     if (!user) {
       return res.status(404).json({ message: 'User not found.' })
     }
-
     const groupExists = user.groups.some((grp) => grp.name === name)
     if (groupExists) {
       return res.status(400).json({ message: 'Group already exists.' })
@@ -427,9 +425,18 @@ export const addToGroup = asyncHandler(async (req, res) => {
 
 export const getAllGroups = asyncHandler(async (req, res) => {
   try {
-    const user = await User.findById(req.user._id)
+    const user = await User.findById(req.user._id).populate({
+      path: 'groups', // Populate the groups array
+      populate: {
+        path: 'members.userId', // Populate the members array inside each group
+        select:
+          'avatar firstName middleName lastName rating numReviews tagLine city state totalLand role _id address.city address.state', // Select the fields you want
+      },
+    })
+
+    // Since the groups are now populated, we can return them directly
     const groups = user.groups
-    res.json(groups)
+    res.json(groups) // Send the populated groups in the response
   } catch (error) {
     console.error('Error getting groups:', error)
     res.status(500).json({ message: 'Internal server error' })
@@ -438,6 +445,7 @@ export const getAllGroups = asyncHandler(async (req, res) => {
 
 export const removeMemberGroup = asyncHandler(async (req, res) => {
   const { memberId, groupId } = req.body
+  console.log(req.body)
   if (!memberId) {
     return res.status(400).json({ message: 'Please select a member.' })
   }
@@ -457,6 +465,9 @@ export const removeMemberGroup = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: 'Member not found in the group.' })
     }
     group.members.splice(memberIndex, 1)
+    if (group.members.length === 0) {
+      user.groups = user.groups.filter((g) => g._id.toString() !== groupId)
+    }
     await user.save({ validateBeforeSave: false })
     res
       .status(200)
@@ -469,6 +480,7 @@ export const removeMemberGroup = asyncHandler(async (req, res) => {
 
 export const deleteGroup = asyncHandler(async (req, res) => {
   const { groupId } = req.body
+  console.log(req.body)
   if (!groupId) {
     return res.status(400).json({ message: 'Please select a group.' })
   }
@@ -531,6 +543,13 @@ export const createSavedOrders = asyncHandler(async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found.' })
     }
+    const isOrderSaved = user.savedOrders.some(
+      (savedOrder) => savedOrder.orderId.toString() === orderId
+    )
+
+    if (isOrderSaved) {
+      return res.status(400).json({ message: 'Order is already saved.' })
+    }
     const savedOrder = {
       orderId: orderId,
       savedAt: Date.now(),
@@ -544,7 +563,6 @@ export const createSavedOrders = asyncHandler(async (req, res) => {
     res.status(500).json({ message: 'Internal server error' })
   }
 })
-
 export const removeSavedOrder = asyncHandler(async (req, res) => {
   const { orderId } = req.body
   if (!orderId) {
@@ -555,16 +573,24 @@ export const removeSavedOrder = asyncHandler(async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found.' })
     }
+
+    // Fix the findIndex logic
     const orderIndex = user.savedOrders.findIndex(
-      (order) => order.orderId === orderId || order._id.toString() === orderId
+      (order) => order.orderId.toString() === orderId
     )
+
     if (orderIndex === -1) {
       return res
         .status(404)
         .json({ message: 'Order not found in saved orders.' })
     }
+
+    // Remove the order at the found index
     user.savedOrders.splice(orderIndex, 1)
+
+    // Save the user document without validation
     await user.save({ validateBeforeSave: false })
+
     res
       .status(200)
       .json({ message: 'Order removed from saved orders successfully!' })
@@ -576,14 +602,84 @@ export const removeSavedOrder = asyncHandler(async (req, res) => {
 
 export const getAllSavedOrders = asyncHandler(async (req, res) => {
   try {
+    const user = await User.findById(req.user._id).populate({
+      path: 'savedOrders',
+      populate: {
+        path: 'orderId',
+        select:
+          '_id land expectedCropsYields pricePerTon orderFor orderStatus paymentMethod paymentStatus transportationRequired deliveryLocation createdAt updatedAt user',
+        populate: {
+          path: 'user',
+          select:
+            'firstName middleName lastName rating numReviews tagLine address totalLand role _id avatar',
+        },
+      },
+    })
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' })
+    }
+    const savedOrders = user.savedOrders.map((savedOrder) => {
+      const order = savedOrder?.orderId
+      const userDetails = order?.user || {}
+      return {
+        _id: order?._id,
+        land: order?.land,
+        expectedCropsYields: order?.expectedCropsYields,
+        pricePerTon: order?.pricePerTon,
+        orderFor: order?.orderFor,
+        orderStatus: order?.orderStatus,
+        paymentMethod: order?.paymentMethod,
+        paymentStatus: order?.paymentStatus,
+        transportationRequired: order?.transportationRequired,
+        deliveryLocation: order?.deliveryLocation,
+        createdAt: order?.createdAt,
+        updatedAt: order?.updatedAt,
+        user: {
+          name: `${userDetails.firstName || ''} ${
+            userDetails.middleName || ''
+          } ${userDetails.lastName || ''}`.trim(),
+          address: userDetails.address || null,
+          totalLand: userDetails.totalLand || null,
+          rating: userDetails.rating,
+          numReviews: userDetails.numReviews,
+          tagLine: userDetails.tagLine || '',
+          role: userDetails.role || '',
+          id: userDetails._id || null,
+          avatar: userDetails.avatar || null,
+        },
+      }
+    })
+
+    // Respond with saved orders
+    res.status(200).json(savedOrders)
+  } catch (error) {
+    console.error('Error getting saved orders:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+
+export const isOrderSaved = asyncHandler(async (req, res) => {
+  const { orderId } = req.body
+  if (!orderId) {
+    return res.status(400).json({ message: 'Please provide an order ID.' })
+  }
+  try {
     const user = await User.findById(req.user._id)
     if (!user) {
       return res.status(404).json({ message: 'User not found.' })
     }
-    const savedOrders = user.savedOrders
-    res.status(200).json(savedOrders)
+    const isOrderSaved = user.savedOrders.some(
+      (savedOrder) => savedOrder.orderId.toString() === orderId
+    )
+    if (isOrderSaved) {
+      return res.status(200).json({ message: 'Order is saved.', saved: true })
+    } else {
+      return res
+        .status(200)
+        .json({ message: 'Order is not saved.', saved: false })
+    }
   } catch (error) {
-    console.error('Error getting saved orders:', error)
+    console.error('Error checking saved order:', error)
     res.status(500).json({ message: 'Internal server error' })
   }
 })

@@ -131,14 +131,14 @@ const Navbar = () => {
                   <Link to={'/profile'} className="link2">
                     <MenuItem className="item item2">Profile</MenuItem>
                   </Link>
-                  <Link to={'/profile'} className="link2">
+                  <Link to={'/dashboard'} className="link2">
                     <MenuItem className="item item2">Dashboard</MenuItem>
                   </Link>
                   <Link to={'/groupedNetwork'} className="link2">
                     <MenuItem className="item item2">Grouped Network</MenuItem>
                   </Link>
                   <Link to={'/savedNetwork'} className="link2">
-                    <MenuItem className="item item2">Saved Network</MenuItem>
+                    <MenuItem className="item item2">Saved Orders</MenuItem>
                   </Link>
                   <Link to={'/createOrder'} className="link2">
                     <MenuItem className="item item2">Create Order</MenuItem>

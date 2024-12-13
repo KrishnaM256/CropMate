@@ -2,17 +2,31 @@ import React from 'react'
 // import profile from '../../../../assets/profile.jpg'
 import { FaStar } from 'react-icons/fa'
 import { IoLocationSharp } from 'react-icons/io5'
-import { FaRegHeart, FaRegPaperPlane } from 'react-icons/fa'
+import { FaRegHeart, FaRegPaperPlane, FaHeart } from 'react-icons/fa'
 import { BiSolidLandscape } from 'react-icons/bi'
 import { MdOutlineGroupAdd } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import './OrderCard.css'
 import { useSelector } from 'react-redux'
 import { BASE_URL, FRONT_URL } from '../../../../redux/constants'
+import {
+  useCreateSavedOrdersMutation,
+  useRemoveSavedOrderMutation,
+} from '../../../../redux/api/usersApiSlice'
+import { toast } from 'react-toastify'
 
-const OrderCard = ({ data, addToGroup, toggle, setToggle }) => {
-  console.log(data)
+const OrderCard = ({
+  data,
+  addToGroup,
+  toggle,
+  setToggle,
+  savedOrders,
+  savedOrderRefetch,
+}) => {
+  // console.log({ data: data })
   const { userInfo } = useSelector((state) => state.auth)
+  const [saveOrder] = useCreateSavedOrdersMutation()
+  const [removeSavedOrder] = useRemoveSavedOrderMutation()
   const navigate = useNavigate()
   const handleAddToGroup = () => {
     const details = {
@@ -23,7 +37,29 @@ const OrderCard = ({ data, addToGroup, toggle, setToggle }) => {
     addToGroup(details)
     setToggle(true)
   }
-
+  console.log(savedOrders)
+  const checkIsOrderSaved = () => {
+    return savedOrders?.some((order) => order._id == data._id)
+  }
+  const handleSaveOrder = async () => {
+    try {
+      const res = await saveOrder({ orderId: data._id }).unwrap()
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+      toast.error(`${error.data?.message}`)
+    }
+    savedOrderRefetch()
+  }
+  const handleRemoveSavedOrder = async () => {
+    try {
+      const res = await removeSavedOrder({ orderId: data._id }).unwrap()
+    } catch (error) {
+      console.log(error)
+      toast.error(`${error.data?.message}`)
+    }
+    savedOrderRefetch()
+  }
   return (
     <div className="card">
       <div className="profileInfo">
@@ -60,9 +96,19 @@ const OrderCard = ({ data, addToGroup, toggle, setToggle }) => {
           <button type="button" className="border" onClick={handleAddToGroup}>
             <MdOutlineGroupAdd />
           </button>
-          <button type="button" className="border">
-            <FaRegHeart />
-          </button>
+          {checkIsOrderSaved() ? (
+            <button
+              type="button"
+              className="border"
+              onClick={handleRemoveSavedOrder}
+            >
+              <FaHeart />
+            </button>
+          ) : (
+            <button type="button" className="border" onClick={handleSaveOrder}>
+              <FaRegHeart />
+            </button>
+          )}
           <button type="button" className="border">
             <FaRegPaperPlane />
           </button>
@@ -97,28 +143,25 @@ const OrderCard = ({ data, addToGroup, toggle, setToggle }) => {
               </span>
             </div>
           </div>
-          {data?.expectedCropsYields.map((ecy, i) => {
-            return (
-              <div className="ipDivContainer2">
-                <div className="landInfo">
-                  <h5>Expected Crop {i + 1} : </h5>
-                  <span>{ecy?.expectedCrop}</span>
-                </div>
-                <div className="landInfo">
-                  <h5>Expected Average Yield {i + 1} : </h5>
-                  <span>{ecy?.expectedYield} tons/acre</span>
-                </div>
-              </div>
-            )
-          })}
+
           <div className="ipDivContainer2">
             <div className="landInfo">
-              <h5>Order For : </h5> <span> {data?.orderType} </span>
+              <h5>Order For : </h5> <span> {data?.orderFor} </span>
             </div>
             <div className="landInfo">
               <h5>Payment Method : </h5> <span> {data?.paymentMethod} </span>
             </div>
           </div>
+          {data?.expectedCropsYields.map((ecy, i) => {
+            return (
+              <div className="landInfo">
+                <h5>Expected Crop {i + 1} : </h5>
+                <span>
+                  {ecy?.expectedCrop} {ecy?.expectedYield} tons/acre
+                </span>
+              </div>
+            )
+          })}
         </div>
       </div>
       <div

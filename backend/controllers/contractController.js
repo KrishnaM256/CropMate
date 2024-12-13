@@ -2,46 +2,72 @@ import Contract from '../models/contractModel.js'
 import asyncHandler from '../middlewares/asyncHandler.js'
 
 export const createContract = asyncHandler(async (req, res) => {
+  console.log(req.body)
+  console.log(req.files)
+
+  const signature = req.files.signature ? req.files.signature[0].path : ''
+
+  // Extract all relevant fields from the request body
   const {
     order,
-    createdBy,
-    acceptedBy,
     pricePerTon,
     deliveryDate,
     transportationRequired,
     paymentTerms,
-    cropDetails,
+    cropDetails, // This should include expectedYield and expectedCrop
     deliveryLocation,
-    status,
     customTerms,
-    paymentStatus,
   } = req.body
+
+  // Parse cropDetails if it's a string (e.g., if you sent it as JSON string from the frontend)
+  let parsedCropDetails = cropDetails
+  if (typeof cropDetails === 'string') {
+    parsedCropDetails = JSON.parse(cropDetails)
+  }
+  let parsedCustomTerms = customTerms
+  if (typeof customTerms === 'string') {
+    parsedCustomTerms = JSON.parse(customTerms)
+  }
+  let parsedDeliveryLocation = customTerms
+  if (typeof deliveryLocation === 'string') {
+    parsedDeliveryLocation = JSON.parse(deliveryLocation)
+  }
+  // Check if all required fields are provided
   if (
     !order ||
-    !createdBy ||
-    !acceptedBy ||
     !pricePerTon ||
     !deliveryDate ||
     !paymentTerms ||
-    !cropDetails ||
+    !parsedCropDetails ||
     !deliveryLocation ||
-    !status ||
     !customTerms ||
-    !paymentStatus ||
-    !transportationRequired
+    !transportationRequired ||
+    !signature // Ensure signature is provided
   ) {
     throw new Error('All fields are mandatory!')
   }
+
+  // Create a new contract object
   const newContract = new Contract({
     ...req.body,
+    signature,
+    cropDetails: parsedCropDetails,
+    customTerms: parsedCustomTerms,
+    deliveryLocation: parsedDeliveryLocation,
     createdBy: req.user._id,
   })
+
   try {
+    // Save the contract
     await newContract.save()
+
+    // Populate the contract with the createdBy user details
     const contract = await newContract.populate(
       'createdBy',
-      `firstName middleName lastName rating numReviews tagLine district state role _id`
+      `avatar firstName middleName lastName rating numReviews tagLine district state role _id`
     )
+
+    // Respond with the created contract
     res.status(201).json(contract)
   } catch (error) {
     console.log(error)

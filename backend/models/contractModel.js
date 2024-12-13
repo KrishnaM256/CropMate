@@ -15,7 +15,6 @@ const contractSchema = mongoose.Schema(
     acceptedBy: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      required: true,
     },
     pricePerTon: {
       type: Number,
@@ -35,10 +34,12 @@ const contractSchema = mongoose.Schema(
       enum: ['advance', 'partial', 'on-delivery'],
       required: true,
     },
-    cropDetails: {
-      cropName: { type: String, required: true },
-      expectedYield: { type: Number, required: true },
-    },
+    cropDetails: [
+      {
+        expectedCrop: { type: String, required: true },
+        expectedYield: { type: Number, required: true },
+      },
+    ],
     deliveryLocation: {
       street: { type: String },
       village: { type: String },
@@ -52,23 +53,19 @@ const contractSchema = mongoose.Schema(
       default: 'draft',
       required: true,
     },
-    customTerms: [
-      {
-        termName: { type: String, required: true },
-        termValue: { type: String, required: true },
-      },
-    ],
+    customTerms: {
+      farmerCustomTerms: [{ type: String, required: true }],
+      buyerCustomTerms: [{ type: String, required: true }],
+    },
     timestamps: {
       acceptedAt: { type: Date },
       completedAt: { type: Date },
       rejectedAt: { type: Date },
     },
-    attachments: [
-      {
-        fileName: { type: String },
-        fileUrl: { type: String },
-      },
-    ],
+    signature: {
+      type: String,
+      required: true,
+    },
     paymentStatus: {
       type: String,
       enum: ['pending', 'completed', 'failed'],
