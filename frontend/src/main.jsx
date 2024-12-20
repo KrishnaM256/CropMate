@@ -35,6 +35,8 @@ import { ChakraProvider } from '@chakra-ui/react'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
 import Contract from './components/common/Contract/Contract.jsx'
 import ContractForm from './components/common/Contract/ContractForm/ContractForm.jsx'
+import Inbox from './components/Chat/Inbox/Inbox.jsx'
+import Learning from './components/Learning/Learning.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -47,8 +49,9 @@ const router = createBrowserRouter(
       {/* <Route path="/cards" element={<FarmerCard />}></Route> */}
       <Route path="/contractMarket" element={<ContractMarket />}></Route>
       <Route path="/liveMarket" element={<LiveMarket />}></Route>
+      <Route path="/learning" element={<Learning />}></Route>
       <Route path="/profile/:userId" element={<FarmerProfile />}></Route>
-      <Route path="/contract" element={<Contract />}></Route>
+      <Route path="/contract/:id" element={<Contract />}></Route>
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<MyProfile />} />
         <Route path="/savedNetwork" element={<SavedUsers />} />
@@ -56,6 +59,8 @@ const router = createBrowserRouter(
         <Route path="/createOrder" element={<CreateOrder />} />
         <Route path="/contractForm" element={<ContractForm />}></Route>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/inbox" element={<Inbox />} />
+        <Route path="/inbox/:id" element={<Inbox />} />
         {/* <Route path="/createBuyerOrder" element={<CreateBuyerOrder />} /> */}
         <Route path="/updateProfile" element={<UpdateProfile />} />
       </Route>

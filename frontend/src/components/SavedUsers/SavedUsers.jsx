@@ -16,7 +16,6 @@ const SavedUsers = () => {
     <div className="pageContainer">
       <h2 className="h2">Saved orders</h2>
       <div className="marketContainer">
-        <div className="marketDiv2"></div>
         <div className="marketDiv3">
           {savedOrders?.length == 0 ? (
             <p className="notFound">No orders saved!</p>

@@ -1,0 +1,86 @@
+/* Learning.css */
+
+/* General styles for the page container */
+.pageContainer {
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+/* Section titles */
+.titles h4,
+.describe h4 {
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+/* Sub-section titles */
+.describe h5 {
+  color: #555;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+/* List styling */
+.titles li,
+.describe li {
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.describe li strong {
+  color: #007cce; /* Highlighted text */
+}
+
+/* Paragraph styles */
+.describe p {
+  margin-bottom: 16px;
+  color: #444;
+}
+
+/* Unordered list within descriptions */
+.describe ul {
+  padding-left: 20px;
+  margin-top: 8px;
+}
+
+.describe ul li {
+  margin-bottom: 5px;
+  color: #444;
+}
+
+/* Add spacing between sections */
+.section {
+  margin-top: 20px;
+}
+
+#_1,
+#_11,
+#_12,
+#_13,
+#_14,
+#_15,
+#_2,
+#_21,
+#_22,
+#_23,
+#_24,
+#_25,
+#_3,
+#_31,
+#_32,
+#_33,
+#_34,
+#_4,
+#_5 {
+  scroll-margin-top: 80px; /* Adjust based on your navbar height */
+}
+
+.describe {
+  margin-top: 20px;
+}

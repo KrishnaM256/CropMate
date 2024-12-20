@@ -127,3 +127,10 @@
     height: auto; /* Adjust height if needed for better fit */
   }
 }
+
+@media (min-width: 1050px) {
+  .profileInfo {
+    display: flex;
+    flex-direction: row;
+  }
+}

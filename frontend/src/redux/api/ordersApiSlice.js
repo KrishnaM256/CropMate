@@ -18,28 +18,27 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
         url: `${ORDER_URL}/get`,
         credentials: 'include',
       }),
-      providesTags: ['Order'], // Allows cache tracking
+      providesTags: ['Order'],
     }),
     getMyOrders: builder.query({
       query: () => ({
         url: `${ORDER_URL}/getMyOrders`,
         credentials: 'include',
       }),
-      providesTags: ['Order'], // Allows cache tracking
+      providesTags: ['Order'],
     }),
     updateOrder: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `${ORDER_URL}/${id}`,
+      query: (data) => ({
+        url: `${ORDER_URL}/update/${data._id}`,
         method: 'PUT',
         body: data,
         credentials: 'include',
       }),
       invalidatesTags: ['Order'],
     }),
-
     deleteOrder: builder.mutation({
       query: (id) => ({
-        url: `${ORDER_URL}/${id}`,
+        url: `${ORDER_URL}/delete/${id}`,
         method: 'DELETE',
         credentials: 'include',
       }),

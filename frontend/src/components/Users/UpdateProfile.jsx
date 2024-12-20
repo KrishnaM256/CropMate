@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate, useParams, Link } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import {
-  useRegisterMutation,
-  useUpdateUserMutation,
-} from '../../redux/api/usersApiSlice'
+import { useUpdateUserMutation } from '../../redux/api/usersApiSlice'
 import { setCredentials } from '../../redux/features/auth/authSlice'
 import { indianCities, indianStates } from '../data/indiaData'
-import { GrPrevious, GrNext } from 'react-icons/gr'
+import { GrPrevious } from 'react-icons/gr'
 import profile from '../../../public/profile.svg'
 import './UpdateProfile.css'
 import { BASE_URL } from '../../redux/constants'
@@ -16,12 +13,12 @@ import { BASE_URL } from '../../redux/constants'
 const Profile = () => {
   const params = useParams()
   const role = params.id
-
   const navigate = useNavigate()
 
   const { search } = useLocation()
   const sp = new URLSearchParams(search)
   const redirect = sp.get('redirect') || '/'
+
   const [updateProfileApi, { isLoading }] = useUpdateUserMutation()
   const { userInfo } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -38,63 +35,65 @@ const Profile = () => {
     city: userInfo.address.city,
     state: userInfo.address.state,
     pincode: userInfo.address.pincode,
-    // aadhaarCard: userInfo.verification.aadhaarCard,
-    // landOwnershipProof: userInfo.verification.landOwnershipProof,
-    // bankPassbook: userInfo.verification.bankPassbook,
-    // businessLicense: userInfo.verification.businessLicense,
-    // bankStatement: userInfo.verification.bankStatement,
     aboutMe: userInfo.aboutMe,
     tagLine: userInfo.tagLine,
     totalLand: userInfo.totalLand,
     role: userInfo.role,
-    workImages: [],
+    workImages: [...userInfo?.workImages],
   })
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
       const formD = new FormData()
-      for (const key in formData) {
-        formD.append(key, formData[key])
-      }
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== 'avatar' && key !== 'workImages') {
+          formD.append(key, value)
+        }
+      })
       formD.append('avatar', formData.avatar)
       formData.workImages.forEach((file) => {
         formD.append('workImages', file)
       })
+
       const res = await updateProfileApi(formD).unwrap()
       dispatch(setCredentials({ ...res }))
       navigate('/profile')
       toast.success('Profile updated successfully')
     } catch (error) {
-      console.log({ error: error })
-      toast.error(error.data?.message)
+      console.error(error)
+      toast.error(error.data?.message || 'Profile update failed')
     }
   }
-  console.log({ formData: formData })
+
   const handleChange = (e) => {
     const { name, value, type, files } = e.target
-
     setFormData({
       ...formData,
       [name]: type === 'file' ? files[0] : value,
     })
   }
+
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files)
-
     setFormData((prev) => ({
       ...prev,
       workImages: [...prev.workImages, ...files],
     }))
   }
+
+  const removeWorkImage = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      workImages: prev.workImages.filter((_, i) => i !== index),
+    }))
+  }
+
   return (
     <div id="createOrder">
       <h2 className="h2">Update Details:</h2>
-      <form
-        className="form1"
-        onSubmit={handleSubmit}
-        encType="multipart/form-data"
-      >
+      <form className="form1" onSubmit={handleSubmit}>
         <div className="formDiv">
           <img
             src={
@@ -147,7 +146,7 @@ const Profile = () => {
                 />
               </div>
             </div>
-            <div className="ipContainer ">
+            <div className="ipContainer">
               <label htmlFor="tagLine">Tag Line:</label>
               <input
                 type="text"
@@ -157,10 +156,9 @@ const Profile = () => {
                 required
               />
             </div>
-            <div className="ipContainer ">
+            <div className="ipContainer">
               <label htmlFor="aboutMe">About Me:</label>
               <textarea
-                type="text"
                 name="aboutMe"
                 rows={5}
                 className="textAreaField"
@@ -180,17 +178,27 @@ const Profile = () => {
               />
             </div>
             <div className="wrkImgsDiv">
-              {formData?.workImages?.map((img, i) => {
-                return (
+              {formData.workImages.map((img, i) => (
+                <div key={`workImg-${i}`} className="wrkImgWrapper">
                   <img
-                    src={img instanceof File ? URL.createObjectURL(img) : img}
-                    alt="work images"
+                    src={
+                      typeof img === 'string'
+                        ? `${BASE_URL}/workImages/${img}`
+                        : URL.createObjectURL(img)
+                    }
+                    alt="work"
                     className="wrkImg"
                   />
-                )
-              })}
+                  <button
+                    type="button"
+                    onClick={() => removeWorkImage(i)}
+                    className="deleteBtn"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
             </div>
-
             <div className="doubleDivContainer">
               <div className="ipContainer">
                 <label htmlFor="email">Email:</label>
@@ -202,7 +210,7 @@ const Profile = () => {
                   required
                 />
               </div>
-              <div className="ipContainer ">
+              <div className="ipContainer">
                 <label htmlFor="phone">Phone Number:</label>
                 <input
                   type="number"
@@ -213,12 +221,9 @@ const Profile = () => {
                 />
               </div>
             </div>
-            {/* </div> */}
-            {/* <div className="formDiv"> */}
-            {/* <div className="formBody"> */}
             <div className="doubleDivContainer">
-              {role == 'farmer' && (
-                <div className="ipContainer ">
+              {role === 'farmer' && (
+                <div className="ipContainer">
                   <label htmlFor="totalLand">Total Land:</label>
                   <input
                     type="number"
@@ -229,7 +234,7 @@ const Profile = () => {
                   />
                 </div>
               )}
-              <div className="ipContainer ">
+              <div className="ipContainer">
                 <label htmlFor="pincode">Pincode:</label>
                 <input
                   type="number"
@@ -246,8 +251,8 @@ const Profile = () => {
                 <input
                   type="text"
                   name="street"
-                  onChange={handleChange}
                   value={formData.street}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -256,8 +261,8 @@ const Profile = () => {
                 <input
                   type="text"
                   name="village"
-                  onChange={handleChange}
                   value={formData.village}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -298,67 +303,9 @@ const Profile = () => {
                 </select>
               </div>
             </div>
-            {/* <div className="ipContainer">
-              <label htmlFor="aadhaarCard">Aadhaar Card:</label>
-              <input
-                type="file"
-                name="aadhaarCard"
-                onChange={handleChange}
-                required
-              />
-            </div>
-            {formData.role == 'farmer' ? (
-              <div className="doubleDivContainer">
-                <div className="ipContainer">
-                  <label htmlFor="landOwnershipProof">
-                    Land Ownership Proof:
-                  </label>
-                  <input
-                    type="file"
-                    name="landOwnershipProof"
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="ipContainer">
-                  <label htmlFor="bankPassbook">Bank Passbook:</label>
-                  <input
-                    type="file"
-                    name="bankPassbook"
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="doubleDivContainer">
-                <div className="ipContainer">
-                  <label htmlFor="businessLicense">Business License:</label>
-                  <input
-                    type="file"
-                    name="businessLicense"
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="ipContainer">
-                  <label htmlFor="bankStatement">Bank Statement:</label>
-                  <input
-                    type="file"
-                    name="bankStatement"
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-            )} */}
           </div>
           <div className="navigatePage">
-            <button
-              className="btn"
-              type="button"
-              onClick={() => history.back()}
-            >
+            <button className="btn" type="button" onClick={() => navigate(-1)}>
               <GrPrevious />
               Back
             </button>

@@ -54,7 +54,7 @@
   width: 70vmin;
 }
 
-.search button {
+.searchBtn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,7 +69,7 @@
   font-size: 30px;
 }
 
-.search button:hover {
+.searchBtn:hover {
   cursor: pointer;
   background-color: rgba(1, 60, 1, 0.9);
 }
@@ -145,7 +145,7 @@
     font-size: 28px;
   }
 
-  .search button {
+  .searchBtn {
     color: white;
     background-color: rgb(1, 60, 1);
     padding: 7px;

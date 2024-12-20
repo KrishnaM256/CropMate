@@ -16,14 +16,9 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { useParams } from 'react-router-dom'
 import { useGetUserByIdQuery } from '../../../../redux/api/usersApiSlice'
+
 const FarmerProfile = () => {
   const { userId } = useParams()
-  const medias = [
-    { type: 'image', src: farm1 },
-    { type: 'image', src: farm2 },
-    { type: 'image', src: farm3 },
-    { type: 'image', src: farm1 },
-  ]
 
   console.log('userId:', userId)
 
@@ -119,28 +114,6 @@ const FarmerProfile = () => {
             <div className="basic2">
               <h4 className="h4">About me</h4>
               <p>{userInfo.aboutMe}</p>
-            </div>
-          </div>
-          <div className="profileDiv2">
-            <div className="adv1">
-              <button type="button" className="border">
-                <MdOutlineGroupAdd />
-                Group
-              </button>
-              <button type="button" className="border">
-                <FaRegHeart />
-                Save
-              </button>
-            </div>
-            <div className="adv2">
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni
-                vitae quidem.
-              </p>
-              <button type="button" id="contactBtn" className="border">
-                <FaRegPaperPlane />
-                Contact me
-              </button>
             </div>
           </div>
         </div>

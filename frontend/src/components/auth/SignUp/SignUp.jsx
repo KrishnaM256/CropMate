@@ -57,8 +57,10 @@ const SignUp = () => {
     Object.entries(formData).forEach(([key, value]) => {
       form.append(key, value)
     })
+
+    console.log({ formData: formData })
     try {
-      console.log({ formData: form })
+      console.log(...form)
       const res = await register(form).unwrap()
       console.log({ res: res })
       dispatch(setCredentials({ ...res }))

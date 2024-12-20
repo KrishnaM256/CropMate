@@ -87,6 +87,7 @@ const ContractMarket = () => {
     setSelectedDetails(null)
     setToggle(false)
   }
+  console.log({ ordersList: ordersList })
 
   return (
     <>
@@ -127,7 +128,7 @@ const ContractMarket = () => {
                   return (
                     <button
                       key={uuid4()}
-                      onClick={() => addToExistingGroup(group._id, group.name)}
+                      onClick={() => addToExistingGroup(group?._id, group.name)}
                       id="grps"
                     >
                       {group.name}
@@ -151,7 +152,7 @@ const ContractMarket = () => {
         </button>
         <div className="marketContainer">
           <div className="marketDiv3">
-            {ordersList &&
+            {ordersList[0] ? (
               ordersList.map((order) => {
                 return (
                   <OrderCard
@@ -164,7 +165,10 @@ const ContractMarket = () => {
                     data={order}
                   />
                 )
-              })}
+              })
+            ) : (
+              <p className="notFound">No orders found!</p>
+            )}
           </div>
         </div>
       </section>

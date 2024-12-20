@@ -1,44 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { GrPrevious, GrNext } from 'react-icons/gr'
 import { TiDeleteOutline } from 'react-icons/ti'
 
 import './ContractForm.css'
-import { useCreateOrderMutation } from '../../../../redux/api/ordersApiSlice'
-import { useCreateContractMutation } from '../../../../redux/api/contractApiSlice'
+import {
+  useCreateOrderMutation,
+  useUpdateOrderMutation,
+} from '../../../../redux/api/ordersApiSlice'
+import {
+  useCreateContractMutation,
+  useUpdateContractMutation,
+} from '../../../../redux/api/contractApiSlice'
 import { toast } from 'react-toastify'
+import { BASE_URL } from '../../../../redux/constants'
 
 const ContractForm = () => {
-  const location = useLocation()
-  const { formData } = location.state || {}
-  const { userInfo } = useSelector((state) => state.auth)
-  const navigate = useNavigate()
-  const [contractData, setContractData] = useState({
-    order: '',
-    pricePerTon: formData?.pricePerTon || '',
-    deliveryDate: '',
-    transportationRequired: formData?.transportationRequired || false,
-    paymentTerms: '',
-    cropDetails: formData?.expectedCropsYields || '',
-    customTerms: {
-      farmerCustomTerms: [],
-      buyerCustomTerms: [],
-    },
-    signature: '',
-    deliveryLocation: formData?.deliveryLocation || '',
-  })
-  const [createOrderApi, { isLoading }] = useCreateOrderMutation()
-  const [createContract] = useCreateContractMutation()
-  const [farmerTermChecked, setFarmerTermChecked] = useState(
-    new Array(8).fill(false)
-  )
-  const [buyerTermChecked, setBuyerTermChecked] = useState(
-    new Array(8).fill(false)
-  )
-  const [customFarmerTerms, setCustomFarmerTerms] = useState([])
-  const [customBuyerTerms, setCustomBuyerTerms] = useState([])
-
   const farmerTerms = [
     'I agree to deliver crops that meet the quality standards as specified by the company.',
     'I agree to sell 100% of the crop produced on the agreed land to the company only.',
@@ -60,6 +38,115 @@ const ContractForm = () => {
     'I will offer crop insurance options to the farmer as part of the agreement (if applicable).',
     'I understand that unforeseen natural calamities may affect my obligations under this agreement.',
   ]
+  const location = useLocation()
+  const { formData, orderData } = location.state || {}
+  console.log({ orderData: orderData })
+  const { userInfo } = useSelector((state) => state.auth)
+  const navigate = useNavigate()
+  const [contractData, setContractData] = useState({
+    order: '',
+    pricePerAcre: formData?.pricePerAcre || '',
+    deliveryDate: orderData
+      ? new Date(orderData?.deliveryDate).toISOString().split('T')[0]
+      : '',
+    transportationRequired: formData?.transportationRequired || false,
+    paymentTerms: orderData ? orderData.paymentTerms : '',
+    cropDetails: formData?.expectedCropsYields || '',
+    customTerms: {
+      farmerCustomTerms: [
+        ...(orderData?.customTerms?.farmerCustomTerms?.filter((term) =>
+          farmerTerms.includes(term)
+        ) || []),
+      ],
+      buyerCustomTerms: [
+        ...(orderData?.customTerms?.buyerCustomTerms?.filter((term) =>
+          buyerTerms.includes(term)
+        ) || []),
+      ],
+    },
+
+    creatorSignature: '',
+    deliveryLocation: formData?.deliveryLocation || '',
+  })
+
+  const [createOrderApi, { isLoading }] = useCreateOrderMutation()
+  const [updateContract] = useUpdateContractMutation()
+  const [updateOrder] = useUpdateOrderMutation()
+  const [createContract] = useCreateContractMutation()
+  const [farmerTermChecked, setFarmerTermChecked] = useState(
+    orderData
+      ? [
+          orderData?.customTerms?.farmerCustomTerms?.includes(farmerTerms[0])
+            ? true
+            : false,
+          orderData?.customTerms?.farmerCustomTerms?.includes(farmerTerms[1])
+            ? true
+            : false,
+          orderData?.customTerms.farmerCustomTerms?.includes(farmerTerms[2])
+            ? true
+            : false,
+          orderData?.customTerms?.farmerCustomTerms?.includes(farmerTerms[3])
+            ? true
+            : false,
+          orderData?.customTerms?.farmerCustomTerms?.includes(farmerTerms[4])
+            ? true
+            : false,
+          orderData?.customTerms?.farmerCustomTerms?.includes(farmerTerms[5])
+            ? true
+            : false,
+          orderData?.customTerms?.farmerCustomTerms?.includes(farmerTerms[6])
+            ? true
+            : false,
+          orderData?.customTerms?.farmerCustomTerms?.includes(farmerTerms[7])
+            ? true
+            : false,
+        ]
+      : new Array(farmerTerms.length).fill(false)
+  )
+
+  const [buyerTermChecked, setBuyerTermChecked] = useState(
+    orderData
+      ? [
+          orderData?.customTerms.buyerCustomTerms.includes(buyerTerms[0])
+            ? true
+            : false,
+          orderData?.customTerms.buyerCustomTerms.includes(buyerTerms[1])
+            ? true
+            : false,
+          orderData?.customTerms.buyerCustomTerms.includes(buyerTerms[2])
+            ? true
+            : false,
+          orderData?.customTerms.buyerCustomTerms.includes(buyerTerms[3])
+            ? true
+            : false,
+          orderData?.customTerms.buyerCustomTerms.includes(buyerTerms[4])
+            ? true
+            : false,
+          orderData?.customTerms.buyerCustomTerms.includes(buyerTerms[5])
+            ? true
+            : false,
+          orderData?.customTerms.buyerCustomTerms.includes(buyerTerms[6])
+            ? true
+            : false,
+          orderData?.customTerms.buyerCustomTerms.includes(buyerTerms[7])
+            ? true
+            : false,
+        ]
+      : new Array(buyerTerms.length).fill(false)
+  )
+  console.log({ farmerTermChecked: farmerTermChecked })
+  console.log({ buyerTermChecked: buyerTermChecked })
+
+  const [customFarmerTerms, setCustomFarmerTerms] = useState(
+    orderData?.customTerms.farmerCustomTerms.filter(
+      (term) => !farmerTerms.includes(term)
+    ) || []
+  )
+  const [customBuyerTerms, setCustomBuyerTerms] = useState(
+    orderData?.customTerms.buyerCustomTerms.filter(
+      (term) => !buyerTerms.includes(term)
+    ) || []
+  )
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target
@@ -121,7 +208,6 @@ const ContractForm = () => {
         : customBuyerTerms.filter((item, index) => index !== i)
     type == 'farmer' ? setCustomFarmerTerms(terms) : setCustomBuyerTerms(terms)
   }
-
   const generateContract = async (e) => {
     e.preventDefault()
 
@@ -142,52 +228,71 @@ const ContractForm = () => {
         farmerCustomTerms: farmerterms,
       },
     }))
-    contractData.transportationRequired = console.log(contractData)
+
     const formD = new FormData()
     formD.append('cropDetails', JSON.stringify(contractData.cropDetails))
-    formD.append('customTerms', JSON.stringify(contractData.customTerms))
+    formD.append(
+      'customTerms',
+      JSON.stringify({
+        buyerCustomTerms: buyerterms,
+        farmerCustomTerms: farmerterms,
+      })
+    )
     formD.append(
       'deliveryLocation',
       JSON.stringify(contractData.deliveryLocation)
     )
-    formD.append('pricePerTon', contractData.pricePerTon)
+    formD.append('pricePerAcre', contractData.pricePerAcre)
     formD.append('deliveryDate', contractData.deliveryDate)
     formD.append('paymentTerms', contractData.paymentTerms)
     formD.append(
       'transportationRequired',
       contractData.transportationRequired === 'included' ? false : true
     )
-    formD.append('signature', contractData.signature) // Add file here
+    formD.append('creatorSignature', contractData.creatorSignature) // Add file here
 
     try {
       const transportationRequired =
         formData.transportationRequired === 'included' ? false : true
-      const res = await createOrderApi({
-        ...formData,
-        transportationRequired: transportationRequired,
-      }).unwrap()
+      const res = orderData?.order
+        ? await updateOrder({
+            ...formData,
+            _id: orderData.order._id,
+            transportationRequired: transportationRequired,
+          }).unwrap()
+        : await createOrderApi({
+            ...formData,
+            transportationRequired: transportationRequired,
+          }).unwrap()
       console.log({ res: res })
       formD.append('order', res._id)
-      const res2 = await createContract(formD).unwrap()
+      if (orderData) {
+        formD.append('_id', orderData._id)
+      }
+      console.log(...formD)
+      const res2 = orderData
+        ? await updateContract(formD).unwrap()
+        : await createContract(formD).unwrap()
       console.log({ res2: res2 })
-      toast.success('Contract generated successfully.')
+      toast.success(
+        orderData
+          ? 'Contract updated successfully.'
+          : 'Contract generated successfully.'
+      )
+
+      navigate('/contractMarket')
     } catch (error) {
-      console.log(error)
       toast.error(error?.data?.message)
     }
+
+    // Clear custom terms after submission
     setCustomBuyerTerms([])
     setCustomFarmerTerms([])
   }
 
   return (
-    <form
-      id="contractForm"
-      className="orderForm"
-      encType="multipart/form-data"
-      onSubmit={generateContract}
-    >
+    <form id="contractForm" className="orderForm" onSubmit={generateContract}>
       <h2 className="h2">Contract Form</h2>
-
       <div className="ipDivContainer">
         <div className="ipDiv">
           <label htmlFor="deliveryDate">Expected Delivery Date:</label>
@@ -361,16 +466,29 @@ const ContractForm = () => {
           </button>
         </div>
       </div>
+      {orderData && (
+        <a
+          href={`${BASE_URL}/${orderData.creatorSignature.replace(
+            'uploads\\',
+            ''
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Creator's Signature
+        </a>
+      )}
 
       <div className="ipDiv">
-        <label htmlFor="signature">Upload Your Signature:</label>
+        <label htmlFor="creatorSignature">Upload Your Signature:</label>
         <input
           type="file"
           accept="image/*"
-          name="signature"
+          name="creatorSignature"
           onChange={handleChange}
         />
       </div>
+
       <div className="gnrtCntrctContainer">
         <button type="submit" className="subBtn btn gnrtCntrct">
           Generate Contract

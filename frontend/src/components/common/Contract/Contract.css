@@ -1,0 +1,46 @@
+.status {
+  border-radius: 5px;
+  padding: 1px 6px;
+}
+.draft {
+  background-color: #bdbdbd;
+}
+.accepted {
+  background-color: rgba(78, 255, 84, 0.4);
+}
+.pending {
+  background-color: #ffeb3b;
+}
+.rejected {
+  background-color: #f44336;
+}
+.completed {
+  background-color: #2196f3;
+}
+.deliveryLocation {
+  margin: 10px 20px;
+}
+.heading {
+  font-weight: 550;
+}
+.pageContainer {
+  font-size: 18px;
+}
+.subLi {
+  margin-left: 50px;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 17px;
+}
+.signDiv {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  align-items: center;
+}
+.dltBtn {
+  background-color: rgba(159, 2, 2, 0.9);
+  width: 250px;
+}
+.dltBtn:hover {
+  background-color: rgba(159, 2, 2, 0.8);
+}

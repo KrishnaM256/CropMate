@@ -37,7 +37,7 @@ const Home = () => {
             name="search"
             placeholder="Find crops, services, or partners..."
           />
-          <button type="button">
+          <button type="button" className="searchBtn">
             <IoSearchOutline className="searchIcon" />
           </button>
         </div>

@@ -14,6 +14,7 @@ import {
   useRemoveSavedOrderMutation,
 } from '../../../../redux/api/usersApiSlice'
 import { toast } from 'react-toastify'
+import { useGetContractByOrderIdQuery } from '../../../../redux/api/contractApiSlice'
 
 const OrderCard = ({
   data,
@@ -27,6 +28,7 @@ const OrderCard = ({
   const { userInfo } = useSelector((state) => state.auth)
   const [saveOrder] = useCreateSavedOrdersMutation()
   const [removeSavedOrder] = useRemoveSavedOrderMutation()
+  const { data: contract } = useGetContractByOrderIdQuery(data._id)
   const navigate = useNavigate()
   const handleAddToGroup = () => {
     const details = {
@@ -60,6 +62,7 @@ const OrderCard = ({
     }
     savedOrderRefetch()
   }
+
   return (
     <div className="card">
       <div className="profileInfo">
@@ -86,34 +89,70 @@ const OrderCard = ({
             <div className="thirdLine line2">
               <div>
                 <IoLocationSharp />
-                {data?.user?.address.city}, {data?.user?.address.state}
+                {data?.user?.address?.city}, {data?.user?.address?.state}
               </div>
             </div>
           </div>
         </div>
 
         <div className="options">
-          <button type="button" className="border" onClick={handleAddToGroup}>
-            <MdOutlineGroupAdd />
-          </button>
+          {userInfo?._id !== data?.user?.id && (
+            <button
+              type="button"
+              className="border"
+              onClick={() =>
+                !userInfo ? navigate('/signin') : handleAddToGroup()
+              }
+            >
+              <MdOutlineGroupAdd />
+            </button>
+          )}
           {checkIsOrderSaved() ? (
             <button
               type="button"
               className="border"
-              onClick={handleRemoveSavedOrder}
+              onClick={() =>
+                !userInfo ? navigate('/signin') : handleRemoveSavedOrder()
+              }
             >
               <FaHeart />
             </button>
           ) : (
-            <button type="button" className="border" onClick={handleSaveOrder}>
+            <button
+              type="button"
+              className="border"
+              onClick={() =>
+                !userInfo ? navigate('/signin') : handleSaveOrder()
+              }
+            >
               <FaRegHeart />
             </button>
           )}
-          <button type="button" className="border">
-            <FaRegPaperPlane />
-          </button>
-          <button type="button" className="simpleBtn border">
-            Proceed
+          {userInfo?._id !== data?.user?.id && (
+            <>
+              <button
+                type="button"
+                className="border"
+                onClick={() =>
+                  !userInfo
+                    ? navigate('/signin')
+                    : navigate(`/inbox/${data?.user?.id}`)
+                }
+              >
+                <FaRegPaperPlane />
+              </button>
+            </>
+          )}
+          <button
+            type="button"
+            className="simpleBtn border"
+            onClick={() =>
+              !userInfo
+                ? navigate('/signin')
+                : navigate(`/contract/${data?._id}`)
+            }
+          >
+            {userInfo?._id === data.user.id ? 'Contract' : 'Proceed'}
           </button>
           <button
             type="button"
@@ -152,12 +191,12 @@ const OrderCard = ({
               <h5>Payment Method : </h5> <span> {data?.paymentMethod} </span>
             </div>
           </div>
-          {data?.expectedCropsYields.map((ecy, i) => {
+          {data?.expectedCropsYields?.map((ecy, i) => {
             return (
               <div className="landInfo">
                 <h5>Expected Crop {i + 1} : </h5>
                 <span>
-                  {ecy?.expectedCrop} {ecy?.expectedYield} tons/acre
+                  {ecy?.expectedCrop}, {ecy?.expectedYield} tons/acre
                 </span>
               </div>
             )
@@ -172,8 +211,8 @@ const OrderCard = ({
           color: 'green',
         }}
       >
-        <span style={{ fontWeight: '600' }}>From ₹{data?.pricePerTon}</span>
-        /ton
+        <span style={{ fontWeight: '600' }}>From ₹{data?.pricePerAcre}</span>
+        /acre
       </div>
     </div>
   )

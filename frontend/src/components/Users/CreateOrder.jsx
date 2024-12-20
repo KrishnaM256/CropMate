@@ -15,15 +15,14 @@ const CreateOrder = () => {
   const { userInfo } = useSelector((state) => state.auth)
   const role = userInfo.role
   console.log(role)
-
   const navigate = useNavigate()
   const location = useLocation()
-  const { orderData } = location.state || {}
-
+  const orderData = location.state
+  console.log({ orderData: orderData })
   const [formData, setFormData] = useState({
     land: '',
     expectedCropsYields: [{ expectedCrop: '', expectedYield: '' }],
-    pricePerTon: '',
+    pricePerAcre: '',
     orderFor: 'buyer',
     paymentMethod: '',
     transportationRequired: 'Included',
@@ -38,7 +37,7 @@ const CreateOrder = () => {
 
   useEffect(() => {
     if (orderData) {
-      setFormData(orderData)
+      setFormData(orderData?.order)
     }
   }, [orderData])
 
@@ -107,7 +106,7 @@ const CreateOrder = () => {
   }
   const validateForm = () => {
     if (!formData.land) return false
-    if (!formData.pricePerTon) return false
+    if (!formData.pricePerAcre) return false
     if (!formData.paymentMethod) return false
     if (!formData.transportationRequired) return false
     for (const crop of formData.expectedCropsYields) {
@@ -186,7 +185,12 @@ const CreateOrder = () => {
         <div className="ipDivContainer">
           <div className="ipDiv">
             <label htmlFor="orderFor">Order For:</label>
-            <select name="orderFor" id="" onChange={handleChange}>
+            <select
+              name="orderFor"
+              id=""
+              onChange={handleChange}
+              value={formData.orderFor}
+            >
               <option value="">Select order for</option>
               <option value="buyer">Buyer</option>
               <option value="farmer">Farmer</option>
@@ -194,7 +198,12 @@ const CreateOrder = () => {
           </div>
           <div className="ipDiv">
             <label htmlFor="paymentMethod">Payment Method:</label>
-            <select name="paymentMethod" onChange={handleChange}>
+            <select
+              name="paymentMethod"
+              onChange={handleChange}
+              value={formData.paymentMethod}
+              required
+            >
               <option value="">Select a payment method</option>
               {paymentMethods.map((pm) => {
                 return <option value={pm}>{pm}</option>
@@ -209,6 +218,9 @@ const CreateOrder = () => {
             <select
               name="transportationRequired"
               onChange={handleChange}
+              value={
+                formData.transportationRequired ? 'notIncluded' : 'included'
+              }
               required
               className="select"
             >
@@ -218,11 +230,11 @@ const CreateOrder = () => {
             </select>
           </div>
           <div className="ipDiv">
-            <label htmlFor="pricePerTon">Price (₹/ton):</label>
+            <label htmlFor="pricePerAcre">Price (₹/acre):</label>
             <input
               type="Number"
-              name="pricePerTon"
-              value={formData.pricePerTon}
+              name="pricePerAcre"
+              value={formData.pricePerAcre}
               onChange={handleChange}
               required
             />
@@ -263,6 +275,7 @@ const CreateOrder = () => {
                   name="district"
                   className="selectField"
                   onChange={handleChange}
+                  value={formData.deliveryLocation.district}
                   required
                 >
                   <option value="">Select a district</option>
@@ -308,7 +321,8 @@ const CreateOrder = () => {
           type="submit"
           className="subBtn create"
           onClick={() =>
-            validateForm() && navigate('/contractForm', { state: { formData } })
+            validateForm() &&
+            navigate('/contractForm', { state: { formData, orderData } })
           }
         >
           Create Contract

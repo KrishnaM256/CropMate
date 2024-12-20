@@ -21,12 +21,13 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding-bottom: 20px;
   width: 100%;
+  flex-wrap: wrap;
 }
 .profileInfoFlex {
   display: flex;
 }
 .profilePic {
-  width: 90px;
+  min-width: 90px;
   height: 90px;
   border-radius: 50%;
 }
@@ -37,6 +38,7 @@
   justify-content: center;
   /* min-width: 550px; */
   margin: 0 10px;
+  max-width: 900px;
 }
 
 .line2 {

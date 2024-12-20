@@ -1,0 +1,176 @@
+.msgs {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.inboxContainer {
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+}
+.leftSub {
+  flex: 1;
+}
+
+.otherUserPic {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+}
+
+.headerPart {
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  gap: 10px;
+  cursor: pointer;
+  /* border-bottom: 1px solid black; */
+  /* border: 1px solid rgba(0, 0, 0, 0.2); */
+
+  box-shadow: 0 1.2px 1.92251px rgba(0, 0, 0, 0.02),
+    0 2px 3.68135px rgba(0, 0, 0, 0.04), 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+.location {
+  display: flex;
+  align-items: center;
+}
+.rightSub {
+  flex: 2.5;
+  border: 1px solid #e4e5e7;
+  height: 85vh;
+  margin: 20px;
+  border-radius: 5px;
+  margin-top: 37px;
+  display: flex; /* Add flexbox */
+  flex-direction: column; /* Stack children vertically */
+  justify-content: center;
+}
+
+.lowerPart {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 0; /* Optional padding */
+  background-color: #fff; /* Background to distinguish from middle */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+}
+.inputBox input {
+  width: 95%;
+  border-radius: 12px;
+  padding: 9px 16px;
+  outline: none;
+  border: 1px solid #e4e5e7;
+  box-sizing: border-box;
+  font-size: 18px;
+  color: #404145;
+  margin: 10px;
+  width: 100%;
+}
+.sendBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  color: #404145;
+  outline: none;
+  font-size: 30px;
+}
+.sendBtn:hover {
+  cursor: pointer;
+  color: #515151;
+}
+.middlePart {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: relative;
+  margin-top: 10px;
+}
+
+.messageContainer {
+  max-width: 60%;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 10px;
+  word-wrap: break-word;
+  font-size: 14px;
+}
+
+/* Right-aligned messages (sent by the current user) */
+.messageContainer.mine {
+  background-color: #0bad7f; /* Blue bubble */
+  color: white;
+  align-self: flex-end;
+  margin-left: auto;
+  margin-right: 20px;
+  text-align: right;
+}
+
+.messageContainer.others {
+  background-color: #e6e6e6;
+  color: black;
+  align-self: flex-start;
+  margin-right: auto;
+  text-align: left;
+  margin-left: 20px;
+}
+.message {
+  margin: 0;
+}
+
+#msgTime {
+  color: #595959;
+  margin-left: auto;
+}
+
+.mine #msgTime {
+  color: #f3f3f3;
+}
+.middlePart::-webkit-scrollbar {
+  width: 3px;
+  height: 5px;
+}
+.optBtns {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  visibility: hidden;
+  font-size: 20px;
+  margin-left: auto;
+}
+.msgBox {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.msgBox.mineBox {
+  margin-left: auto;
+}
+
+.msgBox:hover .optBtns {
+  cursor: pointer;
+  visibility: visible;
+}
+.deleted {
+  color: #e3e3e3;
+  display: flex;
+  align-items: center;
+  font-style: italic;
+}
+.deleted .icon {
+  margin: 0;
+  font-size: 18px;
+}
+.others .deleted {
+  color: #717171;
+}

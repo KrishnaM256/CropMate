@@ -24,7 +24,7 @@ import './Navbar.css'
 import { useLogoutMutation } from '../../../redux/api/usersApiSlice'
 import { logout } from '../../../redux/features/auth/authSlice'
 import { toast } from 'react-toastify'
-import { BASE_URL } from '../../../redux/constants'
+import { BASE_URL, FRONT_URL } from '../../../redux/constants'
 
 const Navbar = () => {
   const dispatch = useDispatch()
@@ -85,7 +85,7 @@ const Navbar = () => {
                   <p>Make predictions for better farming decisions.</p>
                 </div>
               </MenuItem>
-              <MenuItem className="item">
+              <MenuItem className="item" onClick={() => navigate('/learning')}>
                 <div>
                   Learn
                   <p>Enhance your knowledge with learning materials.</p>
@@ -120,7 +120,7 @@ const Navbar = () => {
                   src={
                     userInfo.avatar
                       ? `${BASE_URL}/avatar/${userInfo.avatar}`
-                      : profile
+                      : `${FRONT_URL}/profile.svg`
                   }
                   alt="profile"
                   className="profileIcon"
