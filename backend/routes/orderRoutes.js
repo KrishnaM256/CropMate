@@ -12,9 +12,7 @@ const router = express.Router()
 router.route('/create').post(authenticate, createOrder)
 router.route('/get').get(getAllOrders)
 router.route('/getMyOrders').get(authenticate, getMyOrders)
-router
-  .route('/:id')
-  .put(authenticate, updateOrder)
-  .delete(authenticate, deleteOrder)
+router.route('/update/:id').put(authenticate, updateOrder)
+router.route('/delete/:id').delete(authenticate, deleteOrder)
 
 export default router

@@ -16,7 +16,7 @@ const contractSchema = mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: 'User',
     },
-    pricePerTon: {
+    pricePerAcre: {
       type: Number,
       required: true,
     },
@@ -62,9 +62,12 @@ const contractSchema = mongoose.Schema(
       completedAt: { type: Date },
       rejectedAt: { type: Date },
     },
-    signature: {
+    creatorSignature: {
       type: String,
       required: true,
+    },
+    acceptorSignature: {
+      type: String,
     },
     paymentStatus: {
       type: String,

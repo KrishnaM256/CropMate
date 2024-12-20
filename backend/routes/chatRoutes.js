@@ -1,18 +1,26 @@
 import express from 'express'
 import {
-  deleteMessage,
-  editMessage,
-  receiveMessage,
+  getChatUsers,
+  getChatMessages,
   sendMessage,
+  editMessage,
+  deleteMessage,
+  getMostRecentMessage,
 } from '../controllers/chatController.js'
 import { authenticate } from '../middlewares/authMiddleware.js'
+
 const router = express.Router()
 
-router
-  .route('/:id')
-  .post(authenticate, sendMessage)
-  .get(authenticate, receiveMessage)
-  .delete(authenticate, deleteMessage)
-  .put(authenticate, editMessage)
+router.get('/users', authenticate, getChatUsers)
+
+router.get('/messages/:otherUserId', authenticate, getChatMessages)
+
+router.get('/mostRecentMsg/:otherUserId', authenticate, getMostRecentMessage)
+
+router.post('/send/:id', authenticate, sendMessage)
+
+router.put('/edit/:id', authenticate, editMessage)
+
+router.delete('/delete/:id', authenticate, deleteMessage)
 
 export default router

@@ -10,7 +10,8 @@ const storage = multer.diskStorage({
       businessLicense: 'uploads/businessLicense/',
       bankStatement: 'uploads/bankStatement/',
       workImages: 'uploads/workImages/',
-      signature: 'uploads/signature/',
+      creatorSignature: 'uploads/creatorSignature/',
+      acceptorSignature: 'uploads/acceptorSignature/',
     }
     const folderPath = fileMap[file.fieldname] || 'uploads/others/'
     cb(null, folderPath) // call this call back function when there is no error i.e.,'null' then use '/uploads' as destination

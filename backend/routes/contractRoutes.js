@@ -8,6 +8,7 @@ import {
   acceptContract,
   rejectContract,
   deleteContract,
+  getContractByOrderId,
 } from '../controllers/contractController.js'
 import { upload } from '../utils/multer.js'
 
@@ -17,16 +18,30 @@ router
   .route('/create')
   .post(
     authenticate,
-    upload.fields([{ name: 'signature', maxCount: 1 }]),
+    upload.fields([{ name: 'creatorSignature', maxCount: 1 }]),
     createContract
   )
+router
+  .route('/update')
+  .put(
+    authenticate,
+    upload.fields([{ name: 'creatorSignature', maxCount: 1 }]),
+    updateContract
+  )
+router
+  .route('/accept/:id')
+  .post(
+    authenticate,
+    upload.fields([{ name: 'acceptorSignature', maxCount: 1 }]),
+    acceptContract
+  )
 router.route('/getAll').get(authenticate, getContracts)
+router.route('/getContractByOrderId').get(authenticate, getContractByOrderId)
+
 router
   .route('/:id')
   .get(authenticate, getContractById)
-  .put(authenticate, updateContract)
   .post(authenticate, rejectContract)
-  .post(authenticate, acceptContract)
   .delete(authenticate, deleteContract)
 
 export default router

@@ -31,7 +31,7 @@ import { authenticate, authorized } from '../middlewares/authMiddleware.js'
 router.route('/register').post(
   upload.fields([
     { name: 'avatar', maxCount: 1 },
-    { name: 'aadharCard', maxCount: 1 },
+    { name: 'aadhaarCard', maxCount: 1 },
     { name: 'landOwnershipProof', maxCount: 1 },
     { name: 'bankPassbook', maxCount: 1 },
     { name: 'businessLicense', maxCount: 1 },
@@ -50,11 +50,6 @@ router
     authenticate,
     upload.fields([
       { name: 'avatar', maxCount: 1 },
-      { name: 'aadharCard', maxCount: 1 },
-      { name: 'landOwnershipProof', maxCount: 1 },
-      { name: 'bankPassbook', maxCount: 1 },
-      { name: 'businessLicense', maxCount: 1 },
-      { name: 'bankStatement', maxCount: 1 },
       { name: 'workImages', maxCount: 10 },
     ]),
     updateUserProfile

@@ -5,7 +5,7 @@ export const createOrder = asyncHandler(async (req, res) => {
   console.log({ body: req.body })
   const {
     land,
-    pricePerTon,
+    pricePerAcre,
     expectedCropsYields,
     orderFor,
     paymentMethod,
@@ -13,7 +13,7 @@ export const createOrder = asyncHandler(async (req, res) => {
   } = req.body
   // if (
   //   !land ||
-  //   !pricePerTon ||
+  //   !pricePerAcre ||
   //   !expectedCropsYields ||
   //   !orderFor ||
   //   !paymentMethod ||
@@ -37,7 +37,7 @@ export const createOrder = asyncHandler(async (req, res) => {
       _id: order._id,
       land: order.land,
       expectedCropsYields: order.expectedCropsYields,
-      pricePerTon: order.pricePerTon,
+      pricePerAcre: order.pricePerAcre,
       orderFor: order.orderFor,
       orderStatus: order.orderStatus,
       paymentMethod: order.paymentMethod,
@@ -78,7 +78,7 @@ export const getAllOrders = asyncHandler(async (req, res) => {
     _id: order._id,
     land: order.land,
     expectedCropsYields: order.expectedCropsYields,
-    pricePerTon: order.pricePerTon,
+    pricePerAcre: order.pricePerAcre,
     orderFor: order.orderFor,
     orderStatus: order.orderStatus,
     paymentMethod: order.paymentMethod,
@@ -114,7 +114,7 @@ export const getMyOrders = asyncHandler(async (req, res) => {
       _id: order._id,
       land: order.land,
       expectedCropsYields: order.expectedCropsYields,
-      pricePerTon: order.pricePerTon,
+      pricePerAcre: order.pricePerAcre,
       orderFor: order.orderFor,
       orderStatus: order.orderStatus,
       paymentMethod: order.paymentMethod,
@@ -146,7 +146,7 @@ export const getMyOrders = asyncHandler(async (req, res) => {
 export const updateOrder = asyncHandler(async (req, res) => {
   const {
     land,
-    pricePerTon,
+    pricePerAcre,
     expectedCropsYields,
     orderFor,
     orderStatus,
@@ -155,7 +155,7 @@ export const updateOrder = asyncHandler(async (req, res) => {
   } = req.body
   if (
     !land ||
-    !pricePerTon ||
+    !pricePerAcre ||
     !expectedCropsYields ||
     !orderFor ||
     !orderStatus ||
@@ -180,6 +180,11 @@ export const updateOrder = asyncHandler(async (req, res) => {
 
 export const deleteOrder = asyncHandler(async (req, res) => {
   try {
+    const order1 = await Order.findById(req.params.id)
+    console.log(order1)
+    if (req.user._id !== order1.createdBy) {
+      res.status(400).json('Not authorized')
+    }
     const order = await Order.findByIdAndDelete(req.params.id)
     res.json(order)
   } catch (error) {

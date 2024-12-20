@@ -607,7 +607,7 @@ export const getAllSavedOrders = asyncHandler(async (req, res) => {
       populate: {
         path: 'orderId',
         select:
-          '_id land expectedCropsYields pricePerTon orderFor orderStatus paymentMethod paymentStatus transportationRequired deliveryLocation createdAt updatedAt user',
+          '_id land expectedCropsYields pricePerAcre orderFor orderStatus paymentMethod paymentStatus transportationRequired deliveryLocation createdAt updatedAt user',
         populate: {
           path: 'user',
           select:
@@ -625,7 +625,7 @@ export const getAllSavedOrders = asyncHandler(async (req, res) => {
         _id: order?._id,
         land: order?.land,
         expectedCropsYields: order?.expectedCropsYields,
-        pricePerTon: order?.pricePerTon,
+        pricePerAcre: order?.pricePerAcre,
         orderFor: order?.orderFor,
         orderStatus: order?.orderStatus,
         paymentMethod: order?.paymentMethod,

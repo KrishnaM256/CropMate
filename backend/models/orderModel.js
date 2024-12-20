@@ -15,7 +15,7 @@ const orderSchema = mongoose.Schema(
       },
     ],
     // Both specific
-    pricePerTon: {
+    pricePerAcre: {
       type: Number,
       required: true,
     },
