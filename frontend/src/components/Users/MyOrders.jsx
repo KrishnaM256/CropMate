@@ -4,10 +4,14 @@ import { useGetMyOrdersQuery } from '../../redux/api/ordersApiSlice'
 import OrderCard from '../common/cards/OrderCard/OrderCard'
 import { v4 as uuid4 } from 'uuid'
 import './MyOrders.css'
+import AcceptedOrdersCard from '../common/cards/AcceptedOrdersCard/AcceptedOrdersCard'
 
 const MyOrders = () => {
   const { data: savedOrders, refetch } = useGetAllSavedOrdersQuery()
   const { data: myOrders, isLoading } = useGetMyOrdersQuery()
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
   return (
     <div className="pageContainer">
       <h2 className="h2">My orders</h2>
@@ -17,7 +21,7 @@ const MyOrders = () => {
         ) : (
           myOrders?.map((order) => {
             return (
-              <OrderCard
+              <AcceptedOrdersCard
                 savedOrders={savedOrders}
                 savedOrderRefetch={refetch}
                 key={uuid4()}

@@ -7,7 +7,10 @@ import { IoLocationSharp } from 'react-icons/io5'
 import { toast } from 'react-toastify'
 import './AcceptedOrdersCard.css'
 import { BASE_URL, FRONT_URL } from '../../../../redux/constants'
-import { useGetMyAcceptedOrdersQuery } from '../../../../redux/api/ordersApiSlice'
+import {
+  useGetMyAcceptedOrdersQuery,
+  useUpdateOrderStatusMutation,
+} from '../../../../redux/api/ordersApiSlice'
 import { HiOutlineWrenchScrewdriver } from 'react-icons/hi2'
 import { TiDeleteOutline } from 'react-icons/ti'
 
@@ -31,7 +34,7 @@ const AcceptedOrdersCard = ({ data, savedOrders, savedOrderRefetch }) => {
   const { userInfo } = useSelector((state) => state.auth)
   const [saveOrder] = useCreateSavedOrdersMutation()
   const [removeSavedOrder] = useRemoveSavedOrderMutation()
-
+  const [updateOrderStatus] = useUpdateOrderStatusMutation()
   const [isTrackingOpen, setIsTrackingOpen] = useState(false)
 
   const [toggleStatus, setToggleStatus] = useState(false)
@@ -74,28 +77,13 @@ const AcceptedOrdersCard = ({ data, savedOrders, savedOrderRefetch }) => {
     savedOrderRefetch()
   }
 
-  const renderMilestones = () => {
-    return (
-      <div className="milestonesContainer">
-        <h5>Milestones</h5>
-        <ul className="milestonesList">
-          {data.milestones?.map((milestone, index) => (
-            <li key={index} className={`milestone ${milestone.status}`}>
-              <span>{milestone.name}</span>
-              <span className="status">{milestone.status}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
-  }
-
   console.log(data)
   const [statusData, setStatusData] = useState({
     orderStatus: data?.orderStatus,
     deliveryStatus: data?.deliveryStatus,
     paymentStatus: data?.paymentStatus,
     milestones: data?.milestones || [{ name: '', status: '' }],
+    _id: data?._id || null,
   })
   const handleAddMilestone = () => {
     setStatusData({
@@ -106,6 +94,14 @@ const AcceptedOrdersCard = ({ data, savedOrders, savedOrderRefetch }) => {
   const handleUpdateStatus = async (e) => {
     e.preventDefault()
     console.log({ statusData: statusData })
+    try {
+      const res = await updateOrderStatus(statusData).unwrap()
+      console.log({ res: res })
+      toast.success('Order status updated successfully.')
+    } catch (error) {
+      console.log(error)
+      toast.error(`${error?.message?.data || 'Error updating status.'}`)
+    }
   }
   return (
     <>
@@ -132,10 +128,10 @@ const AcceptedOrdersCard = ({ data, savedOrders, savedOrderRefetch }) => {
                     required
                   >
                     <option value="">Select Status</option>
-                    <option value="open">Open</option>
-                    <option value="accepted">Accepted</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="Open">Open</option>
+                    <option value="Accepted">Accepted</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
                   </select>
                 </div>
                 <div className="ipDiv">
@@ -152,9 +148,9 @@ const AcceptedOrdersCard = ({ data, savedOrders, savedOrderRefetch }) => {
                     required
                   >
                     <option value="">Select Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="in progress">In Progress</option>
-                    <option value="completed">Completed</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
                   </select>
                 </div>
                 <div className="ipDiv">
@@ -171,9 +167,9 @@ const AcceptedOrdersCard = ({ data, savedOrders, savedOrderRefetch }) => {
                     required
                   >
                     <option value="">Select Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="completed">Completed</option>
-                    <option value="failed">Failed</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Failed">Failed</option>
                   </select>
                 </div>
               </div>
@@ -204,21 +200,24 @@ const AcceptedOrdersCard = ({ data, savedOrders, savedOrderRefetch }) => {
                         Status of Milestone {index + 1}:
                       </label>
                       <select
-                        name="paymentStatus"
-                        value={statusData?.paymentStatus}
+                        name={`status${index}`}
+                        value={milestone.status}
                         onChange={(e) =>
                           setStatusData((prev) => {
                             const updatedMilestones = [...prev.milestones]
-                            updatedMilestones[index].status = e.target.value
+                            updatedMilestones[index] = {
+                              ...updatedMilestones[index],
+                              status: e.target.value,
+                            }
                             return { ...prev, milestones: updatedMilestones }
                           })
                         }
                         required
                       >
                         <option value="">Select Status</option>
-                        <option value="pending">Not Started</option>
-                        <option value="completed">In Progress</option>
-                        <option value="failed">Completed</option>
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
                       </select>
                     </div>
                     <button
@@ -329,12 +328,23 @@ const AcceptedOrdersCard = ({ data, savedOrders, savedOrderRefetch }) => {
                 <FaRegPaperPlane />
               </button>
             )}
-            <button
-              className="action-btn"
-              onClick={() => setToggleStatus(!toggleStatus)}
-            >
-              <HiOutlineWrenchScrewdriver />
-            </button>
+            {data?.user?.id === userInfo?._id && data?.orderFor === 'buyer' && (
+              <button
+                className="action-btn"
+                onClick={() => setToggleStatus(!toggleStatus)}
+              >
+                <HiOutlineWrenchScrewdriver />
+              </button>
+            )}
+            {data?.acceptedBy?._id === userInfo?._id &&
+              data?.orderFor === 'farmer' && (
+                <button
+                  className="action-btn"
+                  onClick={() => setToggleStatus(!toggleStatus)}
+                >
+                  <HiOutlineWrenchScrewdriver />
+                </button>
+              )}
 
             <button
               className="proceed-btn"
@@ -433,11 +443,36 @@ const AcceptedOrdersCard = ({ data, savedOrders, savedOrderRefetch }) => {
                   </span>
                 </div>
               </div>
+              <div className="milestonesContainer">
+                <h5>Milestones</h5>
+                {data.milestones[0] ? (
+                  <>
+                    <ul className="milestonesList">
+                      {data.milestones?.map((milestone, index) => (
+                        <li key={index} className={`milestone`}>
+                          <span>{milestone.name}</span>
+                          <span
+                            className={`status ${
+                              milestone.status == 'Not Started'
+                                ? 'NotStarted'
+                                : milestone.status == 'In Progress'
+                                ? 'InProgress'
+                                : milestone.status
+                            }`}
+                          >
+                            {milestone.status}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
 
-              {renderMilestones()}
-
-              <h5>Milestone Progress</h5>
-              <ProgressBar progress={calculateMilestoneProgress()} />
+                    <h5>Milestone Progress</h5>
+                    <ProgressBar progress={calculateMilestoneProgress()} />
+                  </>
+                ) : (
+                  <p className="notMileStone">No milestones created.</p>
+                )}
+              </div>
             </div>
           )}
         </div>

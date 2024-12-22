@@ -4,6 +4,7 @@ import { useGetMyOrdersQuery } from '../../../redux/api/ordersApiSlice'
 import OrderCard from '../../common/cards/OrderCard/OrderCard'
 import { v4 as uuid4 } from 'uuid'
 import './MyOrders.css'
+import AcceptedOrdersCard from '../../common/cards/AcceptedOrdersCard/AcceptedOrdersCard'
 
 const MyOrders = () => {
   const { data: savedOrders, refetch } = useGetAllSavedOrdersQuery()
@@ -16,7 +17,7 @@ const MyOrders = () => {
         ) : (
           myOrders?.map((order) => {
             return (
-              <OrderCard
+              <AcceptedOrdersCard
                 savedOrders={savedOrders}
                 savedOrderRefetch={refetch}
                 key={uuid4()}

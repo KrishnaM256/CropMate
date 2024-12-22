@@ -45,6 +45,15 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Order'],
     }),
+    updateOrderStatus: builder.mutation({
+      query: (data) => ({
+        url: `${ORDER_URL}/updateOrderStatus/${data._id}`,
+        method: 'PUT',
+        body: data,
+        credentials: 'include',
+      }),
+      invalidatesTags: ['Order'],
+    }),
     deleteOrder: builder.mutation({
       query: (id) => ({
         url: `${ORDER_URL}/delete/${id}`,
@@ -63,4 +72,5 @@ export const {
   useDeleteOrderMutation,
   useGetMyOrdersQuery,
   useGetMyAcceptedOrdersQuery,
+  useUpdateOrderStatusMutation,
 } = ordersApiSlice

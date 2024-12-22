@@ -144,22 +144,25 @@
   width: fit-content;
 }
 
-.statusTag.open {
+.statusTag.Open {
   background-color: #007bff;
 }
 .statusTag.InProgress {
-  background-color: orange;
+  background-color: rgba(255, 165, 0, 0.5);
 }
-.statusTag.accepted {
-  background-color: #28a745;
+.statusTag.Pending {
+  background-color: rgba(255, 255, 0, 0.5);
+}
+.statusTag.Accepted {
+  background-color: rgba(47, 215, 47, 0.5);
 }
 
-.statusTag.completed {
-  background-color: #17a2b8;
+.statusTag.Completed {
+  background-color: rgba(68, 220, 244, 0.5);
 }
 
-.statusTag.cancelled {
-  background-color: #dc3545;
+.statusTag.Cancelled {
+  background-color: rgba(220, 53, 69, 0.5);
 }
 
 .milestonesContainer {
@@ -170,23 +173,28 @@
   list-style: none;
   padding: 0;
 }
-
+.notMileStone {
+  color: gray;
+  text-align: center;
+  font-size: 16px;
+}
 .milestone {
   display: flex;
   justify-content: space-between;
   margin: 10px 0;
+  font-size: 17px;
 }
 
-.milestone.Completed {
-  color: green;
+.status.Completed {
+  background-color: rgba(68, 220, 244, 0.5);
 }
 
-.milestone.InProgress {
-  color: orange;
+.status.InProgress {
+  background-color: rgba(255, 165, 0, 0.5);
 }
 
-.milestone.NotStarted {
-  color: gray;
+.status.NotStarted {
+  background-color: rgba(128, 128, 128, 0.5);
 }
 
 .progressBar {
