@@ -20,3 +20,11 @@
   align-items: center;
   gap: 15px;
 }
+
+.rejectCntrct {
+  background-color: rgb(166, 108, 0);
+  width: 250px;
+}
+.rejectCntrct:hover {
+  background-color: rgb(183, 135, 45);
+}

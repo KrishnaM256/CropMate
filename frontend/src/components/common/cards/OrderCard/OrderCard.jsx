@@ -6,7 +6,6 @@ import { FaRegHeart, FaRegPaperPlane, FaHeart } from 'react-icons/fa'
 import { BiSolidLandscape } from 'react-icons/bi'
 import { MdOutlineGroupAdd } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
-import './OrderCard.css'
 import { useSelector } from 'react-redux'
 import { BASE_URL, FRONT_URL } from '../../../../redux/constants'
 import {
@@ -16,6 +15,8 @@ import {
 import { toast } from 'react-toastify'
 import { useGetContractByOrderIdQuery } from '../../../../redux/api/contractApiSlice'
 
+import './OrderCard.css'
+
 const OrderCard = ({
   data,
   addToGroup,
@@ -24,82 +25,76 @@ const OrderCard = ({
   savedOrders,
   savedOrderRefetch,
 }) => {
-  // console.log({ data: data })
   const { userInfo } = useSelector((state) => state.auth)
   const [saveOrder] = useCreateSavedOrdersMutation()
   const [removeSavedOrder] = useRemoveSavedOrderMutation()
   const { data: contract } = useGetContractByOrderIdQuery(data._id)
   const navigate = useNavigate()
+
   const handleAddToGroup = () => {
     const details = {
       name: data?.user?.name,
       id: data?.user?.id,
     }
-    console.log({ details: details })
     addToGroup(details)
     setToggle(true)
   }
-  console.log(savedOrders)
+
   const checkIsOrderSaved = () => {
-    return savedOrders?.some((order) => order._id == data._id)
+    return savedOrders?.some((order) => order._id === data._id)
   }
+
   const handleSaveOrder = async () => {
     try {
-      const res = await saveOrder({ orderId: data._id }).unwrap()
-      console.log(res)
+      await saveOrder({ orderId: data._id }).unwrap()
     } catch (error) {
-      console.log(error)
       toast.error(`${error.data?.message}`)
     }
     savedOrderRefetch()
   }
+
   const handleRemoveSavedOrder = async () => {
     try {
-      const res = await removeSavedOrder({ orderId: data._id }).unwrap()
+      await removeSavedOrder({ orderId: data._id }).unwrap()
     } catch (error) {
-      console.log(error)
       toast.error(`${error.data?.message}`)
     }
     savedOrderRefetch()
   }
 
   return (
-    <div className="card">
-      <div className="profileInfo">
-        <div className="profileInfoFlex">
+    <div className="order-card">
+      <div className="profile-info">
+        <div className="profile-header">
           <img
             src={
               data.user.avatar
                 ? `${BASE_URL}/avatar/${data.user.avatar}`
                 : `${FRONT_URL}/profile.svg`
             }
-            alt=""
-            className="profilePic"
+            alt="profile"
+            className="profile-pic"
           />
-          <div className="info">
-            <div className="firstLine line2">
-              <div style={{ fontWeight: '550', fontSize: '19px' }}>
-                {data?.user?.name}
+          <div className="profile-details">
+            <div className="profile-name">
+              <div className="name">{data?.user?.name}</div>
+              <div className="rating">
+                <FaStar />
+                {data?.user?.rating} ({data?.user?.numReviews})
               </div>
-              <FaStar />
-              <div>{data?.user?.rating}</div>
-              <div>({data?.user?.numReviews})</div>
             </div>
-            <div className="wrapText line2">{data?.user?.tagLine}</div>
-            <div className="thirdLine line2">
-              <div>
-                <IoLocationSharp />
-                {data?.user?.address?.city}, {data?.user?.address?.state}
-              </div>
+            <div className="tagline">{data?.user?.tagLine}</div>
+            <div className="location">
+              <IoLocationSharp />
+              {data?.user?.address?.city}, {data?.user?.address?.state}
             </div>
           </div>
         </div>
 
-        <div className="options">
+        <div className="action-buttons">
           {userInfo?._id !== data?.user?.id && (
             <button
-              type="button"
-              className="border"
+              className="action-btn"
               onClick={() =>
                 !userInfo ? navigate('/signin') : handleAddToGroup()
               }
@@ -109,8 +104,7 @@ const OrderCard = ({
           )}
           {checkIsOrderSaved() ? (
             <button
-              type="button"
-              className="border"
+              className="action-btn"
               onClick={() =>
                 !userInfo ? navigate('/signin') : handleRemoveSavedOrder()
               }
@@ -119,8 +113,7 @@ const OrderCard = ({
             </button>
           ) : (
             <button
-              type="button"
-              className="border"
+              className="action-btn"
               onClick={() =>
                 !userInfo ? navigate('/signin') : handleSaveOrder()
               }
@@ -129,23 +122,19 @@ const OrderCard = ({
             </button>
           )}
           {userInfo?._id !== data?.user?.id && (
-            <>
-              <button
-                type="button"
-                className="border"
-                onClick={() =>
-                  !userInfo
-                    ? navigate('/signin')
-                    : navigate(`/inbox/${data?.user?.id}`)
-                }
-              >
-                <FaRegPaperPlane />
-              </button>
-            </>
+            <button
+              className="action-btn"
+              onClick={() =>
+                !userInfo
+                  ? navigate('/signin')
+                  : navigate(`/inbox/${data?.user?.id}`)
+              }
+            >
+              <FaRegPaperPlane />
+            </button>
           )}
           <button
-            type="button"
-            className="simpleBtn border"
+            className="proceed-btn"
             onClick={() =>
               !userInfo
                 ? navigate('/signin')
@@ -155,11 +144,10 @@ const OrderCard = ({
             {userInfo?._id === data.user.id ? 'Contract' : 'Proceed'}
           </button>
           <button
-            type="button"
-            className="simpleBtn border"
+            className="view-profile-btn"
             onClick={() =>
               navigate(
-                data?.user?.id == userInfo?._id
+                data?.user?.id === userInfo?._id
                   ? '/profile'
                   : `/profile/${data?.user?.id}`
               )
@@ -169,50 +157,44 @@ const OrderCard = ({
           </button>
         </div>
       </div>
-      <div className="details">
-        <div>
-          <div className="ipDivContainer2">
-            <div className="landInfo">
-              <h5>Land : </h5> <span> {data?.land} Acre</span>
-            </div>
-            <div className="landInfo">
-              <h5>Logistics : </h5>
-              <span>
-                {data.transportationRequired ? 'Not included' : 'included'}
-              </span>
-            </div>
-          </div>
 
-          <div className="ipDivContainer2">
-            <div className="landInfo">
-              <h5>Order For : </h5> <span> {data?.orderFor} </span>
-            </div>
-            <div className="landInfo">
-              <h5>Payment Method : </h5> <span> {data?.paymentMethod} </span>
-            </div>
+      <div className="order-details">
+        <div className="land-info">
+          <div>
+            <h5>Land :</h5> <span> {data?.land} Acre</span>
           </div>
-          {data?.expectedCropsYields?.map((ecy, i) => {
-            return (
-              <div className="landInfo">
-                <h5>Expected Crop {i + 1} : </h5>
-                <span>
-                  {ecy?.expectedCrop}, {ecy?.expectedYield} tons/acre
-                </span>
-              </div>
-            )
-          })}
+          <div>
+            <h5>Logistics :</h5>
+            <span>
+              {' '}
+              {data.transportationRequired ? 'Not included' : 'Included'}
+            </span>
+          </div>
         </div>
-      </div>
-      <div
-        style={{
-          fontSize: '18px',
-          textAlign: 'right',
-          width: '100%',
-          color: 'green',
-        }}
-      >
-        <span style={{ fontWeight: '600' }}>From ₹{data?.pricePerAcre}</span>
-        /acre
+
+        <div className="order-info">
+          <div>
+            <h5>Order For :</h5> <span> {data?.orderFor}</span>
+          </div>
+          <div>
+            <h5>Payment Method :</h5> <span> {data?.paymentMethod}</span>
+          </div>
+        </div>
+
+        {data?.expectedCropsYields?.map((ecy, i) => (
+          <div key={i} className="expected-crop">
+            <>
+              <h5>Expected Crop {i + 1} :</h5>
+              <span>
+                {' '}
+                {ecy?.expectedCrop}, {ecy?.expectedYield} tons/acre
+              </span>
+            </>
+          </div>
+        ))}
+        <div className="price">
+          <span className="price-text">From ₹{data?.pricePerAcre}</span>/acre
+        </div>
       </div>
     </div>
   )

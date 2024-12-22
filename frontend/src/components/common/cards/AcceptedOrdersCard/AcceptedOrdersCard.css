@@ -1,0 +1,261 @@
+.popup2 {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1100;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-in-out;
+  width: 600px;
+}
+.popup2 .ipDivContainer {
+  margin: 20px 0;
+}
+.popup2 button {
+  margin: 10px 0px;
+}
+.acceptedCards {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  transition: box-shadow 0.2s ease-in-out;
+  width: 600px;
+}
+
+.acceptedCards:hover {
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.profileInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.profileInfoFlex {
+  display: flex;
+  gap: 20px;
+}
+
+.profilePic {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.firstLine {
+  display: flex;
+  align-items: center;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.firstLine div {
+  margin-left: 10px;
+}
+
+.wrapText {
+  font-size: 0.9em;
+  color: gray;
+  margin-top: 5px;
+}
+
+.thirdLine {
+  display: flex;
+  align-items: center;
+  font-size: 0.9em;
+  color: gray;
+}
+
+.options2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.options2 button {
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.options2 button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ipDivContainer2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.landInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.landInfo h5 {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.details {
+  margin-top: 20px;
+}
+
+.statusSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.statusContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.statusItem {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.statusTag {
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  width: fit-content;
+}
+
+.statusTag.open {
+  background-color: #007bff;
+}
+.statusTag.InProgress {
+  background-color: orange;
+}
+.statusTag.accepted {
+  background-color: #28a745;
+}
+
+.statusTag.completed {
+  background-color: #17a2b8;
+}
+
+.statusTag.cancelled {
+  background-color: #dc3545;
+}
+
+.milestonesContainer {
+  margin: 20px 0;
+}
+
+.milestonesList {
+  list-style: none;
+  padding: 0;
+}
+
+.milestone {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.milestone.Completed {
+  color: green;
+}
+
+.milestone.InProgress {
+  color: orange;
+}
+
+.milestone.NotStarted {
+  color: gray;
+}
+
+.progressBar {
+  background-color: #e9ecef;
+  height: 8px;
+  border-radius: 5px;
+  margin: 10px 0;
+  position: relative;
+}
+
+.progressBarFill {
+  background-color: #007bff;
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.4s ease;
+}
+
+.trackingDown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .acceptedCards {
+    padding: 15px;
+  }
+
+  .profileInfo {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profileInfoFlex {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .info {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .firstLine {
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.1em;
+  }
+
+  .wrapText {
+    font-size: 0.9em;
+    text-align: center;
+  }
+
+  .options2 {
+    gap: 8px;
+  }
+
+  .ipDivContainer2 {
+    grid-template-columns: 1fr;
+  }
+
+  .details {
+    padding-top: 15px;
+  }
+
+  .landInfo {
+    font-size: 0.9em;
+  }
+}

@@ -143,6 +143,14 @@ const Navbar = () => {
                   <Link to={'/createOrder'} className="link2">
                     <MenuItem className="item item2">Create Order</MenuItem>
                   </Link>
+                  <Link to={'/myOrders'} className="link2">
+                    <MenuItem className="item item2">My Orders</MenuItem>
+                  </Link>
+                  <Link to={'/myAcceptedOrders'} className="link2">
+                    <MenuItem className="item item2">
+                      My Accepted Orders
+                    </MenuItem>
+                  </Link>
                 </MenuGroup>
                 <MenuDivider className="menuDivider" />
                 <MenuGroup>

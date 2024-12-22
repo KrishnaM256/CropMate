@@ -3,6 +3,7 @@ import {
   useAcceptContractMutation,
   useDeleteContractMutation,
   useGetContractByOrderIdQuery,
+  useRejectContractMutation,
 } from '../../../redux/api/contractApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -30,6 +31,7 @@ const Contract = () => {
   const [acceptContract] = useAcceptContractMutation()
   const [deleteContract] = useDeleteContractMutation()
   const [deleteOrder] = useDeleteContractMutation()
+  const [rejectContract] = useRejectContractMutation()
   const [formData, setFormData] = useState({
     acceptorSignature: '',
     deliveryLocation: {
@@ -54,7 +56,7 @@ const Contract = () => {
   }
 
   if (isError || !data) {
-    return <p>No contract exists or there was an error loading the data.</p>
+    return <p className="notFound">No contract exists.</p>
   }
 
   const handleChange = (e) => {
@@ -100,9 +102,20 @@ const Contract = () => {
     }
     refetch()
   }
+  const handleRejectContract = async () => {
+    try {
+      const res1 = await rejectContract(data._id).unwrap()
+      console.log({ res1: res1 })
+      toast.success('Contract rejected successfully.')
+    } catch (error) {
+      console.error(error)
+      toast.error(error?.data?.message || 'Failed to reject contract.')
+    }
+    navigate('/contractMarket')
+    refetch()
+  }
   const handleDeleteContract = async () => {
     try {
-      console.log({ data: data })
       const res1 = await deleteContract(data._id).unwrap()
       console.log({ res1: res1 })
       toast.success('Contract deleted successfully.')
@@ -426,6 +439,17 @@ const Contract = () => {
               Accept Contract
             </button>
           )}
+        {data.status === 'accepted' && (
+          <button
+            type="button"
+            className="subBtn btn rejectCntrct"
+            onClick={() =>
+              confirm('Reject contract?') && handleRejectContract()
+            }
+          >
+            Reject Contract
+          </button>
+        )}
       </div>
     </form>
   )

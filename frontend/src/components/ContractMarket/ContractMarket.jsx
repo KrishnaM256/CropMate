@@ -15,6 +15,7 @@ import {
   useGetAllGroupsQuery,
   useGetAllSavedOrdersQuery,
 } from '../../redux/api/usersApiSlice'
+import { useNavigate } from 'react-router-dom'
 
 const ContractMarket = () => {
   const dispatch = useDispatch()
@@ -144,7 +145,8 @@ const ContractMarket = () => {
       )}
       <section id="market">
         <div className="marketDiv1">
-          <CiHome className="homeIcon" /> / <span> Contract Market</span>
+          <CiHome className="homeIcon" onClick={() => navigate('/')} /> /{' '}
+          <span> Contract Market</span>
         </div>
         <button className="border respContainer">
           <TbAdjustmentsHorizontal className="icon" />

@@ -17,9 +17,17 @@ const contractApiSlice = apiSlice.injectEndpoints({
         url: `${CONTRACT_URL}/accept/${id}`,
         body: data,
         method: 'POST',
-        credentials: 'include', // Ensure credentials are included if required
+        credentials: 'include',
       }),
-      invalidatesTags: ['Contract'], // Invalidate cache for "Contract" after mutation
+      invalidatesTags: ['Contract'],
+    }),
+    rejectContract: builder.mutation({
+      query: (id) => ({
+        url: `${CONTRACT_URL}/reject/${id}`,
+        method: 'POST',
+        credentials: 'include',
+      }),
+      invalidatesTags: ['Contract'],
     }),
     getContractByOrderId: builder.query({
       query: (orderId) => ({
@@ -53,4 +61,5 @@ export const {
   useGetContractByOrderIdQuery,
   useUpdateContractMutation,
   useDeleteContractMutation,
+  useRejectContractMutation,
 } = contractApiSlice

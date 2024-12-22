@@ -37,6 +37,9 @@ import Contract from './components/common/Contract/Contract.jsx'
 import ContractForm from './components/common/Contract/ContractForm/ContractForm.jsx'
 import Inbox from './components/Chat/Inbox/Inbox.jsx'
 import Learning from './components/Learning/Learning.jsx'
+import MyOrders from './components/Users/MyOrders.jsx'
+import MyAcceptedOrders from './components/Users/MyAcceptedOrders.jsx'
+import AcceptedOrdersCard from './components/common/cards/AcceptedOrdersCard/AcceptedOrdersCard.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,7 +49,7 @@ const router = createBrowserRouter(
       <Route path="/signUp" element={<RegisterAs />}></Route>
       <Route path="/signUp/:id" element={<SignUp />}></Route>
       <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
-      {/* <Route path="/cards" element={<FarmerCard />}></Route> */}
+      <Route path="/cards" element={<AcceptedOrdersCard />}></Route>
       <Route path="/contractMarket" element={<ContractMarket />}></Route>
       <Route path="/liveMarket" element={<LiveMarket />}></Route>
       <Route path="/learning" element={<Learning />}></Route>
@@ -57,6 +60,8 @@ const router = createBrowserRouter(
         <Route path="/savedNetwork" element={<SavedUsers />} />
         <Route path="/groupedNetwork" element={<GroupedUsers />} />
         <Route path="/createOrder" element={<CreateOrder />} />
+        <Route path="/myOrders" element={<MyOrders />} />
+        <Route path="/myAcceptedOrders" element={<MyAcceptedOrders />} />
         <Route path="/contractForm" element={<ContractForm />}></Route>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/inbox" element={<Inbox />} />
@@ -73,7 +78,11 @@ createRoot(document.getElementById('root')).render(
     {/* <ChakraProvider> */}
     <Provider store={store}>
       <RouterProvider router={router}></RouterProvider>
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar={true}
+      />
     </Provider>
     {/* </ChakraProvider> */}
   </StrictMode>
