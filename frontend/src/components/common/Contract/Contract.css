@@ -1,46 +1,187 @@
-.status {
+/* Container Styles */
+.contractContainer {
+  max-width: 900px;
+  margin: 30px auto;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #2d2d2d;
+  background-color: #fdfdfd;
+  border: 2px solid #333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  padding: 1px 6px;
+  padding: 30px 60px;
 }
-.draft {
-  background-color: #bdbdbd;
+
+/* Headings */
+.contractContainer h2,
+.contractContainer h3,
+.contractContainer h4 {
+  text-align: center;
+  font-weight: bold;
+  color: #2d2d2d;
+  margin-bottom: 20px;
 }
-.accepted {
-  background-color: rgba(78, 255, 84, 0.4);
+
+.contractContainer h2 {
+  font-size: 24px;
+  text-decoration: underline;
 }
-.pending {
-  background-color: #ffeb3b;
+
+.contractContainer h3 {
+  font-size: 20px;
 }
-.rejected {
-  background-color: #f44336;
-}
-.completed {
-  background-color: #2196f3;
-}
-.deliveryLocation {
-  margin: 10px 20px;
-}
-.heading {
-  font-weight: 550;
-}
-.pageContainer {
+
+.contractContainer h4 {
   font-size: 18px;
 }
-.subLi {
-  margin-left: 50px;
-  color: rgba(0, 0, 0, 0.8);
-  font-size: 17px;
+
+/* Section Styles */
+.contractContainer .contractDiv {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 8px;
 }
-.signDiv {
+.contractSection h3 {
+  text-align: start;
+}
+.contractContainer .contractDetails {
+  border: 2px solid #000;
+  padding: 0px 30px;
+  background-color: #f4f4f4;
+}
+
+/* List Items */
+.contractContainer li {
+  list-style: none;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.contractContainer li .heading {
+  font-weight: bold;
+}
+
+.contractContainer li .content {
+  margin-left: 10px;
+  font-style: italic;
+}
+
+/* Custom Terms */
+.contractContainer .subLi {
+  margin-left: 20px;
+  margin-bottom: 5px;
+}
+
+.contractContainer .subLi .heading {
+  font-weight: bold;
+}
+
+.contractContainer .subLi .content {
+  font-weight: normal;
+}
+
+/* Delivery Location Form */
+.contractContainer .deliveryLocation .ipDivContainer {
   display: flex;
-  justify-content: space-between;
-  margin: 20px;
-  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
 }
+
+.contractContainer .deliveryLocation .ipDiv {
+  flex: 1;
+}
+
+.contractContainer .deliveryLocation input,
+.contractContainer .deliveryLocation select {
+  padding: 10px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.contractContainer .deliveryLocation label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Buttons */
+.contractContainer .gnrtCntrctContainer {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.contractContainer .gnrtCntrctContainer .btn {
+  display: inline-block;
+  background-color: #0066cc;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.contractContainer .gnrtCntrctContainer .btn:hover {
+  background-color: #004da3;
+}
+
 .dltBtn {
-  background-color: rgba(159, 2, 2, 0.9);
-  width: 250px;
+  background-color: #dc3545;
 }
+
 .dltBtn:hover {
-  background-color: rgba(159, 2, 2, 0.8);
+  background-color: #b02a37;
+}
+.rejectCntrct {
+  background-color: #ffc107;
+}
+.rejectCntrct:hover {
+  background-color: #e0a800;
+}
+
+/* Status Styles */
+.contractContainer .status {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.contractContainer .status.accepted {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.contractContainer .status.pending {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.contractContainer .status.rejected {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Links for Signatures */
+.contractContainer a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.contractContainer a:hover {
+  text-decoration: underline;
+}
+
+.contractActions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.contractActions button {
+  width: 200px;
 }

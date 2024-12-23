@@ -40,6 +40,7 @@ import Learning from './components/Learning/Learning.jsx'
 import MyOrders from './components/Users/MyOrders.jsx'
 import MyAcceptedOrders from './components/Users/MyAcceptedOrders.jsx'
 import AcceptedOrdersCard from './components/common/cards/AcceptedOrdersCard/AcceptedOrdersCard.jsx'
+import Footer from './components/common/Footer/Footer.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(

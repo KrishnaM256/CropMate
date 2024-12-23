@@ -134,6 +134,9 @@ const Navbar = () => {
                   <Link to={'/dashboard'} className="link2">
                     <MenuItem className="item item2">Dashboard</MenuItem>
                   </Link>
+                  <Link to={'/inbox'} className="link2">
+                    <MenuItem className="item item2">Inbox</MenuItem>
+                  </Link>
                   <Link to={'/groupedNetwork'} className="link2">
                     <MenuItem className="item item2">Grouped Network</MenuItem>
                   </Link>

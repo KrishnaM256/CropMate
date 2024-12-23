@@ -127,287 +127,300 @@ const Contract = () => {
     refetch()
   }
   return (
-    <form className="pageContainer" onSubmit={handleSubmit}>
-      <h2 className="h2">Contract Agreement</h2>
-      <div className="contractDiv contractDetails">
-        <h3 className="h4">Contract Details:</h3>
-        <li>
-          <span className="heading">Created By: </span>
-          <span className="content">
-            {data.createdBy.firstName} {data.createdBy.middleName}{' '}
-            {data.createdBy.lastName}
-          </span>
-        </li>
-        <li>
-          <span className="heading">Accepted By: </span>
-          <span className="content">
-            {data?.acceptedBy ? (
-              <>
-                {data?.acceptedBy.firstName} {data?.acceptedBy.middleName}{' '}
-                {data?.acceptedBy.lastName}
-              </>
-            ) : data.createdBy?._id !== userInfo?._id ? (
-              <>
-                {userInfo.firstName} {userInfo.middleName} {userInfo.lastName}
-              </>
-            ) : (
-              'Not Accepted'
-            )}
-          </span>
-        </li>
-        <li>
-          <span className="heading">Contract Reference Id: </span>
-          <span className="content">{data?._id}</span>
-        </li>
-        <li>
-          <span className="heading">Order Reference Id: </span>
-          <span className="content">{data.order._id}</span>
-        </li>
-        <li>
-          <span className="heading">Created At: </span>
-          <span className="content">{formatDate(data.createdAt)}</span>
-        </li>
-        <li>
-          <span className="heading">Status: </span>
-          <span className={`status ${data.status}`}>{data.status}</span>
-        </li>
-      </div>
-      <div className="contractDiv">
-        <h3 className="h4">Crop Details:</h3>
-        {data.cropDetails.map((detail, index) => {
-          return (
+    <div className="pageContainer">
+      <form className="contractContainer" onSubmit={handleSubmit}>
+        <h1 className="contractTitle">Legal Contract Agreement</h1>
+        <p className="contractIntro">
+          This Contract Agreement ("Agreement") is made and entered into by the
+          parties detailed below, under the principles of mutual understanding
+          and cooperation in the context of contract farming. By signing this
+          Agreement, both parties agree to the terms and conditions outlined
+          herein.
+        </p>
+
+        <section className="contractSection contractDetails">
+          <h2 className="sectionTitle">Contract Details</h2>
+          <p>
+            This Agreement is executed by:
+            <strong>
+              {' '}
+              {data.createdBy.firstName} {data.createdBy.middleName}{' '}
+              {data.createdBy.lastName}{' '}
+            </strong>
+            ("Farmer" or "Creator") and
+            <strong>
+              {data?.acceptedBy ? (
+                `${data.acceptedBy.firstName} ${data.acceptedBy.middleName} ${data.acceptedBy.lastName}`
+              ) : data.createdBy?._id !== userInfo?._id ? (
+                <>
+                  {' '}
+                  {userInfo.firstName} {userInfo.middleName} {userInfo.lastName}
+                </>
+              ) : (
+                ' Pending Acceptance'
+              )}
+            </strong>{' '}
+            ("Buyer" or "Acceptor").
+          </p>
+          <ul>
+            <li>
+              <span className="heading">Contract Reference ID:</span>
+              <span className="content"> {data._id} </span>
+            </li>
+            <li>
+              <span className="heading">Order Reference ID:</span>
+              <span className="content"> {data.order._id} </span>
+            </li>
+            <li>
+              <span className="heading">Date of Agreement:</span>
+              <span className="content"> {formatDate(data.createdAt)} </span>
+            </li>
+            <li>
+              <span className="heading">Status:</span>
+              <span className={`status ${data.status}`}> {data.status} </span>
+            </li>
+          </ul>
+        </section>
+
+        <section className="contractSection cropDetails">
+          <h2 className="sectionTitle">Crop Details</h2>
+          {data.cropDetails.map((detail, index) => (
             <div key={index}>
-              <li>
-                <span className="heading">Crop Type: </span>
-                <span className="content">{detail.expectedCrop} |</span>
-                <span className="heading"> Expected Yield: </span>
-                <span className="content">{detail.expectedYield} ton</span>
-              </li>
+              <p>
+                <span className="heading">Crop Type:</span>
+                <span className="content"> {detail.expectedCrop} </span>
+                <span className="heading"> | Expected Yield:</span>
+                <span className="content"> {detail.expectedYield} ton </span>
+              </p>
             </div>
-          )
-        })}
-        <li>
-          <span className="heading">Land: </span>
-          <span className="content">{data.order.land} Acre</span>
-        </li>
-      </div>
-      <div className="contractDiv">
-        <h3 className="h4">Pricing and Payment Terms:</h3>
-        <li>
-          <span className="heading">Price per Acre: </span>
-          <span className="content">
-            ₹{data.order.pricePerAcre || data.order.pricePerAcre}
-          </span>
-        </li>
-        <li>
-          <span className="heading">Total Price (Estimated): </span>
-          <span className="content">
-            ₹
-            {data.order.pricePerAcre * data.order.land ||
-              data.order.pricePerAcre * data.order.land}
-          </span>
-        </li>
-        <li>
-          <span className="heading">Payment Method: </span>
-          <span className="content">{data.order.paymentMethod}</span>
-        </li>
-      </div>
-      <div className="contractDiv">
-        <h3 className="h4">Delivery Details:</h3>
-        <li>
-          <span className="heading">Expected Delivery Date: </span>
-          <span className="content">{formatDate(data.deliveryDate)}</span>
-        </li>
-        <li>
-          <span className="heading">Transportation Required: </span>
-          <span className="content">
-            {data.order.transportationRequired ? 'Included' : 'Not Included'}
-          </span>
-        </li>
-        <li>
-          <span className="heading">Delivery Location:</span>
-          {data.deliveryLocation?.street ||
-          data.order.deliveryLocation?.street ? (
-            <>
-              <li className="subLi">
-                <span className="heading">Street: </span>
-                <span className="content">
+          ))}
+          <p>
+            <span className="heading">Total Land Area:</span>
+            <span className="content"> {data.order.land} Acres </span>
+          </p>
+        </section>
+
+        <section className="contractSection pricingDetails">
+          <h2 className="sectionTitle">Pricing and Payment Terms</h2>
+          <p>The agreed financial terms between the parties are as follows:</p>
+          <ul>
+            <li>
+              <span className="heading">Price per Acre:</span>
+              <span className="content"> ₹{data.order.pricePerAcre} </span>
+            </li>
+            <li>
+              <span className="heading">Total Estimated Price:</span>
+              <span className="content">
+                {' '}
+                ₹{data.order.pricePerAcre * data.order.land}{' '}
+              </span>
+            </li>
+            <li>
+              <span className="heading">Payment Method:</span>
+              <span className="content">
+                Payments are made directly by the Buyer to the Farmer using the
+                method chosen in the contract. This ensures transparency and
+                security for both parties.
+              </span>
+            </li>
+          </ul>
+        </section>
+
+        <section className="contractSection deliveryDetails">
+          <h2 className="sectionTitle">Delivery Details</h2>
+          <p>The delivery terms agreed by both parties include:</p>
+          <ul>
+            <li>
+              <span className="heading">Expected Delivery Date:</span>
+              <span className="content"> {formatDate(data.deliveryDate)} </span>
+            </li>
+            <li>
+              <span className="heading">Transportation:</span>
+              <span className="content">
+                {data.order.transportationRequired
+                  ? 'Included'
+                  : 'Not Included'}
+              </span>
+            </li>
+            <li>
+              <span className="heading">Delivery Location:</span>
+            </li>
+            {data.deliveryLocation?.street ||
+            data.order.deliveryLocation?.street ? (
+              <ul className="addressDetails">
+                <li>
+                  Street:{' '}
                   {data.deliveryLocation.street ||
                     data.order.deliveryLocation?.street}
-                </span>
-              </li>
-              <li className="subLi">
-                <span className="heading">Village: </span>
-                <span className="content">
+                </li>
+                <li>
+                  Village:{' '}
                   {data.deliveryLocation.village ||
                     data.order.deliveryLocation?.village}
-                </span>
-              </li>
-              <li className="subLi">
-                <span className="heading">District: </span>
-                <span className="content">
+                </li>
+                <li>
+                  District:{' '}
                   {data.deliveryLocation.district ||
                     data.order.deliveryLocation?.district}
-                </span>
-              </li>
-              <li className="subLi">
-                <span className="heading">State: </span>
-                <span className="content">
+                </li>
+                <li>
+                  State:{' '}
                   {data.deliveryLocation.state ||
                     data.order.deliveryLocation?.state}
-                </span>
-              </li>
-              <li className="subLi">
-                <span className="heading">Pin code: </span>
-                <span className="content">
+                </li>
+                <li>
+                  Pincode:{' '}
                   {data.deliveryLocation.pincode ||
                     data.order.deliveryLocation?.pincode}
-                </span>
-              </li>
-            </>
-          ) : (
-            data.createdBy?._id !== userInfo?._id && (
-              <div className="deliveryLocation">
-                <div className="ipDivContainer">
-                  <div className="ipDiv">
-                    <label htmlFor="street">Street:</label>
-                    <input
-                      type="text"
-                      name="street"
-                      value={formData.deliveryLocation.street}
-                      onChange={handleChange}
-                      required
-                    />
+                </li>
+              </ul>
+            ) : (
+              data.createdBy?._id !== userInfo?._id && (
+                <div className="deliveryLocation">
+                  <div className="ipDivContainer">
+                    <div className="ipDiv">
+                      <label htmlFor="street">Street:</label>
+                      <input
+                        type="text"
+                        name="street"
+                        value={formData.deliveryLocation.street}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                    <div className="ipDiv">
+                      <label htmlFor="village">Village:</label>
+                      <input
+                        type="text"
+                        name="village"
+                        value={formData.deliveryLocation.village}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
-                  <div className="ipDiv">
-                    <label htmlFor="village">Village:</label>
-                    <input
-                      type="text"
-                      name="village"
-                      value={formData.deliveryLocation.village}
-                      onChange={handleChange}
-                      required
-                    />
+                  <div className="ipDivContainer">
+                    <div className="ipDiv">
+                      <label htmlFor="district">District:</label>
+                      <select
+                        name="district"
+                        className="selectField"
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select a district</option>
+                        {indianCities.map((city, i) => (
+                          <option key={`city-${i}`} value={city}>
+                            {city}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="ipDiv">
+                      <label htmlFor="state">State:</label>
+                      <select
+                        name="state"
+                        className="selectField"
+                        value={formData.deliveryLocation.state}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select a state</option>
+                        {indianStates.map((state, i) => (
+                          <option key={`state-${i}`} value={state}>
+                            {state}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="ipDiv">
+                      <label htmlFor="pincode">Pincode:</label>
+                      <input
+                        type="number"
+                        name="pincode"
+                        value={formData.deliveryLocation.pincode}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="ipDivContainer">
-                  <div className="ipDiv">
-                    <label htmlFor="district">District:</label>
-                    <select
-                      name="district"
-                      className="selectField"
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="">Select a district</option>
-                      {indianCities.map((city, i) => (
-                        <option key={`city-${i}`} value={city}>
-                          {city}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="ipDiv">
-                    <label htmlFor="state">State:</label>
-                    <select
-                      name="state"
-                      className="selectField"
-                      value={formData.deliveryLocation.state}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="">Select a state</option>
-                      {indianStates.map((state, i) => (
-                        <option key={`state-${i}`} value={state}>
-                          {state}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="ipDiv">
-                    <label htmlFor="pincode">Pincode:</label>
-                    <input
-                      type="number"
-                      name="pincode"
-                      value={formData.deliveryLocation.pincode}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
+              )
+            )}
+          </ul>
+        </section>
+
+        <section className="contractSection customTerms">
+          <h2 className="sectionTitle">Custom Terms</h2>
+          <p>The following custom terms have been mutually agreed upon:</p>
+          <h3>Farmer's Terms:</h3>
+          <ul>
+            {data.customTerms.farmerCustomTerms.map((term, index) => (
+              <li key={index}>{term}</li>
+            ))}
+          </ul>
+          <h3>Buyer's Terms:</h3>
+          <ul>
+            {data.customTerms.buyerCustomTerms.map((term, index) => (
+              <li key={index}>{term}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="contractSection signatureSection">
+          <h2 className="sectionTitle">Signature Verification</h2>
+          <p>
+            Both parties confirm their agreement to the terms outlined above by
+            signing below:
+          </p>
+          {data.creatorSignature && (
+            <p>
+              <a
+                href={`${BASE_URL}/${data.creatorSignature.replace(
+                  'uploads\\',
+                  ''
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Creator's Signature
+              </a>
+            </p>
+          )}
+          {data.acceptorSignature ? (
+            <p>
+              <a
+                href={`${BASE_URL}/${data.acceptorSignature.replace(
+                  'uploads\\',
+                  ''
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Acceptor's Signature
+              </a>
+            </p>
+          ) : (
+            data.createdBy?._id !== userInfo?._id && (
+              <div className="contractDiv">
+                <div className="ipDiv">
+                  <label htmlFor="acceptorSignature">
+                    Upload Your Signature:
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="acceptorSignature"
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
               </div>
             )
           )}
-        </li>
-      </div>
-      <div className="contractDiv">
-        <h3 className="h4">Custom Terms:</h3>
-        <p style={{ fontSize: '17px', fontWeight: '200px' }}>
-          Farmer's Custom Terms:
-        </p>
-        {data?.customTerms?.farmerCustomTerms?.map((term, index) => {
-          return (
-            <li>
-              <span key={index}>{term}</span>
-            </li>
-          )
-        })}
-        <p style={{ fontSize: '17px', fontWeight: '200px' }}>
-          Buyer's Custom Terms:
-        </p>
-        {data?.customTerms?.buyerCustomTerms?.map((term, index) => {
-          return (
-            <li>
-              <span key={index}>{term}</span>
-            </li>
-          )
-        })}
-      </div>
-      <div className="contractDiv signDiv">
-        {data?.acceptorSignature ? (
-          <a
-            href={`${BASE_URL}/${data.acceptorSignature.replace(
-              'uploads\\',
-              ''
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View Acceptor's Signature
-          </a>
-        ) : (
-          data.createdBy?._id !== userInfo?._id && (
-            <div className="contractDiv">
-              <h3 className="h4">Signature Verification: </h3>
-              <div className="ipDiv">
-                <label htmlFor="acceptorSignature">
-                  Upload Your Signature:
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="acceptorSignature"
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-          )
-        )}
-        {data?.creatorSignature && (
-          <a
-            href={`${BASE_URL}/${data.creatorSignature.replace(
-              'uploads\\',
-              ''
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View Creator's Signature
-          </a>
-        )}
-      </div>
-      <div className="gnrtCntrctContainer" style={{ marginTop: '40px' }}>
+        </section>
+      </form>
+      <div className="contractActions">
         <button
           type="button"
           className="btn gnrtCntrct"
@@ -451,7 +464,7 @@ const Contract = () => {
           </button>
         )}
       </div>
-    </form>
+    </div>
   )
 }
 

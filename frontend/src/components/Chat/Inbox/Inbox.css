@@ -1,176 +1,239 @@
-.msgs {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.inboxContainer {
+/* Main Page Container */
+.pageContainer2 {
   display: flex;
-  position: relative;
-  box-sizing: border-box;
-}
-.leftSub {
-  flex: 1;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  font-family: 'Arial', sans-serif;
 }
 
-.otherUserPic {
-  height: 70px;
-  width: 70px;
+/* Inbox Container */
+.inboxContainer {
+  display: flex;
+  gap: 1rem;
+  width: 90%;
+  max-width: 1200px;
+  height: 90%;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Left Side - User List */
+.leftSub {
+  flex: 1;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.leftSub .h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #343a40;
+  margin-bottom: 1rem;
+}
+
+.leftSub .users {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  overflow-y: auto;
+}
+
+/* User Cards in Left Panel */
+.users .msgCard {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.users .msgCard:hover {
+  background-color: #e9ecef;
+  transform: translateY(-2px);
+}
+
+.users .msgCard img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.users .msgCard .msgDetails {
+  font-size: 14px;
+  color: #495057;
+}
+
+.users .msgCard .msgDetails .lastMsg {
+  font-style: italic;
+  font-size: 12px;
+  color: #868e96;
+}
+
+/* Right Side - Chat Section */
+.rightSub {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* Chat Header */
+.rightSub .headerPart {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #f1f3f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.headerPart img {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 }
 
-.headerPart {
-  display: flex;
-  align-items: center;
-  padding: 8px 15px;
-  gap: 10px;
-  cursor: pointer;
-  /* border-bottom: 1px solid black; */
-  /* border: 1px solid rgba(0, 0, 0, 0.2); */
-
-  box-shadow: 0 1.2px 1.92251px rgba(0, 0, 0, 0.02),
-    0 2px 3.68135px rgba(0, 0, 0, 0.04), 0 1px 5px rgba(0, 0, 0, 0.05);
-}
-.location {
-  display: flex;
-  align-items: center;
-}
-.rightSub {
-  flex: 2.5;
-  border: 1px solid #e4e5e7;
-  height: 85vh;
-  margin: 20px;
-  border-radius: 5px;
-  margin-top: 37px;
-  display: flex; /* Add flexbox */
-  flex-direction: column; /* Stack children vertically */
-  justify-content: center;
+.headerPart .msgInfo {
+  flex-grow: 1;
 }
 
+.headerPart .msgInfo .location {
+  display: flex;
+  align-items: center;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.headerPart .msgInfo .location svg {
+  margin-right: 5px;
+  color: #495057;
+}
+
+/* Chat Messages */
+.middlePart {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-right: 10px;
+}
+
+.middlePart .msgBox {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.middlePart .mineBox {
+  justify-content: flex-end;
+}
+
+.middlePart .messageContainer {
+  max-width: 60%;
+  padding: 5px 15px;
+  border-radius: 10px;
+  position: relative;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.middlePart .mine {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  align-self: flex-end;
+}
+
+.middlePart .others {
+  background-color: #e2e3e5;
+  color: #495057;
+}
+
+.middlePart .messageContainer sub {
+  display: block;
+  margin-top: 5px;
+  font-size: 10px;
+  color: #868e96;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.middlePart .deleted {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-style: italic;
+  color: #dc3545;
+}
+
+/* Bottom Input */
 .lowerPart {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 10px 0; /* Optional padding */
-  background-color: #fff; /* Background to distinguish from middle */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-top: auto;
 }
 
 .inputBox {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 95%;
-}
-.inputBox input {
-  width: 95%;
-  border-radius: 12px;
-  padding: 9px 16px;
-  outline: none;
-  border: 1px solid #e4e5e7;
-  box-sizing: border-box;
-  font-size: 18px;
-  color: #404145;
-  margin: 10px;
   width: 100%;
-}
-.sendBtn {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: transparent;
-  padding: 0;
-  border: none;
-  color: #404145;
-  outline: none;
-  font-size: 30px;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 30px;
+  padding: 5px 15px;
 }
-.sendBtn:hover {
-  cursor: pointer;
-  color: #515151;
-}
-.middlePart {
+
+.inputBox input {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  position: relative;
-  margin-top: 10px;
-}
-
-.messageContainer {
-  max-width: 60%;
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 10px;
-  word-wrap: break-word;
+  border: none;
+  outline: none;
+  background: transparent;
   font-size: 14px;
+  padding: 10px;
 }
 
-/* Right-aligned messages (sent by the current user) */
-.messageContainer.mine {
-  background-color: #0bad7f; /* Blue bubble */
-  color: white;
-  align-self: flex-end;
-  margin-left: auto;
-  margin-right: 20px;
-  text-align: right;
+.inputBox .sendBtn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.messageContainer.others {
-  background-color: #e6e6e6;
-  color: black;
-  align-self: flex-start;
-  margin-right: auto;
-  text-align: left;
-  margin-left: 20px;
-}
-.message {
-  margin: 0;
+.inputBox .sendBtn:hover {
+  background-color: #0056b3;
 }
 
-#msgTime {
-  color: #595959;
-  margin-left: auto;
+.inputBox .sendBtn .searchIcon {
+  font-size: 18px;
 }
 
-.mine #msgTime {
-  color: #f3f3f3;
-}
-.middlePart::-webkit-scrollbar {
-  width: 3px;
-  height: 5px;
-}
 .optBtns {
   background-color: transparent;
   border: none;
   outline: none;
-  visibility: hidden;
   font-size: 20px;
-  margin-left: auto;
-}
-.msgBox {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-.msgBox.mineBox {
-  margin-left: auto;
+  cursor: pointer;
 }
 
-.msgBox:hover .optBtns {
-  cursor: pointer;
-  visibility: visible;
-}
-.deleted {
-  color: #e3e3e3;
-  display: flex;
-  align-items: center;
-  font-style: italic;
-}
-.deleted .icon {
-  margin: 0;
-  font-size: 18px;
-}
-.others .deleted {
-  color: #717171;
+.optBtns:hover {
+  color: red;
 }

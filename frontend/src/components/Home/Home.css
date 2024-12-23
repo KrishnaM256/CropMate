@@ -236,10 +236,6 @@ body {
   color: #888;
   margin-top: 10px;
 }
-.faqSection {
-  padding: 50px 20px;
-  background-color: #f9f9f9;
-}
 
 .faqSection .h3 {
   text-align: center;
@@ -249,38 +245,18 @@ body {
   margin-bottom: 30px;
 }
 
-.faqGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 .faqItem {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 10px;
   transition: transform 0.3s ease-in-out;
 }
 
 .faqItem:hover {
-  transform: translateY(-10px);
+  transform: translateY(-7px);
 }
 
-.faqItem h4 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.faqItem p {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #555;
-  margin-top: 10px;
-}
 #roadmap {
   padding: 30px 20px;
   background-color: #f9f9f9;

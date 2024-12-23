@@ -28,11 +28,6 @@ const Inbox = () => {
   const { userInfo } = useSelector((state) => state.auth)
   const param = useParams()
 
-  let otherUserId = param.id
-  if (!otherUserId && !isLoading) {
-    otherUserId = users[1]?._id
-  }
-
   const [sendMessage] = useSendMessageMutation()
   const [deleteMessage] = useDeleteMessageMutation()
   const [sendingMessage, setSendingMessage] = useState('')
@@ -42,6 +37,12 @@ const Inbox = () => {
     isLoading,
     refetch: usersRefetch,
   } = useGetChatUsersQuery()
+
+  let otherUserId = param.id
+  if (!otherUserId && !isLoading) {
+    otherUserId = users[1]?._id
+  }
+
   const { data: newUser, isLoading: isUserLoading } =
     useGetUserByIdQuery(otherUserId)
 
@@ -55,12 +56,6 @@ const Inbox = () => {
   } = useRetrieveMessagesQuery(otherUserId)
   console.log({ messages: messages })
   const bottomRef = useRef(null)
-
-  useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [messages])
 
   const handleDeleteMsg = async (id) => {
     try {
@@ -189,17 +184,16 @@ const Inbox = () => {
                       ) : (
                         message.message
                       )}
+                      <sub id="msgTime">
+                        {formatDistanceToNowStrict(parseISO(message.createdAt))}
+                      </sub>
                     </p>
-                    <sub id="msgTime">
-                      {formatDistanceToNowStrict(parseISO(message.createdAt))}
-                    </sub>
                   </div>
                 </div>
               ))
             ) : (
               <p className="notFound">No messages yet</p>
             )}
-            <div ref={bottomRef} />
           </div>
           <div className="lowerPart">
             <form className="search inputBox" onSubmit={handleSendMsg}>

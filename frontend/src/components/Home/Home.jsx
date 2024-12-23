@@ -5,7 +5,7 @@ import './Home.css'
 import farmer1 from '../../assets/farmer1.png'
 import buyer1 from '../../assets/buyer1.jpg'
 import CategoryCard from '../common/cards/categoryCard/categoryCard'
-
+import FAQs from './FAQs'
 const Home = () => {
   return (
     <section id="home">
@@ -134,62 +134,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="faqSection">
-        <h3 className="h3">Frequently Asked Questions</h3>
-        <div className="faqGrid">
-          <div className="faqItem">
-            <h4>How do I create a contract?</h4>
-            <p>
-              To create a contract, simply log in to your account, navigate to
-              the "Create Contract" section, and follow the step-by-step guide
-              to create a secure agreement with trusted farmers or buyers.
-            </p>
-          </div>
-          <div className="faqItem">
-            <h4>Is the payment secure?</h4>
-            <p>
-              Yes, all payments are processed securely through trusted payment
-              gateways, ensuring safety and reliability for both farmers and
-              buyers.
-            </p>
-          </div>
-          <div className="faqItem">
-            <h4>How do I negotiate prices?</h4>
-            <p>
-              You can directly negotiate with farmers or buyers using our
-              inbuilt chat feature. Once both parties agree on a price, the
-              contract is automatically updated.
-            </p>
-          </div>
-          <div className="faqItem">
-            <h4>
-              Can I review the quality of crops or services before signing a
-              contract?
-            </h4>
-            <p>
-              Yes, we offer quality assurance through lab tests and farmer
-              reviews. You can view the results and feedback before proceeding
-              with the contract.
-            </p>
-          </div>
-          <div className="faqItem">
-            <h4>How do I resolve disputes?</h4>
-            <p>
-              Our platform has a built-in dispute resolution system. In case of
-              any disagreements, you can contact support, and we will help
-              mediate the issue according to our platform's terms.
-            </p>
-          </div>
-          <div className="faqItem">
-            <h4>Can I update my contract after signing it?</h4>
-            <p>
-              Yes, you can request changes to a contract after it’s signed. Both
-              parties must agree to the changes, and the contract will be
-              updated accordingly.
-            </p>
-          </div>
-        </div>
-      </div>
+      <FAQs></FAQs>
     </section>
   )
 }
