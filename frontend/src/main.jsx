@@ -75,10 +75,12 @@ const router = createBrowserRouter(
 )
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <>
+    {/* if strict mode used each log will get printed twice  */}
     {/* <ChakraProvider> */}
     <Provider store={store}>
       <RouterProvider router={router}></RouterProvider>
+      <App></App>
       <ToastContainer
         position="top-center"
         autoClose={1500}
@@ -86,5 +88,5 @@ createRoot(document.getElementById('root')).render(
       />
     </Provider>
     {/* </ChakraProvider> */}
-  </StrictMode>
+  </>
 )

@@ -280,7 +280,7 @@ body {
   position: absolute;
   left: 50%;
   top: 0;
-  height: 96%;
+  height: 90%;
   width: 4px;
   background-color: #ff6600;
   transform: translateX(-50%);

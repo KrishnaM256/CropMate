@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
 }
 
 .line {
@@ -127,8 +128,8 @@
 
 .signin {
   border: 1px solid green;
-  margin-top: 100px;
-  width: 30%;
+  margin: 100px 0px;
+  width: 35%;
 }
 
 .formBody {

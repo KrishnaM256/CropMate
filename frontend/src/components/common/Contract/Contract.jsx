@@ -127,8 +127,8 @@ const Contract = () => {
     refetch()
   }
   return (
-    <div className="pageContainer">
-      <form className="contractContainer" onSubmit={handleSubmit}>
+    <form className="pageContainer" onSubmit={handleSubmit}>
+      <div className="contractContainer">
         <h1 className="contractTitle">Legal Contract Agreement</h1>
         <p className="contractIntro">
           This Contract Agreement ("Agreement") is made and entered into by the
@@ -419,7 +419,7 @@ const Contract = () => {
             )
           )}
         </section>
-      </form>
+      </div>
       <div className="contractActions">
         <button
           type="button"
@@ -434,7 +434,7 @@ const Contract = () => {
             ? 'Request Edit Contract'
             : 'Edit Contract'}
         </button>
-        {data.status !== 'accepted' &&
+        {data.status !== 'Accepted' &&
           data.createdBy?._id === userInfo?._id && (
             <button
               type="button"
@@ -446,13 +446,13 @@ const Contract = () => {
               Delete Contract
             </button>
           )}
-        {data.status !== 'accepted' &&
+        {data.status !== 'Accepted' &&
           data.createdBy?._id !== userInfo?._id && (
             <button type="submit" className="subBtn btn gnrtCntrct">
               Accept Contract
             </button>
           )}
-        {data.status === 'accepted' && (
+        {data.status === 'Accepted' && (
           <button
             type="button"
             className="subBtn btn rejectCntrct"
@@ -464,7 +464,7 @@ const Contract = () => {
           </button>
         )}
       </div>
-    </div>
+    </form>
   )
 }
 

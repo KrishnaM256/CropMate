@@ -127,7 +127,11 @@ const CreateOrder = () => {
   return (
     <div id="createOrder">
       <h2 className="h2">Order Details:</h2>
-      <form action="" className="orderForm">
+      <form
+        action=""
+        className="orderForm"
+        onSubmit={(e) => e.preventDefault()}
+      >
         <div className="ipDiv">
           <label htmlFor="land">
             {role == 'farmer' ? 'Crop Ready Land' : 'Required Land'}(Acre):
@@ -218,15 +222,12 @@ const CreateOrder = () => {
             <select
               name="transportationRequired"
               onChange={handleChange}
-              value={
-                formData.transportationRequired ? 'notIncluded' : 'included'
-              }
               required
               className="select"
             >
               <option value="">Select a transportation</option>
-              <option value="included">Included</option>
-              <option value="notIncluded">Not included</option>
+              <option value="Included">Included</option>
+              <option value="Not Included">Not included</option>
             </select>
           </div>
           <div className="ipDiv">
@@ -321,7 +322,6 @@ const CreateOrder = () => {
           type="submit"
           className="subBtn create"
           onClick={() =>
-            validateForm() &&
             navigate('/contractForm', { state: { formData, orderData } })
           }
         >

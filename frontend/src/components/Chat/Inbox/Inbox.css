@@ -3,21 +3,42 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 93vh;
   font-family: 'Arial', sans-serif;
+}
+
+.inboxPopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1100;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-in-out;
+  width: 90%;
+  height: 90vh;
 }
 
 /* Inbox Container */
 .inboxContainer {
   display: flex;
   gap: 1rem;
-  width: 90%;
+  width: 95%;
   max-width: 1200px;
   height: 90%;
   background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
   overflow: hidden;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .inboxContainer {
+    flex-direction: row;
+  }
 }
 
 /* Left Side - User List */
@@ -32,16 +53,16 @@
 }
 
 .leftSub .h3 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   color: #343a40;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .leftSub .users {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1rem;
   overflow-y: auto;
 }
 
@@ -49,34 +70,34 @@
 .users .msgCard {
   display: flex;
   align-items: center;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 12px;
+  border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .users .msgCard:hover {
   background-color: #e9ecef;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 .users .msgCard img {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 12px;
 }
 
 .users .msgCard .msgDetails {
-  font-size: 14px;
+  font-size: 15px;
   color: #495057;
 }
 
 .users .msgCard .msgDetails .lastMsg {
   font-style: italic;
-  font-size: 12px;
+  font-size: 13px;
   color: #868e96;
 }
 
@@ -95,16 +116,21 @@
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
-  cursor: pointer;
-  padding: 10px;
+  padding: 12px;
   background-color: #f1f3f5;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.headerPart:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .headerPart img {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
   border-radius: 50%;
 }
 
@@ -120,7 +146,7 @@
 }
 
 .headerPart .msgInfo .location svg {
-  margin-right: 5px;
+  margin-right: 8px;
   color: #495057;
 }
 
@@ -130,14 +156,15 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   padding-right: 10px;
+  gap: 10px;
 }
 
 .middlePart .msgBox {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  margin: 10px 0;
 }
 
 .middlePart .mineBox {
@@ -145,12 +172,14 @@
 }
 
 .middlePart .messageContainer {
-  max-width: 60%;
-  padding: 5px 15px;
-  border-radius: 10px;
-  position: relative;
-  font-size: 14px;
-  word-wrap: break-word;
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 12px;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
 }
 
 .middlePart .mine {
@@ -165,11 +194,10 @@
 }
 
 .middlePart .messageContainer sub {
-  display: block;
   margin-top: 5px;
-  font-size: 10px;
+  font-size: 12px;
   color: #868e96;
-  text-align: right;
+  text-align: end;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -197,6 +225,7 @@
   border: 1px solid #ced4da;
   border-radius: 30px;
   padding: 5px 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .inputBox input {
@@ -204,7 +233,7 @@
   border: none;
   outline: none;
   background: transparent;
-  font-size: 14px;
+  font-size: 15px;
   padding: 10px;
 }
 
@@ -212,14 +241,15 @@
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 10px 15px;
+  padding: 12px;
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .inputBox .sendBtn:hover {
   background-color: #0056b3;
+  transform: scale(1.1);
 }
 
 .inputBox .sendBtn .searchIcon {
@@ -232,6 +262,7 @@
   outline: none;
   font-size: 20px;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .optBtns:hover {

@@ -1,5 +1,5 @@
 import { apiSlice } from './apiSlice'
-import { USERS_URL } from '../constants'
+import { BASE_URL, USERS_URL } from '../constants'
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -109,6 +109,11 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    getCountsData: builder.query({
+      query: () => ({
+        url: `${USERS_URL}/getCounts`,
+      }),
+    }),
   }),
 })
 
@@ -127,4 +132,5 @@ export const {
   useRemoveMemberGroupMutation,
   useRemoveSavedOrderMutation,
   useUpdateGroupNameMutation,
+  useGetCountsDataQuery,
 } = usersApiSlice

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import profile from '../../../../public/profile.svg'
+import { IoChatbubbleEllipsesOutline } from 'react-icons/io5'
+
 import {
   Menu,
   MenuButton,
@@ -46,7 +48,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div style={{ height: '63px' }}></div>
+      <div style={{ height: '65px' }}></div>
       {open && <Sidebar open={open} setOpen={setOpen} />}
       <nav className="navbar">
         <div className="sidebarDiv">
@@ -85,12 +87,6 @@ const Navbar = () => {
                   <p>Make predictions for better farming decisions.</p>
                 </div>
               </MenuItem>
-              <MenuItem className="item" onClick={() => navigate('/learning')}>
-                <div>
-                  Learn
-                  <p>Enhance your knowledge with learning materials.</p>
-                </div>
-              </MenuItem>
             </MenuList>
           </Menu>
           <li>
@@ -99,10 +95,10 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink
-              to={'/liveMarket'}
+              to={'/learning'}
               className={({ isActive }) => (isActive ? 'active' : '')}
             >
-              Live market
+              Learning
             </NavLink>
           </li>
           <li>
@@ -130,9 +126,6 @@ const Navbar = () => {
                 <MenuGroup>
                   <Link to={'/profile'} className="link2">
                     <MenuItem className="item item2">Profile</MenuItem>
-                  </Link>
-                  <Link to={'/dashboard'} className="link2">
-                    <MenuItem className="item item2">Dashboard</MenuItem>
                   </Link>
                   <Link to={'/inbox'} className="link2">
                     <MenuItem className="item item2">Inbox</MenuItem>

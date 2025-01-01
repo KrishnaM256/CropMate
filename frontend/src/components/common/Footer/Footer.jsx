@@ -68,6 +68,7 @@ const Footer = () => {
         <p>
           &copy; {new Date().getFullYear()} FarmConnect. All Rights Reserved.
         </p>
+        <p>Designed & Developed by Krishna Magar</p>
       </div>
     </footer>
   )

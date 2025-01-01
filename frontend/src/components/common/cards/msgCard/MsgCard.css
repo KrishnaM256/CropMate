@@ -65,3 +65,26 @@
 .recentMsg .deleted .icon {
   font-size: 17px;
 }
+.profileIcon2 {
+  position: relative; /* Ensures positioning context for the child element */
+  width: 55px; /* Example width for the image */
+  height: 55px; /* Example height for the image */
+  border-radius: 50%; /* If you want the image to be circular */
+  object-fit: cover; /* Ensures the image fits well */
+}
+
+.online {
+  position: absolute;
+  bottom: 0; /* Positions at the bottom of the image */
+  right: 0; /* Positions at the right of the image */
+  width: 10px;
+  height: 10px;
+  background-color: rgb(0, 196, 13);
+  border-radius: 50%;
+  box-shadow: 0 0 2px 2px rgba(49, 223, 61, 0.5);
+}
+
+.profileContainer {
+  position: relative;
+  display: inline-block; /* Ensures the container size wraps the image */
+}

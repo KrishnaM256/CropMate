@@ -138,7 +138,7 @@
   background-color: #b02a37;
 }
 .rejectCntrct {
-  background-color: #ffc107;
+  background-color: #cda019ec;
 }
 .rejectCntrct:hover {
   background-color: #e0a800;
@@ -151,17 +151,17 @@
   border-radius: 5px;
 }
 
-.contractContainer .status.accepted {
+.contractContainer .status.Accepted {
   background-color: #28a745;
   color: #fff;
 }
 
-.contractContainer .status.pending {
+.contractContainer .status.Pending {
   background-color: #ffc107;
   color: #000;
 }
 
-.contractContainer .status.rejected {
+.contractContainer .status.Rejected {
   background-color: #dc3545;
   color: #fff;
 }
@@ -183,5 +183,5 @@
 }
 
 .contractActions button {
-  width: 200px;
+  width: 250px;
 }

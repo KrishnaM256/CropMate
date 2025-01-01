@@ -5,13 +5,20 @@ import { useGetAllSavedOrdersQuery } from '../../redux/api/usersApiSlice'
 import OrderCard from '../common/cards/OrderCard/OrderCard'
 import { v4 as uuid4 } from 'uuid'
 import AcceptedOrdersCard from '../common/cards/AcceptedOrdersCard/AcceptedOrdersCard'
+import { ChakraProvider, Spinner } from '@chakra-ui/react'
 
 const MyAcceptedOrders = () => {
   const { data: savedOrders, refetch } = useGetAllSavedOrdersQuery()
   const { data: myOrders, isLoading } = useGetMyAcceptedOrdersQuery()
   console.log({ myOrders: myOrders })
   if (isLoading) {
-    return <p>Loading...</p>
+    return (
+      <ChakraProvider>
+        <div className="spinner2 spinner">
+          <Spinner size={'xl'} className="spinner" />
+        </div>
+      </ChakraProvider>
+    )
   }
   return (
     <div className="pageContainer">

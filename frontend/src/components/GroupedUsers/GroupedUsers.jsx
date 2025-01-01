@@ -13,6 +13,7 @@ import {
   useRemoveMemberGroupMutation,
   useUpdateGroupNameMutation,
 } from '../../redux/api/usersApiSlice'
+import { ChakraProvider, Spinner } from '@chakra-ui/react'
 
 const GroupedUsers = () => {
   const dispatch = useDispatch()
@@ -103,12 +104,20 @@ const GroupedUsers = () => {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <ChakraProvider>
+        <div className="spinner2 spinner">
+          <Spinner size={'xl'} className="spinner" />
+        </div>
+      </ChakraProvider>
+    )
   }
 
   if (isError) {
     return <div>Error loading groups</div>
   }
+  console.log({ groupList: groupList })
+  console.log({ selectedGroup: selectedGroup })
 
   return (
     <div className="pageContainer">
@@ -119,17 +128,15 @@ const GroupedUsers = () => {
         </p>
       ) : (
         <>
-          <button className="border respContainer">
-            <HiOutlineUserGroup className="icon" />
-            Groups
-          </button>
           <div className="cardsContainer">
             <div className="groups">
               <h4>Groups</h4>
               <div className="grpContainer">
                 {groupList?.map((gl) => (
                   <div
-                    className="grp"
+                    className={`grp ${
+                      selectedGroup?._id === gl?._id ? 'currGrp' : ''
+                    }`}
                     key={uuid4()}
                     onClick={() => handleClick(gl._id)}
                   >
@@ -153,13 +160,6 @@ const GroupedUsers = () => {
                     />
                   )}
                   <div>
-                    <button
-                      type="button"
-                      className="border"
-                      style={{ border: 'none' }}
-                    >
-                      <FaRegPaperPlane />
-                    </button>
                     <button
                       type="button"
                       className="border"

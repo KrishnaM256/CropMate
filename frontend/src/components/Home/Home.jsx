@@ -6,7 +6,10 @@ import farmer1 from '../../assets/farmer1.png'
 import buyer1 from '../../assets/buyer1.jpg'
 import CategoryCard from '../common/cards/categoryCard/categoryCard'
 import FAQs from './FAQs'
+import { useGetCountsDataQuery } from '../../redux/api/usersApiSlice'
 const Home = () => {
+  const { data, isLoading } = useGetCountsDataQuery()
+  if (!isLoading) console.log(data)
   return (
     <section id="home">
       <div className="header">
@@ -29,15 +32,19 @@ const Home = () => {
         <h3 className="h3">Our Impact</h3>
         <div className="statsGrid">
           <div className="statCard">
-            <h4>10,000+</h4>
+            <h4>{data?.countFarmers}+</h4>
             <p>Farmers Joined</p>
           </div>
           <div className="statCard">
-            <h4>5,000+</h4>
+            <h4>{data?.countBuyers}+</h4>
             <p>Buyers Joined</p>
           </div>
           <div className="statCard">
-            <h4>20,000+</h4>
+            <h4>{data?.countOpenContracts}+</h4>
+            <p>Contracts Opened</p>
+          </div>
+          <div className="statCard">
+            <h4>{data?.countSignedContracts}+</h4>
             <p>Contracts Signed</p>
           </div>
         </div>
@@ -115,7 +122,7 @@ const Home = () => {
                 recommended for any farmer looking to grow with trustworthy
                 partners!"
               </p>
-              <p>- Farmer John</p>
+              <p>- Farmer Harsh Ram Patil</p>
             </div>
           </div>
           <div className="testimonialCard">
@@ -129,7 +136,7 @@ const Home = () => {
                 solution for any buyer looking to work with trusted farmers and
                 streamline their sourcing process!"
               </p>
-              <p>- Buyer John</p>
+              <p>- Buyer Rajesh Verma</p>
             </div>
           </div>
         </div>

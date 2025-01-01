@@ -1,5 +1,9 @@
 .faqSection {
   padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border-radius: 12px;
 }
 
@@ -9,6 +13,7 @@
   margin-bottom: 15px;
   background-color: #ffffff; /* White card style */
   overflow: hidden;
+  width: 800px;
   transition: all 0.3s ease;
 }
 

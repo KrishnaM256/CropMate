@@ -11,7 +11,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  padding: 0 100px;
+  padding: 5px 100px;
   box-sizing: border-box;
 }
 .logo {
@@ -33,6 +33,7 @@
 .navbar ul li a {
   text-decoration: none;
   color: #62646a;
+  font-size: 16px;
   list-style: none;
   display: flex;
   justify-content: center;

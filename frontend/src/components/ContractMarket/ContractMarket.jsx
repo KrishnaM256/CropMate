@@ -16,6 +16,7 @@ import {
   useGetAllSavedOrdersQuery,
 } from '../../redux/api/usersApiSlice'
 import { useNavigate } from 'react-router-dom'
+import { ChakraProvider, Spinner } from '@chakra-ui/react'
 
 const ContractMarket = () => {
   const dispatch = useDispatch()
@@ -38,8 +39,15 @@ const ContractMarket = () => {
   const [toggle, setToggle] = useState(false)
   const [selectedDetails, setSelectedDetails] = useState(null)
 
-  if (ordersLoading) return <p>Loading...</p>
-  if (ordersError) return <p>Error loading orders</p>
+  if (ordersLoading)
+    return (
+      <ChakraProvider>
+        <div className="spinner2 spinner">
+          <Spinner size={'xl'} className="spinner" />
+        </div>
+      </ChakraProvider>
+    )
+  if (ordersError) return <p className="notFound">Error loading orders</p>
 
   const handleSaveGroup = async (e) => {
     e.preventDefault()
@@ -148,10 +156,6 @@ const ContractMarket = () => {
           <CiHome className="homeIcon" onClick={() => navigate('/')} /> /{' '}
           <span> Contract Market</span>
         </div>
-        <button className="border respContainer">
-          <TbAdjustmentsHorizontal className="icon" />
-          Filter
-        </button>
         <div className="marketContainer">
           <div className="marketDiv3">
             {ordersList[0] ? (

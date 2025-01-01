@@ -78,7 +78,13 @@ const MyProfile = () => {
                 />
                 <div className="info">
                   <div className="firstLine line1">
-                    <div style={{ fontWeight: '550', fontSize: '25px' }}>
+                    <div
+                      style={{
+                        fontWeight: '550',
+                        fontSize: '25px',
+                        margin: '0',
+                      }}
+                    >
                       {userInfo.firstName} {userInfo.middleName}{' '}
                       {userInfo.lastName}
                     </div>
@@ -147,14 +153,6 @@ const MyProfile = () => {
               <span onClick={() => setFile(null)}>&times;</span>
               <img src={`${BASE_URL}/workImages/${file}`} alt="popup" />
             </div>
-          )}
-        </div>
-        <div className="basic3">
-          <h4 className="h4">Reviews</h4>
-          {userInfo.Reviews && userInfo.Reviews.length > 0 ? (
-            userInfo.Reviews.map((review) => <ReviewCard></ReviewCard>)
-          ) : (
-            <p className="subLine">No reviews yet</p>
           )}
         </div>
       </div>

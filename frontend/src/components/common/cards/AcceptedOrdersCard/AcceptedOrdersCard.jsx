@@ -452,7 +452,7 @@ const AcceptedOrdersCard = ({ data, savedOrders, savedOrderRefetch }) => {
                         <li key={index} className={`milestone`}>
                           <span>{milestone.name}</span>
                           <span
-                            className={`status ${
+                            className={`statusTag ${
                               milestone.status == 'Not Started'
                                 ? 'NotStarted'
                                 : milestone.status == 'In Progress'
