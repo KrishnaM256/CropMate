@@ -126,10 +126,6 @@ export const getContractById = asyncHandler(async (req, res) => {
 export const updateContract = asyncHandler(async (req, res) => {
   console.log(req.body)
   console.log(req.files)
-  if (req.user._id.toString() !== contract1.createdBy.toString()) {
-    res.status(403).json('Not authorized')
-    return
-  }
 
   const creatorSignature = req.files.creatorSignature
     ? req.files.creatorSignature[0].path
@@ -176,6 +172,10 @@ export const updateContract = asyncHandler(async (req, res) => {
   try {
     // Update the contract by ID
     const oldContract = await Contract.findById(req.body._id)
+    if (req.user._id.toString() !== oldContract.createdBy.toString()) {
+      res.status(403).json('Not authorized')
+      return
+    }
     const contract = await Contract.findByIdAndUpdate(
       req.body._id,
       {
@@ -218,12 +218,16 @@ export const acceptContract = asyncHandler(async (req, res) => {
   try {
     const contract = await Contract.findById(id)
     console.log({ contract: contract })
-    contract.status = 'accepted'
+    contract.status = 'Accepted'
     contract.acceptedBy = req.user._id
     contract.timestamps.acceptedAt = Date.now()
     contract.deliveryLocation = parsedDeliveryLocation
     contract.acceptorSignature = acceptorSignature
     const updatedContract = await contract.save()
+    const order = await Order.findByIdAndUpdate(updatedContract.order, {
+      orderStatus: 'Accepted',
+      acceptedBy: req.user._id,
+    })
     res.json(updatedContract)
   } catch (error) {
     res.status(400).json({ message: error.message })
@@ -232,12 +236,21 @@ export const acceptContract = asyncHandler(async (req, res) => {
 
 export const rejectContract = asyncHandler(async (req, res) => {
   const contract = await Contract.findById(req.params.id)
-
   try {
-    contract.status = 'rejected'
-    contract.timestamps.rejectedAt = Date.now()
-
+    contract.status = 'Draft'
+    contract.acceptedBy = null
+    contract.timestamps.acceptedAt = null
+    contract.deliveryLocation.street = ''
+    contract.deliveryLocation.village = ''
+    contract.deliveryLocation.district = ''
+    contract.deliveryLocation.state = ''
+    contract.deliveryLocation.pincode = ''
+    contract.acceptorSignature = null
     const updatedContract = await contract.save()
+    const order = await Order.findByIdAndUpdate(updatedContract.order, {
+      orderStatus: 'Open',
+      acceptedBy: null,
+    })
     res.json(updatedContract)
   } catch (error) {
     res.status(400).json({ message: error.message })
@@ -278,7 +291,7 @@ export const deleteContract = asyncHandler(async (req, res) => {
 
     res.json({ message: 'Contract and associated order deleted successfully' })
   } catch (error) {
-    console.error(error)
+    console.error({ error: error })
     res.status(400).json({ message: error.message })
   }
 })

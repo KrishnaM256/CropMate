@@ -49,8 +49,8 @@ const contractSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['draft', 'pending', 'accepted', 'rejected', 'completed'],
-      default: 'draft',
+      enum: ['Draft', 'Pending', 'Accepted', 'Rejected', 'Completed'],
+      default: 'Draft',
       required: true,
     },
     customTerms: {
@@ -71,8 +71,8 @@ const contractSchema = mongoose.Schema(
     },
     paymentStatus: {
       type: String,
-      enum: ['pending', 'completed', 'failed'],
-      default: 'pending',
+      enum: ['Pending', 'Completed', 'Failed'],
+      default: 'Pending',
       required: true,
     },
   },

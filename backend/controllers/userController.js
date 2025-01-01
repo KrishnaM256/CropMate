@@ -1,4 +1,5 @@
 import User from '../models/userModel.js'
+import Order from '../models/orderModel.js'
 import asyncHandler from '../middlewares/asyncHandler.js'
 import bcrypt from 'bcryptjs'
 import createToken from '../utils/createToken.js'
@@ -105,7 +106,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       user.password = req.body.password
     }
 
-    const updatedUser = await user.save()
+    const updatedUser = await user.save({ validateBeforeSave: false })
 
     res.status(200).json(updatedUser._doc)
   }
@@ -680,6 +681,30 @@ export const isOrderSaved = asyncHandler(async (req, res) => {
     }
   } catch (error) {
     console.error('Error checking saved order:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
+export const countData = asyncHandler(async (req, res) => {
+  try {
+    const countBuyers = await User.countDocuments({ role: 'buyer' })
+    const countFarmers = await User.countDocuments({ role: 'farmer' })
+
+    const countSignedContracts = await Order.countDocuments({
+      orderStatus: { $in: ['Accepted', 'Completed'] },
+    })
+
+    const countOpenContracts = await Order.countDocuments({
+      orderStatus: 'Open',
+    })
+
+    return res.status(200).json({
+      countBuyers,
+      countFarmers,
+      countSignedContracts,
+      countOpenContracts,
+    })
+  } catch (error) {
+    console.error('Error in countData:', error)
     res.status(500).json({ message: 'Internal server error' })
   }
 })

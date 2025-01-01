@@ -24,6 +24,7 @@ import {
   updateGroupName,
   removeSavedOrder,
   getAllSavedOrders,
+  countData,
 } from '../controllers/userController.js'
 
 import { authenticate, authorized } from '../middlewares/authMiddleware.js'
@@ -66,6 +67,7 @@ router.route('/updateGroupName').put(authenticate, updateGroupName)
 router.route('/createSavedOrders').post(authenticate, createSavedOrders)
 router.route('/removeSavedOrder').delete(authenticate, removeSavedOrder)
 router.route('/getAllSavedOrders').get(authenticate, getAllSavedOrders)
+router.route('/getCounts').get(countData)
 
 router
   .route('/admin/:id')

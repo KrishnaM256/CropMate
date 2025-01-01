@@ -7,13 +7,13 @@ import orderRoutes from './routes/orderRoutes.js'
 import contractRoutes from './routes/contractRoutes.js'
 import chatRoutes from './routes/chatRoutes.js'
 import notificationRoutes from './routes/notificationRoutes.js'
-
+import http from 'http'
 import cors from 'cors'
-
+import { Server } from 'socket.io'
 configDotenv()
 connectDB()
+import { app, server } from './socket/server.js'
 
-const app = express()
 app.use(cookieParser())
 const port = process.env.PORT || 5001
 
@@ -23,7 +23,9 @@ app.use(
     credentials: true,
   })
 )
-
+app.get('/', (req, res) => {
+  console.log('Hello')
+})
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('uploads'))
@@ -34,6 +36,6 @@ app.use('/api/contract', contractRoutes)
 app.use('/api/chat', chatRoutes)
 app.use('/api/notifications', notificationRoutes)
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Running on server http://localhost:${port}`)
 })

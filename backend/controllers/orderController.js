@@ -67,7 +67,7 @@ export const createOrder = asyncHandler(async (req, res) => {
 })
 
 export const getAllOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find().populate(
+  const orders = await Order.find({ acceptedBy: null }).populate(
     'user',
     `firstName middleName lastName rating numReviews tagLine address totalLand role _id avatar`
   )
@@ -83,6 +83,7 @@ export const getAllOrders = asyncHandler(async (req, res) => {
     orderStatus: order.orderStatus,
     paymentMethod: order.paymentMethod,
     paymentStatus: order.paymentStatus,
+    deliveryStatus: order.deliveryStatus,
     transportationRequired: order.transportationRequired,
     deliveryLocation: order.deliveryLocation,
     createdAt: order.createdAt,
@@ -105,10 +106,15 @@ export const getAllOrders = asyncHandler(async (req, res) => {
 
 export const getMyOrders = asyncHandler(async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id }).populate(
-      'user',
-      `firstName middleName lastName rating numReviews tagLine address totalLand role _id avatar`
-    )
+    const orders = await Order.find({ user: req.user._id })
+      .populate(
+        'user',
+        `firstName middleName lastName rating numReviews tagLine address totalLand role _id avatar`
+      )
+      .populate(
+        'acceptedBy',
+        `firstName middleName lastName rating numReviews tagLine address totalLand role _id avatar`
+      )
 
     const userOrders = orders.map((order) => ({
       _id: order._id,
@@ -121,6 +127,56 @@ export const getMyOrders = asyncHandler(async (req, res) => {
       paymentStatus: order.paymentStatus,
       transportationRequired: order.transportationRequired,
       deliveryLocation: order.deliveryLocation,
+      deliveryStatus: order.deliveryStatus,
+      milestones: order.milestones,
+      acceptedBy: order.acceptedBy,
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt,
+      user: {
+        name: `${order.user.firstName} ${order.user.middleName} ${order.user.lastName}`,
+        address: order.user.address,
+        totalLand: order.user.totalLand,
+        rating: order.user.rating,
+        numReviews: order.user.numReviews,
+        tagLine: order.user.tagLine,
+        role: order.user.role,
+        id: order.user._id,
+        avatar: order.user.avatar,
+      },
+    }))
+
+    res.status(200).json(userOrders)
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ message: error.message })
+  }
+})
+
+export const getMyAcceptedOrders = asyncHandler(async (req, res) => {
+  try {
+    const orders = await Order.find({ acceptedBy: req.user._id })
+      .populate(
+        'user',
+        `firstName middleName lastName rating numReviews tagLine address totalLand role _id avatar`
+      )
+      .populate(
+        'acceptedBy',
+        `firstName middleName lastName rating numReviews tagLine address totalLand role _id avatar`
+      )
+    const userOrders = orders.map((order) => ({
+      _id: order._id,
+      land: order.land,
+      expectedCropsYields: order.expectedCropsYields,
+      pricePerAcre: order.pricePerAcre,
+      orderFor: order.orderFor,
+      orderStatus: order.orderStatus,
+      paymentMethod: order.paymentMethod,
+      paymentStatus: order.paymentStatus,
+      transportationRequired: order.transportationRequired,
+      deliveryLocation: order.deliveryLocation,
+      deliveryStatus: order.deliveryStatus,
+      milestones: order.milestones,
+      acceptedBy: order.acceptedBy,
       createdAt: order.createdAt,
       updatedAt: order.updatedAt,
       user: {
@@ -186,6 +242,22 @@ export const deleteOrder = asyncHandler(async (req, res) => {
       res.status(400).json('Not authorized')
     }
     const order = await Order.findByIdAndDelete(req.params.id)
+    res.json(order)
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ message: error.message })
+  }
+})
+
+export const updateOrderStatus = asyncHandler(async (req, res) => {
+  try {
+    console.log({ body: req.body.milestones })
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { ...req.body },
+      { new: true }
+    )
+    await order.save({ validateBeforeSave: false })
     res.json(order)
   } catch (error) {
     console.log(error)

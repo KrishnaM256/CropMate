@@ -35,13 +35,14 @@ router
     upload.fields([{ name: 'acceptorSignature', maxCount: 1 }]),
     acceptContract
   )
+router.route('/reject/:id').post(authenticate, rejectContract)
 router.route('/getAll').get(authenticate, getContracts)
 router.route('/getContractByOrderId').get(authenticate, getContractByOrderId)
 
 router
   .route('/:id')
   .get(authenticate, getContractById)
-  .post(authenticate, rejectContract)
+
   .delete(authenticate, deleteContract)
 
 export default router

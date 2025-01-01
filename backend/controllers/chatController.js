@@ -1,6 +1,7 @@
 import Chat from '../models/chatModel.js'
 import asyncHandler from '../middlewares/asyncHandler.js'
 import mongoose from 'mongoose'
+import { getReceiverSocketId, io } from '../socket/server.js'
 
 // 1. Get all chat users involved in conversations
 export const getChatUsers = asyncHandler(async (req, res) => {
@@ -60,16 +61,22 @@ export const getChatMessages = asyncHandler(async (req, res) => {
 export const sendMessage = asyncHandler(async (req, res) => {
   console.log(req.body)
   const { message } = req.body
+  const { id: receiverId } = req.params
+  const senderId = req.user._id
   if (!message) {
     throw new Error('Please enter message.')
   }
 
   const chat = new Chat({
     ...req.body,
-    sender: req.user._id,
-    receiver: req.params.id,
+    sender: senderId,
+    receiver: receiverId,
   })
-
+  const receiverSocketId = getReceiverSocketId(receiverId)
+  if (receiverSocketId) {
+    io.to(receiverSocketId).emit('newMessage', message)
+    io.emit('newMessage', message)
+  }
   try {
     await chat.save()
     res.status(201).json({ message: 'Message sent successfully!' })
@@ -124,7 +131,11 @@ export const deleteMessage = asyncHandler(async (req, res) => {
 
   chatMessage.deleted = true
   await chatMessage.save()
-
+  const receiverSocketId = getReceiverSocketId(chatMessage.receiver)
+  if (receiverSocketId) {
+    io.to(receiverSocketId).emit('deleteMessage', chatMessage.message)
+    io.emit('newMessage', chatMessage.message)
+  }
   res.status(200).json({ message: 'Message deleted successfully!' })
 })
 

@@ -25,18 +25,14 @@ const orderSchema = mongoose.Schema(
       ref: 'User',
       required: [true, 'User id is required'],
     },
+    acceptedBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
     // Both specific
     orderFor: {
       type: String,
       enum: ['farmer', 'buyer'],
       required: true,
     },
-    // Both specific
-    orderStatus: {
-      type: String,
-      enum: ['open', 'accepted', 'completed', 'cancelled'],
-      default: 'open',
-    },
+
     // Both
     paymentMethod: {
       type: String,
@@ -44,12 +40,6 @@ const orderSchema = mongoose.Schema(
     },
     // Both specific
     transportationRequired: { type: Boolean, default: true, required: true },
-    acceptedBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
-    paymentStatus: {
-      type: String,
-      enum: ['pending', 'completed', 'failed'],
-      default: 'pending',
-    },
     finalPrice: { type: Number },
     // Buyer specific
     deliveryLocation: {
@@ -59,6 +49,32 @@ const orderSchema = mongoose.Schema(
       state: { type: String },
       pincode: { type: Number },
     },
+    paymentStatus: {
+      type: String,
+      enum: ['Pending', 'Completed', 'Failed'],
+      default: 'Pending',
+    },
+    // Both specific
+    orderStatus: {
+      type: String,
+      enum: ['Open', 'Accepted', 'Completed', 'Cancelled'],
+      default: 'Open',
+    },
+    deliveryStatus: {
+      type: String,
+      enum: ['Pending', 'In Progress', 'Completed'],
+      default: 'Pending',
+    },
+    milestones: [
+      {
+        name: { type: String, required: true },
+        status: {
+          type: String,
+          enum: ['Not Started', 'In Progress', 'Completed'],
+          default: 'Not Started',
+        },
+      },
+    ],
   },
   {
     timestamps: true,
